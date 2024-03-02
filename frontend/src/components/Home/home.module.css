@@ -5,7 +5,6 @@
     font-weight: 700;
     line-height: 85px;
     letter-spacing: 0%;
-    text-align: left;
 }
 .title span:last-child{
     color: rgb(39, 39, 39);
@@ -14,8 +13,8 @@
     font-weight: 700;
     line-height: 85px;
     letter-spacing: 0%;
-    text-align: left;
 }
+
 .buttoninputfile{
     border-radius: 13px;
     background: rgb(10, 43, 163);
@@ -37,7 +36,7 @@
     border: 5px dashed rgb(148, 148, 148);
     border-radius: 33px;
     height: 380px;
-    
+    width: 100%;
 }
 .underuploadicon{
     color: rgb(39, 39, 39);
@@ -51,6 +50,7 @@
 .homepage{
     font-family: Montserrat;
 }
+
 
 .textlabelsblock{
     color: rgb(0, 0, 0);
@@ -76,11 +76,78 @@
     background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */ to right;
 }
 
+.buttoninputfileMobile{
+    display: none;
+    border-radius: 13px;
+    background: rgb(10, 43, 163);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 37px;
+    letter-spacing: 0%;
+    text-align: center;
+    width: 100%;
+    @apply mt-[24px]
+}
+
 @media (max-width: 768px) {
     .flex-col md:flex-row {
         flex-direction: column;
     }
-    .leftpanel, .w-full.md\:w-[52%] {
-        width: 100%;
+    .title{
+        width: 100% !important;
     }
+}
+
+@media (max-width: 958px) {
+    .mainLabel{
+        flex-direction: column;
+    }
+    .windowfile{
+        display: none;
+    }
+    .pcInputLabel{
+        display: none;
+    }
+    .buttoninputfileMobile{
+        display: block;
+    }
+    .mainLabel{
+        margin-top: 44px;
+    }
+    .title span{
+        text-align: center;
+        font-size: 43px !important;
+        font-family: Montserrat !important;
+        font-weight: 700 !important;
+        line-height: 52px !important;
+        letter-spacing: 0% !important;
+    }
+    .leftpanelLabel{
+        display: flex !important;
+        justify-content: center !important;
+    }
+    .title{
+        width: 70%;
+    }
+    .buttoninputfileMobile{
+        width: 70%;
+    }
+    .buttonMobileDiv{
+        @apply flex justify-center w-full
+    }
+    
+}
+
+
+
+@media (max-width: 1050px) {
+    .title span{
+        font-size: 56px !important;
+    }    
 }
