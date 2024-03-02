@@ -1,11 +1,27 @@
-import module from "./home.module.css"
-import modal from "../../images/modal.png"
-import upload from "../../images/upload_icon.png"
-import docIcon from "../../images/doc icon.png"
-import fileIcon from "../../images/document-file-sharing.png"
-import setting from "../../images/settings icon.png"
+import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import module from "./home.module.css";
+import modal from "../../images/modal.png";
+import upload from "../../images/upload_icon.png";
+import docIcon from "../../images/doc icon.png";
+import fileIcon from "../../images/document-file-sharing.png";
+import setting from "../../images/settings icon.png";
 
 const Home = () => {
+    const [files, setFiles] = useState([]);
+
+    console.log(files)
+
+    const onDrop = (acceptedFiles) => {
+        setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
+    };
+    
+    const {getRootProps, getInputProps} = useDropzone({
+        onDrop,
+        accept: '.dfx',
+        multiple: true
+    });
+
     return (
         <div className="homepage">
             <div className={`flex h-auto gap-[16px] ${module.mainLabel}`}>
@@ -16,26 +32,30 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="w-full flex justify-end">
-                    <div className={`min-w-[570px] max-w-[625px] h-full p-[42px] relative ${module.pcInputLabel} `} style={{
-                        backgroundImage: `url(${modal})`,
-                        backgroundSize: 'cover',
-                    }}>
+                    <div
+                        className={`min-w-[570px] max-w-[625px] h-full p-[42px] relative ${module.pcInputLabel}`}
+                        style={{
+                            backgroundImage: `url(${modal})`,
+                            backgroundSize: 'cover',
+                        }}
+                        {...getRootProps()}
+                    >
+                        <input {...getInputProps()} />
                         <div className="rounded-3xl bg-white w-full h-full p-[24px] flex flex-col gap-[24px] justify-between">
-                            <label htmlFor="file_DXF" className={` ${module.windowfile}`}>
+                            <div className={`cursor-pointer ${module.windowfile}`}>
                                 <div className="flex justify-center items-center h-full w-full">
                                     <div className="flex flex-col gap-[56px]">
                                         <div className="flex justify-center items-center"><img src={upload} alt="upload" /></div>
                                         <div className={module.underuploadicon}>Или перетащите сюда ваши DXF файлы</div>
                                     </div>
                                 </div>
-                            </label>
+                            </div>
                             <label htmlFor="file_DXF" className={module.buttoninputfile}>Загрузить сейчас</label>
                         </div>
                     </div>
                     <div className={module.buttonMobileDiv}>
-                    <label htmlFor="file_DXF" className={module.buttoninputfileMobile}>Загрузить сейчас</label>
+                        <label htmlFor="file_DXF" className={module.buttoninputfileMobile}>Загрузить сейчас</label>
                     </div>
-                    <input type="file" id="file_DXF" name="file_DXF" className="hidden" />
                 </div>
             </div>
             <div className={`mt-[75px] mb-[75px] px-[5vw] lg:px-[125px] md:px-[5%] py-[75px] flex flex-col md:flex-row gap-[5vw] ${module.rowLables}`}>

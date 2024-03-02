@@ -31,6 +31,7 @@
     letter-spacing: 0%;
     text-align: center;
     width: 100%;
+    cursor: pointer;
 }
 .windowfile{
     border: 5px dashed rgb(148, 148, 148);
@@ -92,6 +93,7 @@
     letter-spacing: 0%;
     text-align: center;
     width: 100%;
+    cursor: pointer;
     @apply mt-[24px]
 }
 
@@ -101,6 +103,10 @@
     }
     .title{
         width: 100% !important;
+    }
+    .buttoninputfileMobile{
+        width: 100% !important;
+        @apply mx-[5%]
     }
 }
 
@@ -139,7 +145,11 @@
         width: 70%;
     }
     .buttonMobileDiv{
-        @apply flex justify-center w-full
+        width: 100% !important;
+        @apply flex justify-center
+    }
+    .leftpanelLabel{
+        padding-left: 0 !important;
     }
     
 }
@@ -150,4 +160,5 @@
     .title span{
         font-size: 56px !important;
     }    
+
 }
