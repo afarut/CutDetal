@@ -1,80 +1,156 @@
-.footerNavWrapper {
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-.navigationWrapper {
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: 0em;
-  text-align: left;
-}
-
-.navigationWrapper ul li {
-  margin-left: 52px;
-}
-
 .logoTitle {
   font-family: Inter;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 22px;
-  letter-spacing: 0em;
-  text-align: left;
+}
+@media (min-width: 1280px) {
+  .navigationWrapper {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+
+  .navigationWrapper ul li {
+    margin-left: 52px;
+  }
+  .footerNavWrapper {
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .logoTitle {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+
+  .contacts {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000;
+  }
+
+  .contactsWrapper {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.49);
+  }
+
+  .contactsWrapper span {
+    margin-bottom: 10px;
+  }
+
+  .contactsWrapper span:last-child {
+    margin-bottom: 0;
+  }
+  .imagesWrapper img:last-child {
+    margin-right: 0;
+  }
+
+  .imagesWrapper img {
+    height: 42;
+    width: 42;
+    margin-right: 13px;
+  }
+
+  .imagesWrapper img,
+  .navigationWrapper ul li,
+  .logoTitle {
+    cursor: pointer;
+  }
+
+  .projName {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(135, 135, 135, 1);
+  }
 }
 
-.contacts {
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 22px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #000;
-}
 
-.contactsWrapper {
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: rgba(0, 0, 0, 0.49);
-}
 
-.contactsWrapper span {
-  margin-bottom: 10px;
-}
+@media (max-width: 1280px) {
+  .projName {
+    margin-top: 25px;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(135, 135, 135, 1);
+  }
 
-.contactsWrapper span:last-child {
-  margin-bottom: 0;
-}
-
-.imagesWrapper img {
-  height: 42;
-  width: 42;
-  margin-right: 13px;
-}
-
-.imagesWrapper img:last-child {
-  margin-right: 0;
-}
-
-.imagesWrapper img,
-.navigationWrapper ul li,
-.logoTitle {
-  cursor: pointer;
-}
-
-.projName {
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 22px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: rgba(135, 135, 135, 1);
+  .navigationWrapper {
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+  
+  .navigationWrapper ul li {
+    margin-bottom: 24px;
+  }
+  
+  .navigationWrapper ul li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .contacts {
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000;
+  }
+  
+  .contactsWrapper {
+    margin-top: 30px;
+    font-family: Inter;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.49);
+  }
+  
+  .contactsWrapper span {
+    margin-bottom: 10px;
+  }
+  
+  .contactsWrapper span:last-child {
+    margin-bottom: 0;
+  }
+  
+  .imagesWrapper img {
+    margin-top: 30px;
+    height: 42;
+    width: 42;
+    margin-right: 13px;
+  }
+  
+  .imagesWrapper img:last-child {
+    margin-right: 0;
+  }
 }
