@@ -1,0 +1,19 @@
+.title span:first-child{
+    color: rgb(10, 43, 163);
+    font-family: Montserrat;
+    font-size: 70px;
+    font-weight: 700;
+    line-height: 85px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.title span:last-child{
+    color: rgb(39, 39, 39);
+    font-family: Montserrat;
+    font-size: 70px;
+    font-weight: 700;
+    line-height: 85px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
