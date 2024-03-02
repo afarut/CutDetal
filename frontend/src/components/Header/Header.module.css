@@ -28,9 +28,11 @@
   margin-right: 10px;
 }
 
+.userAuthButtonWrapper {
+  
+}
+
 .signUpButton {
-  /* background: rgba(55, 46, 153, 1); */
-  /* font-family: Tilda Sans VF; */
   font-size: 18px;
   font-weight: 600;
   line-height: 22px;
@@ -40,6 +42,24 @@
 	src: 
 		url('tilda-sans_vf.woff2') format('woff2'),
 		url('tilda-sans_vf.woff') format('woff');
-	font-weight: normal;
+	font-weight: 600;
 	font-style: normal;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 6px;
+}
+
+.logInButton {
+  background-color: rgba(10, 43, 163, 1);
+  color: white;
+  border-radius: 6px;
+  src: 
+		url('tilda-sans_vf.woff2') format('woff2'),
+		url('tilda-sans_vf.woff') format('woff');
+	font-weight: 600;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.logInButton:hover, .signUpButton:hover, .navigationWrapper ul li, .logoTitle {
+  cursor: pointer;
 }
