@@ -7,7 +7,7 @@ import telegramIcon from '../../images/telegram.svg'
 
 const Footer = () => {
     return (
-        <div className="footer-wrapper w-full absolute bottom-0 items-center ">
+        <div className="footer-wrapper w-full items-center ">
             <div className={`${module.footerNavWrapper} flex justify-between items-center h-[142px]`}>
                 <div className='pl-[42px]'>
                     <span className={`${module.logoTitle}`}>LOGO</span>
