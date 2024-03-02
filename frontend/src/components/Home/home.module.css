@@ -76,3 +76,11 @@
     background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */ to right;
 }
 
+@media (max-width: 768px) {
+    .flex-col md:flex-row {
+        flex-direction: column;
+    }
+    .leftpanel, .w-full.md\:w-[52%] {
+        width: 100%;
+    }
+}
