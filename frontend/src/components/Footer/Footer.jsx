@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <div className="footer-wrapper w-full">
+        <div className="footer-wrapper appContainer w-full">
             footer
         </div>
     )

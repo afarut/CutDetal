@@ -1,3 +1,45 @@
 .wrapper {
     box-shadow: 0px 4px 11.5px 0px rgba(0, 0, 0, 0.25);
 }
+
+.logoTitle {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.navigationWrapper {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.navigationWrapper ul li {
+  margin-right: 20px;
+}
+
+.navigationWrapper ul li {
+  margin-right: 10px;
+}
+
+.signUpButton {
+  /* background: rgba(55, 46, 153, 1); */
+  /* font-family: Tilda Sans VF; */
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgba(55, 46, 153, 1);
+	src: 
+		url('tilda-sans_vf.woff2') format('woff2'),
+		url('tilda-sans_vf.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
