@@ -20,10 +20,10 @@ const Header = () => {
         </div>
 
         <div className={`${module.userAuthButtonWrapper} flex items-center`}>
-          <div className={`${module.signUpButton}`}>
+          <div className={`${module.signUpButton} px-[22px] py-[10px] mr-[20px]`}>
             <button>Регистрация</button>
           </div>
-          <div>
+          <div className={`${module.logInButton} px-[22px] py-[10px]`}>
             <button>Логин</button>
           </div>
         </div>
