@@ -48,4 +48,31 @@
     letter-spacing: 0%;
     text-align: center;
 }
+.homepage{
+    font-family: Montserrat;
+}
+
+.textlabelsblock{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: center;
+}
+.iconlabel{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: center;
+}
+.rowLables {
+    backdrop-filter: blur(4px);
+    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */;
+    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */ to right;
+}
 
