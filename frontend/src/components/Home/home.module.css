@@ -16,4 +16,36 @@
     letter-spacing: 0%;
     text-align: left;
 }
+.buttoninputfile{
+    border-radius: 13px;
+    background: rgb(10, 43, 163);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 37px;
+    letter-spacing: 0%;
+    text-align: center;
+    width: 100%;
+}
+.windowfile{
+    border: 5px dashed rgb(148, 148, 148);
+    border-radius: 33px;
+    height: 380px;
+    
+}
+.underuploadicon{
+    color: rgb(39, 39, 39);
+    font-family: Montserrat;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 37px;
+    letter-spacing: 0%;
+    text-align: center;
+}
 
