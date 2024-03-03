@@ -1,4 +1,5 @@
 from django.db import models
+from .constants import VERBOSE_STATUS_TYPE
 
 
 class Material(models.Model):
@@ -19,14 +20,23 @@ class Range(models.Model):
 		return f"{self.start} - {self.stop} by {self.price}"
 
 
-#class Detail(models.Model):
-#	material = models.ForeignKey(Material, on_delete=models.CASCADE)
-#	width = models.FloatField()
-#	height = models.FloatField()
-#	dxf_file = models.FileField(upload_to="dxf")
-#	swg_file = models.FileField(upload_to="swg")
-#	srtab = models.FloatField()
-#	srlength = models.FloatField()
-#
-#	def get_price(self):
-#		pass
+class Order(models.Model):
+	username = models.CharField(max_length=70)
+	email = models.EmailField()
+	phone_number = models.CharField(max_length=20)
+	status = models.PositiveSmallIntegerField(choices=VERBOSE_STATUS_TYPE, default=0)
+	is_individual = models.BooleanField(default=True)
+
+
+class Detail(models.Model):
+	name = models.CharField(max_length=70)
+	material = models.ForeignKey(Material, on_delete=models.CASCADE)
+	width = models.FloatField()
+	height = models.FloatField()
+	dxf_file = models.FileField(upload_to="dxf")
+	svg_file = models.FileField(upload_to="svg")
+	length = models.FloatField()
+	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+
+	def get_price(self):
+		pass
