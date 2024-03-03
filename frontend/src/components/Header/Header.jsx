@@ -92,7 +92,7 @@ const Header = () => {
           >
             <ul className="lg:flex items-center">
             {user.isAdmin && <><NavLink to={'/monitoring'}><li>Мониторинг</li></NavLink></>}
-              {user.isSuperAdmin && <li>Управление</li>}
+              {user.isSuperAdmin && <NavLink to={'/manage'}><li>Управление</li></NavLink>}
             </ul>
           </div>
         )}
@@ -139,7 +139,7 @@ const Header = () => {
                           <div>{user.isAdmin && <><NavLink onClick={togglePopup} to={'/monitoring'}><span>Мониторинг</span></NavLink></>}</div>
                         
                         <div>
-                          {user.isSuperAdmin && <span>Управление</span>}
+                          {user.isSuperAdmin && <NavLink to={'/manage'}><span>Управление</span></NavLink>}
                         </div>
                       </>
                     )}
