@@ -14,7 +14,7 @@ class Range(models.Model):
 	start = models.FloatField()
 	stop = models.FloatField()
 	price = models.FloatField()
-	material = models.ForeignKey(Material, on_delete=models.CASCADE)
+	material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="ranges")
 
 	def __str__(self):
 		return f"{self.start} - {self.stop} by {self.price}"
@@ -36,7 +36,7 @@ class Detail(models.Model):
 	dxf_file = models.FileField(upload_to="dxf")
 	svg_file = models.FileField(upload_to="svg")
 	length = models.FloatField()
-	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="details")
 
 	def get_price(self):
 		pass
