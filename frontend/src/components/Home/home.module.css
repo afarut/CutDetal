@@ -321,3 +321,63 @@
 .divScroll::-webkit-scrollbar {
     width: 0px; 
 }
+
+.placingTitle{
+    color: rgba(0, 0, 0, 0.71);
+    font-family: Montserrat;
+    font-size: 43.59px;
+    font-weight: 400;
+    line-height: 53px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.inputDivPOrder label{
+    font-family: Montserrat;
+    font-size: 24.22px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.inputDivPOrder input{
+    box-sizing: border-box;
+    border: 1.21px solid rgb(10, 43, 163);
+    border-radius: 9.69px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 17.94px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: left;
+    @apply px-[11px] py-[7px]
+}
+.buttonsOrderRow1{
+    color: rgb(55, 46, 153);
+    font-family: Tilda Sans VF;
+    font-size: 21.79px;
+    font-weight: 600;
+    line-height: 26px;
+    box-sizing: border-box;
+    border: 1.13px solid rgba(0, 0, 0, 0.11);
+    border-radius: 6.8px;
+    box-shadow: 0px 4.54px 4.54px 0px rgba(0, 0, 0, 0.25);
+    background: rgb(255, 255, 255);
+    text-align: center;
+    @apply py-[12px]
+}
+.buttonsOrderRow2{
+    border-radius: 6.79px;
+    box-shadow: 0px 4.54px 4.54px 0px rgba(0, 0, 0, 0.25);
+    background: rgb(10, 43, 163);
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 21.79px;
+    font-weight: 600;
+    line-height: 27px;
+    letter-spacing: 0%;
+    text-align: center;
+    @apply py-[12px]
+}
