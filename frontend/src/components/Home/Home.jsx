@@ -353,7 +353,7 @@ const Home = () => {
                                 </div>
                             </div>
                             <div className={module.buttonMobileDiv}>
-                                <label htmlFor="file_DXF" className={module.buttoninputfileMobile}>Загрузить сейчас</label>
+                                <label htmlFor="file_DXF" {...getRootProps()} className={module.buttoninputfileMobile}>Загрузить сейчас</label>
                             </div>
                         </div>
                     </div>
