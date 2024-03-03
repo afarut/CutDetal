@@ -92,3 +92,24 @@
   border-bottom: 0;
   /* margin-bottom: 20px; */
 }
+
+@media (min-width: 1024px) {
+  .formWrapper label {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+  
+  .formWrapper input {
+    margin-top: 10px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+}
