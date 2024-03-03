@@ -1,0 +1,12 @@
+from django.urls import path
+from core import views
+
+app_name = "core"
+
+urlpatterns = [
+    path("detail/", views.DetailApiView.as_view(), name="detail"),
+    path("order/", views.OrderApiView.as_view(), name="order"),
+    path("material/<int:pk>/", views.MaterialGetEditDeleteApiView.as_view(), name="materials_edit_create_delete"),
+    path("material/", views.MaterialApiview.as_view(), name="material"),
+    path("user/", views.UserGet.as_view(), name="user")
+]
