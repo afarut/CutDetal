@@ -4,6 +4,7 @@ import instagramIcon from "../../images/instagram.svg";
 import facebookIcon from "../../images/facebook.svg";
 import whatsAppIcon from "../../images/whatsapp.svg";
 import telegramIcon from "../../images/telegram.svg";
+import cutDetalLogo from '../../images/cutdetallogo.svg'
 
 const Footer = () => {
   return (
@@ -13,9 +14,10 @@ const Footer = () => {
           className={`${module.footerNavWrapper} flex xl:flex-row xl:justify-between flex-col xl:items-center xl:h-[142px]`}
         >
           <div className="xl:pl-[42px]">
-            <span className={`${module.logoTitle} text-[40px] font-extrabold`}>
+            {/* <span className={`${module.logoTitle} text-[40px] font-extrabold`}>
               LOGO
-            </span>
+            </span> */}
+            <img height={50} width={60} src={cutDetalLogo} alt="logo" />
           </div>
 
           <div className={`${module.navigationWrapper}`}>

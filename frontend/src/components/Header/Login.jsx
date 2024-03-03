@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import module from './Header.module.css';
 
-const Login = ({ togglePopup, popupRef }) => {
+const Login = ({ togglePopup, popupRef, setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false); // Состояние для галочки "запомнить меня"
@@ -19,11 +19,16 @@ const Login = ({ togglePopup, popupRef }) => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Предотвращаем обычное поведение отправки формы
-    // Здесь вы можете выполнить логику отправки данных, например, через API
+    event.preventDefault(); 
+    
     console.log("Submitting username:", username);
     console.log("Submitting password:", password);
     console.log("Remember me:", rememberMe);
+    setUsername('')
+    setPassword('')
+
+    setUser({isAdmin: true, isSuperAdmin: true})
+    togglePopup()
   };
 
   return (
