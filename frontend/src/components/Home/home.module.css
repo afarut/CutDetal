@@ -73,8 +73,8 @@
 }
 .rowLables {
     backdrop-filter: blur(4px);
-    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */;
-    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */ to right;
+    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) ;
+    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) to right;
 }
 
 .buttoninputfileMobile{
@@ -162,3 +162,50 @@
     }    
 
 }
+
+.processWindowText{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 44px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+
+.processWindow {
+    width: 200px;
+    height: 200px; /* Изменяем высоту элемента */
+    border-radius: 50%; /* чтобы сделать круг */
+    border: 21px solid transparent;
+    border-top-color: rgb(10, 43, 163); /* синий цвет круга */
+    animation: spin 1s linear infinite; /* добавляем анимацию */
+}
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg); /* поворачиваем круг на 360 градусов */
+    }
+  }
+
+  .rotatedImage {
+    transform: rotate(90deg) !important; /* Поворачиваем картинку на 90 градусов */
+  }
+  .buttonOkey{
+    border-radius: 13px;
+    background: rgb(10, 43, 163);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 86px 24px 86px;
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 37px;
+    letter-spacing: 0%;
+    text-align: center;
+    cursor: pointer;
+  }
