@@ -4,6 +4,7 @@ from core import views
 app_name = "core"
 
 urlpatterns = [
+    path('dxf/', views.dxf_view, name='dxf_view'),
     path("detail/", views.DetailApiView.as_view(), name="detail"),
     path("order/", views.OrderApiView.as_view(), name="order"),
     path("material/<int:pk>/", views.MaterialGetEditDeleteApiView.as_view(), name="materials_edit_create_delete"),
