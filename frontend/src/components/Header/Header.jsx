@@ -1,24 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
+import { NavLink } from 'react-router-dom'
 import module from "./Header.module.css";
-
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
 
+import cutDetalLogo from '../../images/cutdetallogo.svg'
+
+import Login from "./Login";
+
 const Header = () => {
+  const [user, setUser] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const popupRef = useRef(null);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
+    setIsLoginPopupOpen(false);
+  };
+
+  const toggleLoginPopup = () => {
+    setIsLoginPopupOpen(!isLoginPopupOpen);
   };
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       setIsPopupOpen(false);
+      setIsLoginPopupOpen(false);
     }
   };
 
   useEffect(() => {
-    if (isPopupOpen) {
+    if (isPopupOpen || isLoginPopupOpen) {
       document.body.style.overflow = "hidden";
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -30,19 +42,25 @@ const Header = () => {
       document.body.style.overflow = "auto";
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isPopupOpen]);
+  }, [isPopupOpen, isLoginPopupOpen]);
 
   return (
     <div
       className={`${module.wrapper} w-[100%] h-[82px] appContainer flex justify-between`}
     >
       <div className="flex justify-center items-center">
-        <span className={`${module.logoTitle}`}>LOGO</span>
+        <NavLink to={'/'}>
+        <img height={50} width={60} src={cutDetalLogo} alt="logo" />
+        </NavLink>
       </div>
 
       <div className="flex items-center">
         <div className={`${module.navigationWrapper} hidden lg:block`}>
-          <ul className="flex justify-center items-center mr-[10px]">
+          <ul
+            className={`flex justify-center items-center  ${
+              !user ? "mr-[10px]" : ""
+            }`}
+          >
             <li>Контакты</li>
             <li>Помощь</li>
             <li>Бизнес</li>
@@ -50,63 +68,113 @@ const Header = () => {
           </ul>
         </div>
 
-        <div
-          className={`${module.userAuthButtonWrapper} hidden lg:flex items-center`}
-        >
+        {!user ? (
+          <>
+            <div
+              className={`${module.userAuthButtonWrapper} hidden lg:flex items-center`}
+            >
+              <div
+                className={`${module.signUpButton} px-[22px] py-[10px] mr-[20px] ml-[10px]`}
+              >
+                <button>Регистрация</button>
+              </div>
+              <div
+                onClick={toggleLoginPopup}
+                className={`${module.logInButton} px-[22px] py-[10px]`}
+              >
+                <button>Логин</button>
+              </div>
+            </div>
+          </>
+        ) : (
           <div
-            className={`${module.signUpButton} px-[22px] py-[10px] mr-[20px]`}
+            className={`${module.navigationWrapper} hidden lg:flex items-center`}
           >
-            <button>Регистрация</button>
+            <ul className="lg:flex items-center">
+            {user.isAdmin && <><NavLink to={'/monitoring'}><li>Мониторинг</li></NavLink></>}
+              {user.isSuperAdmin && <NavLink to={'/manage'}><li>Управление</li></NavLink>}
+            </ul>
           </div>
-          <div className={`${module.logInButton} px-[22px] py-[10px]`}>
-            <button>Логин</button>
-          </div>
-        </div>
+        )}
 
-        <div className="lg:hidden" onClick={() => setIsPopupOpen(true)}>
+        <div className="lg:hidden" onClick={togglePopup}>
           <img src={burgerMenuIcon} alt="Burger Menu Icon" />
         </div>
 
         {isPopupOpen && (
-          <div className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-50`}>
-            <div
-              ref={popupRef}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 w-[50%]"
-            >
+          <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
+            {!isLoginPopupOpen ? (
               <div
-                className={`${module.popupItemsWrapper} flex justify-center items-center flex-col`}
+                ref={popupRef}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 w-[50%]"
               >
-                <div>
-                  <span>Контакты</span>
-                </div>
-                <div>
-                  <span>Помощь</span>
-                </div>
-                <div>
-                  <span>Бизнес</span>
-                </div>
-                <div>
-                  <span>О нас</span>
-                </div>
-              </div>
-              <div onClick={togglePopup} className="absolute top-[15px] right-[15px]">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 35 35"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  className={`${module.popupItemsWrapper} flex justify-center items-center flex-col`}
                 >
-                  <path
-                    d="M1.61578 2.19485L32.5388 33.1178M1.61578 33.1178L32.5388 2.19485"
-                    stroke="#FF6161"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                  <>
+                    <div>
+                      <span>Контакты</span>
+                    </div>
+                    <div>
+                      <span>Помощь</span>
+                    </div>
+                    <div>
+                      <span>Бизнес</span>
+                    </div>
+                    <div>
+                      <span>О нас</span>
+                    </div>
+                    {!user ? (
+                      <>
+                        <div>
+                          <span>Регистрация</span>
+                        </div>
+                        <div onClick={toggleLoginPopup}>
+                          <span>Логин</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        
+                          <div>{user.isAdmin && <><NavLink onClick={togglePopup} to={'/monitoring'}><span>Мониторинг</span></NavLink></>}</div>
+                        
+                        <div>
+                          {user.isSuperAdmin && <NavLink to={'/manage'}><span>Управление</span></NavLink>}
+                        </div>
+                      </>
+                    )}
+                  </>
+                </div>
+                <div
+                  onClick={togglePopup}
+                  className="absolute top-[15px] right-[15px]"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 35 35"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.61578 2.19485L32.5388 33.1178M1.61578 33.1178L32.5388 2.19485"
+                      stroke="#FF6161"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
-            </div>
+            ) : (
+              <Login setUser={setUser} popupRef={popupRef} togglePopup={togglePopup} />
+            )}
+          </div>
+        )}
+
+        {isLoginPopupOpen && !isPopupOpen && (
+          <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
+            <Login setUser={setUser} togglePopup={toggleLoginPopup} popupRef={popupRef} />
           </div>
         )}
       </div>
