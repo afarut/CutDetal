@@ -1,24 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 import module from "./Header.module.css";
-
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
+
+import Login from './Login'
 
 const Header = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const popupRef = useRef(null);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
+    setIsLoginPopupOpen(false);
+  };
+
+  const toggleLoginPopup = () => {
+    setIsLoginPopupOpen(!isLoginPopupOpen);
   };
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       setIsPopupOpen(false);
+      setIsLoginPopupOpen(false);
     }
   };
 
   useEffect(() => {
-    if (isPopupOpen) {
+    if (isPopupOpen || isLoginPopupOpen) {
       document.body.style.overflow = "hidden";
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -30,7 +38,7 @@ const Header = () => {
       document.body.style.overflow = "auto";
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isPopupOpen]);
+  }, [isPopupOpen, isLoginPopupOpen]);
 
   return (
     <div
@@ -58,38 +66,52 @@ const Header = () => {
           >
             <button>Регистрация</button>
           </div>
-          <div className={`${module.logInButton} px-[22px] py-[10px]`}>
+          <div
+            onClick={toggleLoginPopup}
+            className={`${module.logInButton} px-[22px] py-[10px]`}
+          >
             <button>Логин</button>
           </div>
         </div>
 
-        <div className="lg:hidden" onClick={() => setIsPopupOpen(true)}>
+        <div className="lg:hidden" onClick={togglePopup}>
           <img src={burgerMenuIcon} alt="Burger Menu Icon" />
         </div>
 
-        {isPopupOpen && (
-          <div className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-50`}>
-            <div
+        {(isPopupOpen) && (
+          <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
+            {!isLoginPopupOpen ? (<div
               ref={popupRef}
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 w-[50%]"
             >
               <div
                 className={`${module.popupItemsWrapper} flex justify-center items-center flex-col`}
               >
-                <div>
-                  <span>Контакты</span>
-                </div>
-                <div>
-                  <span>Помощь</span>
-                </div>
-                <div>
-                  <span>Бизнес</span>
-                </div>
-                <div>
-                  <span>О нас</span>
-                </div>
+                <>
+                  <div>
+                    <span>Контакты</span>
+                  </div>
+                  <div>
+                    <span>Помощь</span>
+                  </div>
+                  <div>
+                    <span>Бизнес</span>
+                  </div>
+                  <div>
+                    <span>О нас</span>
+                  </div>
+                  <div>
+                    <span>Регистрация</span>
+                  </div>
+                  <div onClick={toggleLoginPopup}>
+                    <span>Логин</span>
+                  </div>
+                </>
               </div>
-              <div onClick={togglePopup} className="absolute top-[15px] right-[15px]">
+              <div
+                onClick={togglePopup}
+                className="absolute top-[15px] right-[15px]"
+              >
                 <svg
                   width="20"
                   height="20"
@@ -100,13 +122,19 @@ const Header = () => {
                   <path
                     d="M1.61578 2.19485L32.5388 33.1178M1.61578 33.1178L32.5388 2.19485"
                     stroke="#FF6161"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </div>
-            </div>
+            </div>) : <Login popupRef={popupRef} togglePopup={toggleLoginPopup} />}
+          </div>
+        )}
+
+        {isLoginPopupOpen && !isPopupOpen && (
+          <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
+            <Login togglePopup={toggleLoginPopup} popupRef={popupRef} />
           </div>
         )}
       </div>
