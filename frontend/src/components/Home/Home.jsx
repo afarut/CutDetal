@@ -8,6 +8,8 @@ import fileIcon from "../../images/document-file-sharing.png";
 import setting from "../../images/settings icon.png";
 import okey from "../../images/okeydownload.svg"
 import krest from "../../images/krestik.svg"
+import trash from "../../images/trash.svg"
+import queshion from "../../images/queshion.svg"
 import {convertBase64} from "../../utils/convertBase64"
 import { motion } from "framer-motion";
 
@@ -17,6 +19,8 @@ const Home = () => {
     const [uploading, setUploading] = useState(false)
 
     const [visibleError, setVisibleError] = useState(false);
+
+    const [calculate, setCalculate] = useState(false)
 
     const onDrop = async (acceptedFiles) => {
         setLoading(true);
@@ -64,6 +68,12 @@ const Home = () => {
         setFiles([])
     }
 
+    const goCalc = () => {
+        setUploading(false)
+        setCalculate(true)
+        setLoading(false)
+    }
+
 
     return (
         <div className=''>
@@ -94,7 +104,7 @@ const Home = () => {
                                     <div className={module.processWindowText}>
                                         Files are ready!
                                     </div>
-                                    <div className={module.buttonOkey}>
+                                    <div className={module.buttonOkey} onClick={goCalc}>
                                         К расчету
                                     </div>
                                 </div>
@@ -113,6 +123,52 @@ const Home = () => {
                     </div>
                 </div>
             )}
+            {calculate ? 
+                <div className='absolute inset-0 flex justify-center pt-[6%] bg-opacity-60 bg-black z-20 h-full'>
+                    <div className='bg-white w-full h-[740px] mx-[42px] rounded-3xl relative pt-[16px]'>
+                        <div className={module.titleCalc}>
+                            Расчет стоимости деталей
+                        </div>
+                        <div className={`flex flex-col gap-[14px] max-h-[650px] relative overflow-scroll overflow-x-hidden pt-[12px] ${module.divScroll}`}>
+                        {[0,1,2,3,4,5].map((item, index) => (
+                            <div key={index} className={module.cartCalc}>
+                                <div className='w-[26%] h-[190px] flex justify-center items-center'>
+                                    <img src={trash} alt="trash" className='h-full px-[8px]'/>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <div className={module.calcItemName}>
+                                        File.dxf
+                                    </div>
+                                    <div className={`mt-[28px] ${module.materialInput} flex items-center gap-[8px]`}>
+                                        <div className='flex items-center'>Материал:</div> 
+                                        <select name="material" id="material" className='w-[165px] h-[30px]'>
+                                            <option value="0">Выберите</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <div className={module.inputDivCount}>
+                                        <div className='flex items-center'>Количество: </div>
+                                        <input type="text" className='w-[165px] h-[30px]' placeholder='Введите число'/>
+                                        <span className={`${module.spanPriceItem}  flex items-center`}>цена 70р/деталь <img src={queshion} alt="queshion" className='ml-[4px] w-[12px] h-[12px] flex items-center'/> </span>
+                                    </div>
+                                    <div className={module.AllPriceItem}>
+                                        ИТОГО: <span>285.000</span> RUB
+                                    </div>
+                                </div>
+                                <div className='absolute top-0 right-0 m-[18px]'>
+                                    <img src={trash} alt="trash" />
+                                </div>
+                            </div>
+                        ))}
+
+                        </div>
+                        <div className={`${module.rotatedImage} absolute right-0 top-0 m-[16px] cursor-pointer`} onClick={windowClose}>
+                            <img src={krest} alt="okey" />
+                        </div>
+                    </div>
+                </div> 
+            : ""}
             <div className="homepage">
                 <div className={`relative ${module.contentWrapper}`}>
                     <div className={`flex h-auto gap-[16px] ${module.mainLabel}`}>
