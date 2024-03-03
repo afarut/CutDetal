@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { NavLink } from 'react-router-dom'
 import module from "./Header.module.css";
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
 
@@ -48,8 +49,9 @@ const Header = () => {
       className={`${module.wrapper} w-[100%] h-[82px] appContainer flex justify-between`}
     >
       <div className="flex justify-center items-center">
-        {/* <span className={`${module.logoTitle}`}>LOGO</span> */}
+        <NavLink to={'/'}>
         <img height={50} width={60} src={cutDetalLogo} alt="logo" />
+        </NavLink>
       </div>
 
       <div className="flex items-center">
@@ -89,7 +91,7 @@ const Header = () => {
             className={`${module.navigationWrapper} hidden lg:flex items-center`}
           >
             <ul className="lg:flex items-center">
-              {user.isAdmin && <li>Мониторинг</li>}
+            {user.isAdmin && <><NavLink to={'/monitoring'}><li>Мониторинг</li></NavLink></>}
               {user.isSuperAdmin && <li>Управление</li>}
             </ul>
           </div>
@@ -133,7 +135,9 @@ const Header = () => {
                       </>
                     ) : (
                       <>
-                        <div>{user.isAdmin && <span>Мониторинг</span>}</div>
+                        
+                          <div>{user.isAdmin && <><NavLink onClick={togglePopup} to={'/monitoring'}><span>Мониторинг</span></NavLink></>}</div>
+                        
                         <div>
                           {user.isSuperAdmin && <span>Управление</span>}
                         </div>
@@ -163,7 +167,7 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              <Login setUser={setUser} popupRef={popupRef} togglePopup={toggleLoginPopup} />
+              <Login setUser={setUser} popupRef={popupRef} togglePopup={togglePopup} />
             )}
           </div>
         )}
