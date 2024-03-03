@@ -10,36 +10,6 @@ from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
 
-def dxf_to_base64(dxf_file_path):
-    """
-    Функция для конвертации содержимого файла DXF в строку Base64.
-
-    Аргументы:
-    dxf_file_path (str): Путь к файлу DXF.
-
-    Возвращает:
-    str: Строка, содержащая содержимое файла DXF, закодированное в Base64.
-    """
-
-    try:
-        # Открываем файл в бинарном режиме
-        with open(dxf_file_path, 'rb') as file:
-            file_content = file.read()  # Читаем содержимое файла
-
-        # Кодируем содержимое файла в Base64
-        encoded_content = base64.b64encode(file_content)
-
-        # Декодируем байты в строку и возвращаем результат
-        return encoded_content.decode('utf-8')
-
-    except FileNotFoundError:
-        print(f"Файл не найден: {dxf_file_path}")
-        return None
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
-        return None
-
-
 def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=settings.LOGIN, password=settings.PASSWORD):
     # Создаем сессию с аутентификацией
     session = Session()
@@ -100,7 +70,3 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
             "size_y": 0,
             "version": ''
         }
-
-base64_string = dxf_to_base64("C:/work_space/api_work/static/Тахацу 1.DXF")
-
-print(calc_dxf(base64_string, "1"))
