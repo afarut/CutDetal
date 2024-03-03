@@ -1,0 +1,76 @@
+.settingsWrapper {
+  box-shadow: 0px 0px 15.600000381469727px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 17px;
+  cursor: pointer;
+}
+
+.settingsTitle {
+  margin-top: 20px;
+  font-family: Montserrat;
+  font-weight: 400;
+  letter-spacing: 0em;
+  text-align: center;
+  color: black;
+}
+
+.priceManageTitle {
+  font-family: Montserrat;
+  font-weight: 400;
+  line-height: 45px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.71);
+}
+
+.inputWrapper {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.inputWrapper input {
+    border-radius: 10px;
+    border: 1.21px solid rgba(10, 43, 163, 1)
+}
+
+.inputWrapper span {
+    color: rgba(0, 0, 0, 0.71);
+}
+
+.inputWrapper label {
+    color: rgba(10, 43, 163, 1);
+}
+
+.cancelButton {
+padding: 10px 22px 10px 22px;
+border-radius: 13px;
+border: 3px solid rgba(0, 0, 0, 0.04);
+font-family: Montserrat;
+font-size: 24px;
+font-weight: 600;
+line-height: 29px;
+letter-spacing: 0em;
+text-align: left;
+color: rgba(55, 46, 153, 1);
+box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+}
+
+.closeButton {
+    font-family: Montserrat;
+font-size: 24px;
+font-weight: 600;
+line-height: 29px;
+letter-spacing: 0em;
+text-align: left;
+color: #fff;
+padding: 10px 86px 10px 86px;
+border-radius: 13px;
+gap: 10px;
+background-color: rgba(10, 43, 163, 1);
+box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+border: 3px solid rgba(10, 43, 163, 1);
+}
