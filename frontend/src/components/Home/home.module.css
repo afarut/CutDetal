@@ -209,3 +209,115 @@
     text-align: center;
     cursor: pointer;
   }
+
+  .titleCalc{
+    color: rgba(0, 0, 0, 0.71);
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 44px;
+    letter-spacing: 0%;
+    text-align: left;
+    margin-bottom: 12px;
+    @apply ml-[16px]
+  }
+
+  .cartCalc{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    padding: 18px;
+    @apply flex gap-[30px] rounded-3xl relative mx-[16px]
+  }
+  .cartCalc:last-child{
+    @apply mb-[12px]
+  }
+.calcItemName{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 44px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.materialInput{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.materialInput select{
+    box-sizing: border-box;
+    border: 1px solid rgb(10, 43, 163);
+    border-radius: 8px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 14.82px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: left;
+    @apply px-[9px] flex items-center
+}
+.inputDivCount{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: left;
+    display: flex;
+    gap: 8px;
+    margin-top: 13px;
+}
+.inputDivCount input{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 14.82px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: left;
+    box-sizing: border-box;
+    border: 1px solid rgb(10, 43, 163);
+    border-radius: 8px;
+    background: rgb(255, 255, 255);
+    @apply px-[9px] flex items-center
+}
+.inputDivCount span{
+    color: rgb(113, 113, 113);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.AllPriceItem{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 31px;
+    font-weight: 600;
+    line-height: 38px;
+    letter-spacing: 0%;
+    text-align: left;
+    margin-top: 9px;
+}
+.AllPriceItem span{
+    margin-left: 37px;
+    margin-right: 12px;
+}
+.divScroll {
+    overflow-y: auto;
+    scrollbar-width: 0px; 
+    scrollbar-color: transparent transparent; 
+}
+
+.divScroll::-webkit-scrollbar {
+    width: 0px; 
+}
