@@ -1,9 +1,3 @@
-import base64
-import json
-import logging
-import requests
-
-
 from django.conf import settings
 from requests import Session
 from requests.auth import HTTPBasicAuth
@@ -14,7 +8,6 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
     # Создаем сессию с аутентификацией
     session = Session()
     session.auth = HTTPBasicAuth(login, password)
-    logging.info('Сессия создана')
 
     # WSDL URL от 1C сервера
     wsdl = 'http://sr.sk18.ru:8088/CalcServer/ws/SRInterface.1cws?wsdl'
@@ -31,22 +24,17 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
         Password=password
     )
 
-    logging.error('Запрос создан')
 
     try:
         # print(f"Response: {response}")
         if response.SRResult is None:
             success = True
             error_message = ''
-            logging.error('Ошибок в расчёте не выявлено')
         else:
             success = False
             error_message = response.SRResult
-            logging.error(f'Ошибка в расчёте: {error_message}')
 
-        logging.error('Вычисляем общую длину реза')
         total_length = sum([entity.SRLength for entity in response.SRTab.SREntity])
-        logging.error(f'Общая длина реза {total_length}')
         # Подготавливаем данные для JSON-ответа
         result = {
             "success": success,

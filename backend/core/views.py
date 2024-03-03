@@ -6,18 +6,12 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 
-
-
-
 @csrf_exempt
 def dxf_view(request):
 
     if request.method == "POST":
         form = forms.UploadFileForm(json.loads(request.body.decode()), request.FILES)
-        #json.loads(request.body.decode())
-        #print(form.__dict__)
         result = utils.calc_dxf(form.data["base64file"], "name img from frontend")
-        print(result)
         if result['success']:
             return JsonResponse({
                 "status": "success",
