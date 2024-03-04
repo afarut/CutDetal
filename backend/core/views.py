@@ -11,6 +11,8 @@ from .models import Detail, Order, Material
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from django.http import JsonResponse
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 
 @csrf_exempt
 def dxf_view(request):
@@ -52,6 +54,8 @@ class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
 class MaterialApiview(CreateAPIView, ListAPIView):
 	serializer_class = MaterialSerializer
 	queryset = Material.objects.all()
+	permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 
 class DeleteDetailFromOrder(APIView):
