@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import settingsIcon from "../../images/settings.svg";
 import manageIcon from "../../images/manage.svg";
 import module from "./Manage.module.css";
@@ -51,10 +52,12 @@ const Manage = () => {
 
   return (
     <div className={`flex justify-center items-center flex-col lg:flex-row my-[35px] gap-[20px] lg:my-[0] h-[70vh]`}>
-      <div className={`${module.settingsWrapper} lg:h-[466px] lg:w-[466px] h-[330px] w-[330px] flex justify-center items-center flex-col`} onClick={openPopup}>
+      <NavLink to={'/manage/price'}>
+      <div className={`${module.settingsWrapper} lg:h-[466px] lg:w-[466px] h-[330px] w-[330px] flex justify-center items-center flex-col`}>
         <img className='h-[185px] w-[185px] lg:h-[260px] lg:w-[260px]' src={settingsIcon} alt='settings' />
         <span className={`${module.settingsTitle} text-[28px] lg:text-[40px] leading-[30px] lg:leading-[49px]`}>Управление ценой</span>
       </div>
+      </NavLink>
       <div className={`${module.settingsWrapper} lg:h-[466px] lg:w-[466px] h-[330px] w-[330px] flex justify-center items-center flex-col`} onClick={openPopup}>
         <img className='h-[185px] w-[185px] lg:h-[260px] lg:w-[260px]' src={manageIcon} alt='manage' />
         <span className={`${module.settingsTitle} text-[28px] lg:text-[40px] leading-[30px] lg:leading-[49px]`}>Управление размером файлов</span>

@@ -139,7 +139,7 @@ const Header = () => {
                           <div>{user.isAdmin && <><NavLink onClick={togglePopup} to={'/monitoring'}><span>Мониторинг</span></NavLink></>}</div>
                         
                         <div>
-                          {user.isSuperAdmin && <NavLink to={'/manage'}><span>Управление</span></NavLink>}
+                          {user.isSuperAdmin && <NavLink onClick={togglePopup} to={'/manage'}><span className="mr-[0]">Управление</span></NavLink>}
                         </div>
                       </>
                     )}
