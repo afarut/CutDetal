@@ -10,7 +10,7 @@ import PriceManage from './components/PriceManage/PriceManage';
 
 function App() {
   return (
-    <div>
+    <div className='relative'>
       <Header />
       <Routes>
         <Route exact path="/" element={<Home />} />

@@ -73,8 +73,8 @@
 }
 .rowLables {
     backdrop-filter: blur(4px);
-    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */;
-    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) /* Предупреждение: градиент использует вращение, не поддерживаемое CSS, и может работать не так, как ожидается. */ to right;
+    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) ;
+    background: radial-gradient(870.03% 155.00% at -11% -40%, rgb(21, 10, 163) 4.221%, rgba(0, 10, 250, 0.56) 100%) to right;
 }
 
 .buttoninputfileMobile{
@@ -161,4 +161,223 @@
         font-size: 56px !important;
     }    
 
+}
+
+.processWindowText{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 44px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+
+.processWindow {
+    width: 200px;
+    height: 200px; /* Изменяем высоту элемента */
+    border-radius: 50%; /* чтобы сделать круг */
+    border: 21px solid transparent;
+    border-top-color: rgb(10, 43, 163); /* синий цвет круга */
+    animation: spin 1s linear infinite; /* добавляем анимацию */
+}
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg); /* поворачиваем круг на 360 градусов */
+    }
+  }
+
+  .rotatedImage {
+    transform: rotate(90deg) !important; /* Поворачиваем картинку на 90 градусов */
+  }
+  .buttonOkey{
+    border-radius: 13px;
+    background: rgb(10, 43, 163);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 86px 24px 86px;
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 37px;
+    letter-spacing: 0%;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .titleCalc{
+    color: rgba(0, 0, 0, 0.71);
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 44px;
+    letter-spacing: 0%;
+    text-align: left;
+    margin-bottom: 12px;
+    @apply ml-[16px]
+  }
+
+  .cartCalc{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    padding: 18px;
+    @apply flex gap-[30px] rounded-3xl relative mx-[16px]
+  }
+  .cartCalc:last-child{
+    @apply mb-[12px]
+  }
+.calcItemName{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 44px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.materialInput{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.materialInput select{
+    box-sizing: border-box;
+    border: 1px solid rgb(10, 43, 163);
+    border-radius: 8px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 14.82px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: left;
+    @apply px-[9px] flex items-center
+}
+.inputDivCount{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: left;
+    display: flex;
+    gap: 8px;
+    margin-top: 13px;
+}
+.inputDivCount input{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 14.82px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: left;
+    box-sizing: border-box;
+    border: 1px solid rgb(10, 43, 163);
+    border-radius: 8px;
+    background: rgb(255, 255, 255);
+    @apply px-[9px] flex items-center
+}
+.inputDivCount span{
+    color: rgb(113, 113, 113);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.AllPriceItem{
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 31px;
+    font-weight: 600;
+    line-height: 38px;
+    letter-spacing: 0%;
+    text-align: left;
+    margin-top: 9px;
+}
+.AllPriceItem span{
+    margin-left: 37px;
+    margin-right: 12px;
+}
+.divScroll {
+    overflow-y: auto;
+    scrollbar-width: 0px; 
+    scrollbar-color: transparent transparent; 
+}
+
+.divScroll::-webkit-scrollbar {
+    width: 0px; 
+}
+
+.placingTitle{
+    color: rgba(0, 0, 0, 0.71);
+    font-family: Montserrat;
+    font-size: 43.59px;
+    font-weight: 400;
+    line-height: 53px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+.inputDivPOrder label{
+    font-family: Montserrat;
+    font-size: 24.22px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.inputDivPOrder input{
+    box-sizing: border-box;
+    border: 1.21px solid rgb(10, 43, 163);
+    border-radius: 9.69px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 17.94px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: left;
+    @apply px-[11px] py-[7px]
+}
+.buttonsOrderRow1{
+    color: rgb(55, 46, 153);
+    font-family: Tilda Sans VF;
+    font-size: 21.79px;
+    font-weight: 600;
+    line-height: 26px;
+    box-sizing: border-box;
+    border: 1.13px solid rgba(0, 0, 0, 0.11);
+    border-radius: 6.8px;
+    box-shadow: 0px 4.54px 4.54px 0px rgba(0, 0, 0, 0.25);
+    background: rgb(255, 255, 255);
+    text-align: center;
+    @apply py-[12px]
+}
+.buttonsOrderRow2{
+    border-radius: 6.79px;
+    box-shadow: 0px 4.54px 4.54px 0px rgba(0, 0, 0, 0.25);
+    background: rgb(10, 43, 163);
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 21.79px;
+    font-weight: 600;
+    line-height: 27px;
+    letter-spacing: 0%;
+    text-align: center;
+    @apply py-[12px]
 }

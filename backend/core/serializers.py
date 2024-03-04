@@ -18,7 +18,10 @@ class MaterialSerializer(serializers.ModelSerializer):
 			"weight",
 			"ranges"
 			)
+
 		depth=1
+
+
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
