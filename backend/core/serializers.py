@@ -1,11 +1,5 @@
 from rest_framework import serializers
-from .models import Material, Range, Order, Detail
-
-
-class RangeSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Range
-		fields = "__all__"
+from .models import Material, Order, Detail
 
 
 class MaterialSerializer(serializers.ModelSerializer):
