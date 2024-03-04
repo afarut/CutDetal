@@ -6,12 +6,15 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer
+from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus
 from .models import Detail, Order, Material
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 @csrf_exempt
@@ -37,9 +40,11 @@ def dxf_view(request):
             })
     
 class DetailApiView(CreateAPIView, ListAPIView):
-	serializer_class = DetailSerializer
+	serializer_class = DetailWithOrderStatus
 	queryset = Detail.objects.all()
-
+	filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+	filterset_fields = ["order__status"]
+	
 
 class OrderApiView(CreateAPIView, ListAPIView):
 	serializer_class = OrderCreateSerializer

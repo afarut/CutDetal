@@ -38,6 +38,7 @@ class Detail(models.Model):
 	svg_file = models.FileField(upload_to="svg")
 	length = models.FloatField()
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="details")
+	count = models.PositiveIntegerField(default=1)
 
 	def get_price(self):
 		pass
