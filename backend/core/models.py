@@ -5,6 +5,7 @@ from .constants import VERBOSE_STATUS_TYPE
 class Material(models.Model):
 	name = models.CharField(max_length=30)
 	weight = models.FloatField()
+	price_by_square_meter = models.FloatField()
 
 	def __str__(self):
 		return self.name

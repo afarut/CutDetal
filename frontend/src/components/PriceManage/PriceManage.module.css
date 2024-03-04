@@ -1,0 +1,60 @@
+.buttonWrapper {
+  box-shadow: 0px 0px 15.899999618530273px 0px rgba(0, 0, 0, 0.25);
+  color: rgba(0, 160, 35, 1);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  border-radius: 29px;
+}
+
+.PriceManageItem {
+  box-shadow: 0px 0px 15.899999618530273px 0px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  border-radius: 29px;
+}
+
+.nameOfMaterial {
+  font-family: Montserrat;
+  font-weight: 600;
+  line-height: 29px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgba(10, 43, 163, 1);
+}
+
+.titleInfo {
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: black;
+}
+
+.fieldDesc {
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgba(10, 43, 163, 1);
+}
+
+.materialInfoWrapper {
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #000;
+}
+
+.materialInfoContainer div {
+    margin-bottom: 5px;
+}

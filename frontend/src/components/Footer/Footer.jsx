@@ -17,7 +17,7 @@ const Footer = () => {
             {/* <span className={`${module.logoTitle} text-[40px] font-extrabold`}>
               LOGO
             </span> */}
-            <img className="h-[100px] w-[120px] xl:h-[50px] xl:w-[60px]" src={cutDetalLogo} alt="logo" />
+            <img className="h-[100px] w-[120px] xl:h-[50px] xl:w-[60px] cursor-pointer" src={cutDetalLogo} alt="logo" />
           </div>
 
           <div className={`${module.navigationWrapper}`}>

@@ -19,6 +19,10 @@ class MaterialSerializer(serializers.ModelSerializer):
 			"ranges"
 			)
 
+		depth=1
+
+
+
 
 class OrderCreateSerializer(serializers.ModelSerializer):
 	#detail_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Detail.objects.all())
