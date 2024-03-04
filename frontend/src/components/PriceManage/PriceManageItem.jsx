@@ -3,13 +3,13 @@ import trashIcon from '../../images/trash.svg'
 
 import module from './PriceManage.module.css'
 
-const PriceManageItem = () => {
+const PriceManageItem = ({setPopupVisible}) => {
     return (
         <div className={`${module.PriceManageItem} w-full mb-[10px] py-[13px] lg:px-[25px] px-[13px]`}>
             <div className='mb-[8px] flex justify-between '>
                 <span className={`${module.nameOfMaterial} text-[24px]`}>{'Аллюминий'}</span>
                 <div className='flex items-center'>
-                    <img height={27} className='mr-[15px] lg:ml-[17px] cursor-pointer' src={pencilIcon} />
+                    <img height={27} className='mr-[15px] lg:ml-[17px] cursor-pointer' onClick={() => setPopupVisible(true)} src={pencilIcon} />
                     <img height={27} className='cursor-pointer' src={trashIcon} />
                 </div>
             </div>
