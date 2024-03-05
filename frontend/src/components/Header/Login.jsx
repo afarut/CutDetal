@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import module from "./Header.module.css";
-import useSignIn from 'react-auth-kit/hooks/useSignIn'
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 
-import axios from '../../axios.js'
+import axios from "../../axios.js";
 
 const Login = ({ togglePopup, popupRef, setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
-  const signIn = useSignIn()
+  
+  const signIn = useSignIn();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -23,6 +25,8 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
     setRememberMe(event.target.checked);
   };
 
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
@@ -32,16 +36,32 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
     console.log("Remember me:", rememberMe);
 
     axios
-      .post("/api/token/", { username: username, password: password }, { withCredentials: true })
+      .post("/api/token/", { username: username, password: password })
       .then((response) => {
         console.log(response)
+        axios.get("/user/", {
+          headers: {
+            Authorization: `Bearer ${response.data.access}`,
+          },
+        })
+        .then((userResponse) => {
+          // console.log(userResponse.data);
+          setUser(userResponse.data)
+        })
+        .catch((error) => {
+          setError(error.response?.data.message);
+        });
+
+        console.log(response);
         signIn({
           auth: {
             token: response.data.access,
-            type: 'Bearer'
+            type: "Bearer",
           },
-          refresh: response.data.refresh,
-        })
+          userState: {name: username}
+        });
+        // Выполняем запрос к /user после успешной аутентификации
+        
       })
       .catch((error) => {
         setError(error.response?.data.message);
@@ -50,7 +70,6 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
     setUsername("");
     setPassword("");
 
-    // setUser({ isAdmin: true, isSuperAdmin: true });
     togglePopup();
   };
 
