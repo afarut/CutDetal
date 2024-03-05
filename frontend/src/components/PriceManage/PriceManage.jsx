@@ -21,7 +21,6 @@ const PriceManage = () => {
     axios
       .get("/material")
       .then((response) => {
-        console.log(response.data);
         setAllMaterials(response.data);
       })
       .catch((error) => {
@@ -81,7 +80,7 @@ const PriceManage = () => {
       {allMaterials.map((material) => (
         <PriceManageItem
           name={material.name}
-          weight={material.weight}
+          weigth={material.weight}
           ranges={material.ranges}
           priceForSquareMeter={material.price_by_square_meter}
           setPopupVisible={setPopupVisible}
