@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 import filterIcon from "../../images/filterIcon.svg";
 
@@ -11,6 +13,7 @@ import { NavLink } from "react-router-dom";
 
 
 const Monitoring = () => {
+  const authUser = useAuthUser()
     const [isCalculationsChosen, setIsCalculationsChosen] = useState(true)
 
   return (

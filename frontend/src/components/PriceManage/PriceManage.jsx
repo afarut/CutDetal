@@ -6,6 +6,7 @@ import PopupAddMaterial from "./PopupAddMaterial";
 
 import PriceManageItem from "./PriceManageItem";
 import trashIcon from "../../images/trash.svg";
+import axios from "../../axios.js";
 
 import module from "./PriceManage.module.css";
 
@@ -14,6 +15,14 @@ const PriceManage = () => {
   const [isPopupAddMaterialVisible, setPopupAddMaterialVisible] =
     useState(false);
   const popupRef = useRef(null);
+
+  useEffect(() => {
+    axios.get('/material').then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      console.error(error.message)
+    })
+  })
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
