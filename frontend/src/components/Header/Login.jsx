@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import module from './Header.module.css';
+import module from "./Header.module.css";
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
+
+import axios from '../../axios.js'
 
 const Login = ({ togglePopup, popupRef, setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false); // Состояние для галочки "запомнить меня"
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const signIn = useSignIn()
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -18,22 +23,46 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
     setRememberMe(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); 
-    
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+
     console.log("Submitting username:", username);
     console.log("Submitting password:", password);
     console.log("Remember me:", rememberMe);
-    setUsername('')
-    setPassword('')
 
-    setUser({isAdmin: true, isSuperAdmin: true})
-    togglePopup()
+    axios
+      .post("/api/token/", { username: username, password: password }, { withCredentials: true })
+      .then((response) => {
+        console.log(response)
+        signIn({
+          auth: {
+            token: response.data.access,
+            type: 'Bearer'
+          },
+          refresh: response.data.refresh,
+        })
+      })
+      .catch((error) => {
+        setError(error.response?.data.message);
+      });
+
+    setUsername("");
+    setPassword("");
+
+    // setUser({ isAdmin: true, isSuperAdmin: true });
+    togglePopup();
   };
 
   return (
-    <div ref={popupRef} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 w-[50%] rounded-xl">
-      <form onSubmit={handleSubmit} className={`pt-[8px] ${module.formWrapper}`}>
+    <div
+      ref={popupRef}
+      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 w-[50%] rounded-xl"
+    >
+      <form
+        onSubmit={handleSubmit}
+        className={`pt-[8px] ${module.formWrapper}`}
+      >
         <div>
           <label htmlFor="username text-[16px]">Login</label>
           <input
@@ -57,24 +86,29 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
           />
         </div>
         <div className="flex flex-col ">
-        <div className="mb-4">
-          <input
-            type="checkbox"
-            id="rememberMe"
-            checked={rememberMe}
-            onChange={handleRememberMeChange}
-            className="mr-2"
-          />
-          <label htmlFor="rememberMe" className="!text-[14px] lg:!text-[18px]">Remember me for 14 days</label>
-        </div>
-        <div className="flex justify-center lg:justify-end">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded"
-          >
-            Submit
-          </button>
-        </div>
+          <div className="mb-4">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={handleRememberMeChange}
+              className="mr-2"
+            />
+            <label
+              htmlFor="rememberMe"
+              className="!text-[14px] lg:!text-[18px]"
+            >
+              Remember me for 14 days
+            </label>
+          </div>
+          <div className="flex justify-center lg:justify-end">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
       <div onClick={togglePopup} className="absolute top-[15px] right-[15px]">
