@@ -7,3 +7,4 @@ Markdown==3.5.2
 PyJWT==2.8.0
 pytz==2024.1
 sqlparse==0.4.4
+django-cors-headers==4.3.1
