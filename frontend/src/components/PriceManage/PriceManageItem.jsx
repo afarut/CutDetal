@@ -9,7 +9,14 @@ const PriceManageItem = ({
   weigth,
   priceForSquareMeter,
   ranges,
+  material,
+  setCurrentMaterial
 }) => {
+    const editClickHandler = () => {
+        setCurrentMaterial(material)
+        setPopupVisible(true)
+    }
+
   return (
     <div
       className={`${module.PriceManageItem} w-full mb-[10px] py-[13px] lg:px-[25px] px-[13px]`}
@@ -20,7 +27,7 @@ const PriceManageItem = ({
           <img
             height={27}
             className="mr-[15px] lg:ml-[17px] cursor-pointer"
-            onClick={() => setPopupVisible(true)}
+            onClick={editClickHandler}
             src={pencilIcon}
           />
           <img height={27} className="cursor-pointer" src={trashIcon} />
