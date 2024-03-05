@@ -1,13 +1,19 @@
 import React, { useRef, useState, useEffect } from "react";
 import trashIcon from "../../images/trash.svg";
 
+import axios from "../../axios.js";
+
 import module from "./PriceManage.module.css";
 import PopupEditInput from "./PopupEditInput";
 
 const Popup = ({ setPopupVisible, material }) => {
-  const [squaredMeterPrice, setSquaredMeterPrice] = useState(material.price_by_square_meter);
+  const [squaredMeterPrice, setSquaredMeterPrice] = useState(
+    material.price_by_square_meter
+  );
   const [weight, setWeight] = useState(material.weight);
-  const [rangePrices, setRangePrices] = useState(material.ranges.map(range => range.price));
+  const [rangePrices, setRangePrices] = useState(
+    material.ranges.map((range) => range.price)
+  );
 
   const popupRef = useRef(null);
 
@@ -33,14 +39,60 @@ const Popup = ({ setPopupVisible, material }) => {
     };
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Squared Meter Price:", squaredMeterPrice);
     console.log("Weight:", weight);
     console.log("Range Prices:", rangePrices);
-
-    setPopupVisible(false);
+    const jwtToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("_auth="))
+      .split("=")[1];
+  
+    try {
+      const materialResponse = await axios.put(
+        `/material/${material.id}/`,
+        {
+          name: material.name,
+          weight: weight,
+          price_by_square_meter: squaredMeterPrice,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      console.log(materialResponse);
+  
+      const rangeRequests = material.ranges.map((range, index) => {
+        const rangeId = range.id;
+        return axios.put(
+          `/range/${rangeId}/`,
+          {
+            price: rangePrices[index],
+            start: range.start,
+            stop: range.stop,
+            material: material.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
+      });
+  
+      await Promise.all(rangeRequests);
+  
+      console.log("All requests completed successfully.");
+  
+      setPopupVisible(false);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
+  
 
   return (
     <div className="px-8 lg:px-12 fixed flex justify-center items-center inset-0 bg-gray-800 bg-opacity-60 z-50">
