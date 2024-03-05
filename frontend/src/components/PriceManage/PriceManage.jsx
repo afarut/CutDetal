@@ -15,16 +15,19 @@ const PriceManage = () => {
   const [isPopupAddMaterialVisible, setPopupAddMaterialVisible] =
     useState(false);
   const popupRef = useRef(null);
-  const [allMaterials, setAllMaterials] = useState([])
+  const [allMaterials, setAllMaterials] = useState([]);
 
   useEffect(() => {
-    axios.get('/material').then((response) => {
-      console.log(response.data)
-      setAllMaterials(response.data)
-    }).catch((error) => {
-      console.error(error.message)
-    })
-  }, [])
+    axios
+      .get("/material")
+      .then((response) => {
+        console.log(response.data);
+        setAllMaterials(response.data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, []);
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -74,9 +77,16 @@ const PriceManage = () => {
           </svg>
         </NavLink>
       </div>
-      
-      {allMaterials.map(material => (
-        <PriceManageItem name={material.name} priceForSquareMeter={material.priceForSquareMeter} setPopupVisible={setPopupVisible}  />
+
+      {allMaterials.map((material) => (
+        <PriceManageItem
+          name={material.name}
+          weight={material.weight}
+          ranges={material.ranges}
+          priceForSquareMeter={material.price_by_square_meter}
+          setPopupVisible={setPopupVisible}
+          key={material.id}
+        />
       ))}
 
       {isPopupVisible && <PopupEdit setPopupVisible={setPopupVisible} />}

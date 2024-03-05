@@ -4,6 +4,7 @@ import trashIcon from '../../images/trash.svg'
 import module from './PriceManage.module.css'
 
 const PriceManageItem = ({setPopupVisible, name, weigth, priceForSquareMeter, ranges }) => {
+    console.log({name, weigth, priceForSquareMeter, ranges})
     return (
         <div className={`${module.PriceManageItem} w-full mb-[10px] py-[13px] lg:px-[25px] px-[13px]`}>
             <div className='mb-[8px] flex justify-between '>
