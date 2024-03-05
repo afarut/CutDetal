@@ -29,8 +29,9 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 			"email",
 			"username",
 			"details",
+			"date",
 			)
-		depth=1
+		#depth=1
 
 
 class OrderCroppedSerialazer(serializers.ModelSerializer):
@@ -42,6 +43,7 @@ class OrderCroppedSerialazer(serializers.ModelSerializer):
 			"username",
 			"is_individual",
 			"email",
+			"date",
 			)
 
 
@@ -63,6 +65,8 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
 			"order",
 			"count",
 			"order_status",
+			"date",
+			"price",
 			)
 		extra_kwargs = {
 			"length": {'write_only': True},
@@ -70,6 +74,7 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
 			"name": {'write_only': True},
 			"width": {'write_only': True},
 			"height": {'write_only': True},
+			"date": {'read_only': True},
 		}
 		depth = 1
 
