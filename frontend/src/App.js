@@ -10,13 +10,6 @@ import Manage from "./components/Manage/Manage";
 import PriceManage from "./components/PriceManage/PriceManage";
 import createStore from "react-auth-kit/createStore";
 
-const store = createStore({
-  authName: "_auth",
-  authType: "cookie",
-  cookieDomain: window.location.hostname,
-  cookieSecure: window.location.protocol === "https:", // Change it after deploying to server
-});
-
 function App() {
   return (
     <div className="relative">
