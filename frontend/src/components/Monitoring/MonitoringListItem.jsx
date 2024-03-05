@@ -13,7 +13,9 @@ const MonitoringListItem = ({
       className={`${module.listItemWrapper} px-[18px] lg:px-[42px] mb-[8px] lg:mb-[14px] mx-[31px]`}
     >
       <div className={`flex justify-start items-center py-[15px] lg:py-[20px]`}>
+        <div className="w-1/4">
         <img className="w-[133px] h-[155px]" src={image} alt="imageofdxf" />
+        </div>
         <div
           className={`${module.ItemInfoWrapper} ml-[10px] text-[16px] lg:text-[21px] flex flex-col`}
         >
