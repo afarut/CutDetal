@@ -1,5 +1,17 @@
 from rest_framework import serializers
-from .models import Material, Order, Detail
+from .models import Material, Order, Detail, Range
+
+
+class RangeSerialazer(serializers.ModelSerializer):
+	class Meta:
+		model = Range
+		fields = (
+			"id",
+			"start",
+			"stop",
+			"price",
+			"material"
+			)
 
 
 class MaterialSerializer(serializers.ModelSerializer):
@@ -13,8 +25,6 @@ class MaterialSerializer(serializers.ModelSerializer):
 			"ranges",
 			"price_by_square_meter",
 			)
-
-		depth=1
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
@@ -51,6 +61,7 @@ class OrderCroppedSerialazer(serializers.ModelSerializer):
 class DetailWithOrderStatus(serializers.ModelSerializer):
 	order_status = serializers.ReadOnlyField(source='order.status', allow_null=True, default=0)
 	order = OrderCroppedSerialazer(read_only=True)
+	material_data = MaterialSerializer(read_only=True, source="material")
 
 	class Meta:
 		model = Detail
@@ -68,6 +79,7 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
 			"order_status",
 			"date",
 			"price",
+			"material_data",
 			)
 		extra_kwargs = {
 			"length": {'write_only': True},
@@ -75,9 +87,11 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
 			"name": {'write_only': True},
 			"width": {'write_only': True},
 			"height": {'write_only': True},
+			"material": {"write_only": True},
 			"date": {'read_only': True},
+			"material_data": {'read_only': True},
 		}
-		depth = 1
+		#depth = 1
 
 
 class DetailSerializer(serializers.ModelSerializer):

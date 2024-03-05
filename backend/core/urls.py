@@ -9,5 +9,6 @@ urlpatterns = [
     path("order/", views.OrderApiView.as_view(), name="order"),
     path("material/<int:pk>/", views.MaterialGetEditDeleteApiView.as_view(), name="materials_edit_create_delete"),
     path("material/", views.MaterialApiview.as_view(), name="material"),
-    path("user/", views.UserGet.as_view(), name="user")
+    path("user/", views.UserGet.as_view(), name="user"),
+    path("range/", views.RangesApiview.as_view(), name="ranges"),
 ]
