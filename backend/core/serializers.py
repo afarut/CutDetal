@@ -25,6 +25,8 @@ class MaterialSerializer(serializers.ModelSerializer):
 			"ranges",
 			"price_by_square_meter",
 			)
+		depth = 1
+		
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):

@@ -23,6 +23,7 @@ const PriceManage = () => {
       .get("/material")
       .then((response) => {
         setAllMaterials(response.data);
+        console.log(response.data)
       })
       .catch((error) => {
         console.error(error.message);
