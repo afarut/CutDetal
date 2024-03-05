@@ -15,6 +15,7 @@ const PriceManage = () => {
   const [isPopupAddMaterialVisible, setPopupAddMaterialVisible] =
     useState(false);
   const popupRef = useRef(null);
+  const [currentMaterial, setCurrentMaterial] = useState(null)
   const [allMaterials, setAllMaterials] = useState([]);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const PriceManage = () => {
       .catch((error) => {
         console.error(error.message);
       });
-  }, []);
+  }, [isPopupVisible]);
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -79,16 +80,18 @@ const PriceManage = () => {
 
       {allMaterials.map((material) => (
         <PriceManageItem
+          material={material}
           name={material.name}
           weigth={material.weight}
           ranges={material.ranges}
           priceForSquareMeter={material.price_by_square_meter}
           setPopupVisible={setPopupVisible}
           key={material.id}
+          setCurrentMaterial={setCurrentMaterial}
         />
       ))}
 
-      {isPopupVisible && <PopupEdit setPopupVisible={setPopupVisible} />}
+      {isPopupVisible && <PopupEdit material={currentMaterial} setPopupVisible={setPopupVisible} />}
 
       {isPopupAddMaterialVisible && (
         <PopupAddMaterial
