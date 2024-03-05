@@ -8,7 +8,6 @@ import axios from "../../axios.js";
 const Login = ({ togglePopup, popupRef, setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   
   const signIn = useSignIn();
@@ -21,11 +20,6 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
     setPassword(event.target.value);
   };
 
-  const handleRememberMeChange = (event) => {
-    setRememberMe(event.target.checked);
-  };
-
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,7 +27,6 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
 
     console.log("Submitting username:", username);
     console.log("Submitting password:", password);
-    console.log("Remember me:", rememberMe);
 
     axios
       .post("/api/token/", { username: username, password: password })
@@ -58,7 +51,6 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
             token: response.data.access,
             type: "Bearer",
           },
-          userState: {name: username}
         });
         // Выполняем запрос к /user после успешной аутентификации
         
@@ -105,21 +97,6 @@ const Login = ({ togglePopup, popupRef, setUser }) => {
           />
         </div>
         <div className="flex flex-col ">
-          <div className="mb-4">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              checked={rememberMe}
-              onChange={handleRememberMeChange}
-              className="mr-2"
-            />
-            <label
-              htmlFor="rememberMe"
-              className="!text-[14px] lg:!text-[18px]"
-            >
-              Remember me for 14 days
-            </label>
-          </div>
           <div className="flex justify-center lg:justify-end">
             <button
               type="submit"
