@@ -10,7 +10,8 @@ class MaterialSerializer(serializers.ModelSerializer):
 			"id",
 			"name",
 			"weight",
-			"ranges"
+			"ranges",
+			"price_by_square_meter",
 			)
 
 		depth=1
