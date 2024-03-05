@@ -6,8 +6,8 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus
-from .models import Detail, Order, Material
+from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer
+from .models import Detail, Order, Material, Range
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from django.http import JsonResponse
@@ -59,6 +59,12 @@ class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
 class MaterialApiview(CreateAPIView, ListAPIView):
 	serializer_class = MaterialSerializer
 	queryset = Material.objects.all()
+	permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class RangesApiview(CreateAPIView, ListAPIView):
+	serializer_class = RangeSerialazer
+	queryset = Range.objects.all()
 	permission_classes = [IsAuthenticatedOrReadOnly]
 
 
