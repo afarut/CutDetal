@@ -27,7 +27,7 @@ LOGIN = config('LOGIN', default="LOGIN", cast=str)
 PASSWORD = config("PASSWORD", default="PASSWORD", cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = []
 
