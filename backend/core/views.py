@@ -68,6 +68,11 @@ class RangesApiview(CreateAPIView, ListAPIView):
 	permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+class RangeGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
+	serializer_class = RangeSerialazer
+	queryset = Range.objects.all()
+
+
 
 class DeleteDetailFromOrder(APIView):
 	serializer_class = DetailSerializer
