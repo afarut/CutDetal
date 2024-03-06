@@ -1,6 +1,8 @@
 import pencilIcon from "../../images/pencil.svg";
 import trashIcon from "../../images/trash.svg";
 
+import axios from '../../axios.js'
+
 import module from "./PriceManage.module.css";
 
 const PriceManageItem = ({
@@ -10,12 +12,36 @@ const PriceManageItem = ({
   priceForSquareMeter,
   ranges,
   material,
-  setCurrentMaterial
+  setCurrentMaterial,
+  isDeleting,
+  setIsDeleting,
 }) => {
-    const editClickHandler = () => {
-        setCurrentMaterial(material)
-        setPopupVisible(true)
-    }
+  const editClickHandler = () => {
+    setCurrentMaterial(material);
+    setPopupVisible(true);
+  };
+
+  const handleDelete = () => {
+    setIsDeleting(true);
+
+    const jwtToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("_auth="))
+      .split("=")[1];
+
+    axios
+      .delete(`/material/${material.id}/`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+      .then((response) => {
+        setIsDeleting(false)
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  };
 
   return (
     <div
@@ -30,7 +56,7 @@ const PriceManageItem = ({
             onClick={editClickHandler}
             src={pencilIcon}
           />
-          <img height={27} className="cursor-pointer" src={trashIcon} />
+          <img height={27} className="cursor-pointer" onClick={handleDelete} src={trashIcon} />
         </div>
       </div>
 

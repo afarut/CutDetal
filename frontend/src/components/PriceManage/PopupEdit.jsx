@@ -41,9 +41,7 @@ const Popup = ({ setPopupVisible, material }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Squared Meter Price:", squaredMeterPrice);
-    console.log("Weight:", weight);
-    console.log("Range Prices:", rangePrices);
+
     const jwtToken = document.cookie
       .split("; ")
       .find((row) => row.startsWith("_auth="))
@@ -63,7 +61,6 @@ const Popup = ({ setPopupVisible, material }) => {
           },
         }
       );
-      console.log(materialResponse);
   
       const rangeRequests = material.ranges.map((range, index) => {
         const rangeId = range.id;
@@ -84,8 +81,6 @@ const Popup = ({ setPopupVisible, material }) => {
       });
   
       await Promise.all(rangeRequests);
-  
-      console.log("All requests completed successfully.");
   
       setPopupVisible(false);
     } catch (error) {
