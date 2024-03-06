@@ -17,18 +17,18 @@ const PriceManage = () => {
   const popupRef = useRef(null);
   const [currentMaterial, setCurrentMaterial] = useState(null)
   const [allMaterials, setAllMaterials] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     axios
       .get("/material")
       .then((response) => {
         setAllMaterials(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         console.error(error.message);
       });
-  }, [isPopupVisible]);
+  }, [isPopupVisible, isPopupAddMaterialVisible, isDeleting]);
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -89,6 +89,8 @@ const PriceManage = () => {
           setPopupVisible={setPopupVisible}
           key={material.id}
           setCurrentMaterial={setCurrentMaterial}
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
         />
       ))}
 
