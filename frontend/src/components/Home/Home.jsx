@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import module from "./home.module.css";
 import modal from "../../images/modal.png";
@@ -28,8 +28,12 @@ const Home = () => {
   const [isIndividual, setIsIndividual] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
-  const [materialValues, setMaterialValues] = useState(Array(6).fill(0));
-  const [quantityValues, setQuantityValues] = useState(Array(6).fill(""));
+  const [materialValues, setMaterialValues] = useState("");
+  const [materials, setMaterials] = useState([])
+  const [quantityValues, setQuantityValues] = useState("");
+  const [data, setData] = useState([])
+
+  console.log(data)
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -69,14 +73,18 @@ const Home = () => {
     setFormUpload(true);
   };
 
-//   function getJwtTokenFromCookie() {
-//     // Code to extract JWT token from cookie, replace 'jwtToken' with your actual cookie name
-//     const cookieValue = document.cookie
-//         .split('; ')
-//         .find(row => row.startsWith('jwtToken='))
-//         .split('=')[1];
-//     return cookieValue;
-// }
+    useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('/material/');
+            setMaterials(response.data)
+        } catch (error) {
+            console.error('Ошибка при получении данных:', error);
+        }
+    };
+    
+    fetchData();
+  }, []);
 
   const onDrop = async (acceptedFiles) => {
     setLoading(true);
@@ -107,24 +115,25 @@ const Home = () => {
         acceptedFiles.map(convertBase64)
       );
       setFiles(convertedFiles);
-      console.log(convertedFiles[0].replace("data:application/octet-stream;base64,", ""))
       const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1]
-      console.log(jwtToken)
-      axios
-        .post(
-          "/dxf/",
-          { base64file: convertedFiles[0].replace("data:application/octet-stream;base64,", "") },
-          {
-          headers: {
-            Authorization: `Bearer ${jwtToken}` // Include JWT token in Authorization header
-        }}
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error(error.message);
-        });
+      for (let i = 0; i<convertedFiles.length; i++){
+        await axios
+          .post(
+            "/dxf/",
+            { base64file: convertedFiles[i].replace("data:application/octet-stream;base64,", "") },
+            {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`
+          }}
+          )
+          .then((response) => {
+            setData(prevData => [...prevData, response.data]);
+
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
+      }
       setUploading(true);
     } catch (error) {
       console.error("Error converting files to Base64:", error);
@@ -266,13 +275,15 @@ const Home = () => {
             <div
               className={`flex flex-col gap-[14px] max-h-[650px] relative overflow-scroll overflow-x-hidden pt-[12px] ${module.divScroll}`}
             >
-              {[0, 1, 2, 3, 4, 5].map((item, index) => (
+              {data.map((item, index) => (
                 <div key={index} className={module.cartCalc}>
-                  <div className="w-[26%] h-[190px] flex justify-center items-center">
-                    <img src={trash} alt="trash" className="h-full px-[8px]" />
+                  <div className="flex justify-center items-center relative">
+                    <div className="w-full h-full">
+                        <div style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%' }} dangerouslySetInnerHTML={{ __html: item.image }} />
+                    </div>
                   </div>
                   <div className="flex flex-col">
-                    <div className={module.calcItemName}>File.dxf</div>
+                    <div className={module.calcItemName}>{item.image_name}</div>
                     <div
                       className={`mt-[28px] ${module.materialInput} flex items-center gap-[8px]`}
                     >
@@ -281,15 +292,18 @@ const Home = () => {
                         name="material"
                         id="material"
                         className="w-[165px] h-[30px]"
-                        value={materialValues[index]} // Привязываем значение материала к состоянию
+                        value={materialValues[index]}
                         onChange={(e) =>
-                          handleMaterialChange(index, e.target.value)
-                        } // Обработчик изменения материала
-                      >
-                        <option value="0">Выберите</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                      </select>
+                            handleMaterialChange(index, e.target.value)
+                        }
+                    >
+                        <option value="0" hidden>Выберите</option>
+                        {
+                            materials.map((item) => (
+                                <option key={item.id} value={item.id}>{item.name}</option>
+                            ))
+                        }
+                    </select>
                     </div>
                     <div className={module.inputDivCount}>
                       <div className="flex items-center">Количество: </div>
@@ -297,10 +311,10 @@ const Home = () => {
                         type="text"
                         className="w-[165px] h-[30px]"
                         placeholder="Введите число"
-                        value={quantityValues[index]} // Привязываем значение количества к состоянию
+                        value={quantityValues[index]}
                         onChange={(e) =>
                           handleQuantityChange(index, e.target.value)
-                        } // Обработчик изменения количества
+                        }
                       />
                       <span
                         className={`${module.spanPriceItem}  flex items-center`}
