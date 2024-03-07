@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import axios from '../../axios.js'
 
-import filterIcon from "../../images/filterIcon.svg";
-
 import module from "./Monitoring.module.css";
 
 import MonitorCalculations from "./MonitorCalculations";
 import MonitorOrders from "./MonitorOrders";
 import { NavLink } from "react-router-dom";
+import MonitoringFilter from "./MonitoringFilter.jsx";
 
 const Monitoring = () => {
   const authUser = useAuthUser();
@@ -26,7 +25,7 @@ const Monitoring = () => {
     }).then((response) => {
       setData(response.data)
     })
-  })
+  }, [selectedOption])
 
   console.log(selectedOption);
 
@@ -82,36 +81,7 @@ const Monitoring = () => {
         </div>
       </div>
 
-      <div
-        className={`relative mt-[14px] mb-[13px] lg:mb-[17px] lg:mt-[16px] px-[31px]  flex items-center justify-start lg:justify-end`}
-      >
-        {/* Блок с селектом */}
-        <div className="relative">
-          <select
-            value={selectedOption}
-            onChange={(e) => setSelectedOption(e.target.value)}
-            className={`${module.filterButton} flex justify-center items-center pl-[17px] py-[13px] lg:pl-[17px] lg:pr-[30px] lg:py-[13px] pr-[30px]`}
-          >
-            <option value={''}>
-
-                Сортировать
-
-            </option>
-            <option value={'?ordering=count'}>Количество</option>
-            <option value={'?ordering=date'}>Дата</option>
-            <option value={'?ordering=price'}>Цена</option>
-            <option value={'?ordering=material'}>Материал</option>
-          </select>
-          {/* Корректировка положения иконки */}
-          <div className="absolute top-0 right-2 flex justify-end items-center h-[100%]">
-            <img
-              className={`lg:h-[20px] lg:w-[20px]`}
-              src={filterIcon}
-              alt="filterIcon"
-            />
-          </div>
-        </div>
-      </div>
+      <MonitoringFilter selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
 
       {isCalculationsChosen ? <MonitorCalculations data={data} /> : <MonitorOrders />}
     </div>
