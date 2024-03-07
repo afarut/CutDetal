@@ -213,7 +213,6 @@
     letter-spacing: 0%;
     text-align: center;
     cursor: pointer;
-    margin-right: 16px;
   }
 
   .titleCalc{
@@ -386,4 +385,35 @@
     letter-spacing: 0%;
     text-align: center;
     @apply py-[12px]
+}
+
+
+
+@media (max-width: 1100px) {
+    .loadPopup{
+        padding-top: 20% !important;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .loadPopup{
+        padding-top: 40% !important;
+    }
+    .loadPopupDiv{
+        width: 330px !important;
+        height: 350px !important;
+    }
+    .loadPopupOkey{
+        width: 140px !important;
+        height: 140px !important;
+    }
+    .processWindowText{
+        font-size: 37px;
+    }
+    .buttonOkey{
+        width: 100% !important;
+        height: 50px !important;
+        font-size: 23px !important;
+    }
 }
