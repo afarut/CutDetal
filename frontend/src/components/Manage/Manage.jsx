@@ -51,7 +51,7 @@ const Manage = () => {
   };
 
   return (
-    <div className={`flex justify-center items-center flex-col lg:flex-row my-[60px] gap-[20px] lg:my-[0] h-[70vh]`}>
+    <div className={`flex justify-center items-center flex-col lg:flex-row my-[60px] gap-[20px] lg:my-[0] lg:h-[70vh]`}>
       <NavLink to={'/manage/price'}>
       <div className={`${module.settingsWrapper} lg:h-[466px] lg:w-[466px] h-[330px] w-[330px] flex justify-center items-center flex-col`}>
         <img className='h-[185px] w-[185px] lg:h-[260px] lg:w-[260px]' src={settingsIcon} alt='settings' />
