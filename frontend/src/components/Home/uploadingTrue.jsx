@@ -4,7 +4,7 @@ import CloseWindow from "./closewindow";
 
 const UploadingTrue = ({goCalc, windowClose}) => {
     return (
-        <div className="flex flex-col items-center gap-[26px] justify-center h-full">
+        <div className={`flex flex-col items-center gap-[16px] justify-center h-full ${module.divGap}`}>
             <div>
                 <img className={module.loadPopupOkey} src={okey} alt="okey" />
             </div>

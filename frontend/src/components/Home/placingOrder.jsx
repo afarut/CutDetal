@@ -3,7 +3,7 @@ import module from "./home.module.css"
 const PlacingOrder = ({name, handleNameChange, phoneNumber, handlePhoneNumberChange, email, handleEmailChange, isIndividual, handleTypeChange, goPrevPlacingOrder, handleSubmit}) => {
     return ( 
         <div>
-          <div className="absolute inset-0 flex justify-center pt-[10%] bg-opacity-60 bg-black z-20 h-full">
+          <div className={`absolute inset-0 flex justify-center pt-[6%] bg-opacity-60 bg-black z-20 h-full ${module.divCalculate}`}>
             <div className="h-[max-content] w-[540px] bg-white rounded-3xl px-[36px] py-[28px]">
               <div className="h-full relative">
                 <div className="">
@@ -81,7 +81,7 @@ const PlacingOrder = ({name, handleNameChange, phoneNumber, handlePhoneNumberCha
                       </div>
                     </div>
                   </div>
-                  <div className={`flex gap-[8px] mt-[20px]`}>
+                  <div className={`flex gap-[8px] mt-[20px] ${module.buttonPlacing}`}>
                     <div
                       className={`w-1/2 ${module.buttonsOrderRow1}`}
                       onClick={goPrevPlacingOrder}

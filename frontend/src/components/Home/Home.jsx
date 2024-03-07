@@ -22,10 +22,12 @@ const Home = () => {
   const [isIndividual, setIsIndividual] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
-  const [materialValues, setMaterialValues] = useState("");
+  const [materialValues, setMaterialValues] = useState([]);
   const [materials, setMaterials] = useState([])
-  const [quantityValues, setQuantityValues] = useState("");
+  const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([])
+
+  console.log(quantityValues)
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -122,7 +124,8 @@ const Home = () => {
           )
           .then((response) => {
             setData(prevData => [...prevData, response.data]);
-
+            setQuantityValues(prevData => [...prevData, 1])
+            setMaterialValues(prevData => [...prevData, materials[0].id])
           })
           .catch((error) => {
             console.error(error.message);
@@ -173,12 +176,18 @@ const Home = () => {
     newData.splice(index, 1);
     setData(newData);
 
+    const newMaterialValues = [...materialValues];
+    const newQuantityValues = [...quantityValues];
+    newMaterialValues.splice(index, 1);
+    newQuantityValues.splice(index, 1);
+
+    setMaterialValues(newMaterialValues);
+    setQuantityValues(newQuantityValues);
+
     if (newData.length === 0) {
         windowClose();
     }
-  };
-
-  console.log(process.env.HOST)
+};
 
   return (
     <div className="">
