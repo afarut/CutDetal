@@ -6,7 +6,7 @@ const UploadingTrue = ({goCalc, windowClose}) => {
     return (
         <div className="flex flex-col items-center gap-[26px] justify-center h-full">
             <div>
-                <img src={okey} alt="okey" />
+                <img className={module.loadPopupOkey} src={okey} alt="okey" />
             </div>
             <div className={module.processWindowText}>
                 Files are ready!
