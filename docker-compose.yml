@@ -17,8 +17,8 @@ services:
   web:
     build: ./backend
     restart: always
-    expose:
-        - "8000"
+    ports:
+      - 8000:8000
     depends_on:
       - react
     volumes:
@@ -31,7 +31,7 @@ services:
     restart: always
     container_name: react
     ports:
-      - 8000:80
+      - 8080:80
     env_file:
       - './frontend/.env'
     depends_on:
