@@ -30,7 +30,7 @@ PASSWORD = config("PASSWORD", default="PASSWORD", cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-#ALLOWED_HOSTS = config('ALLOWED_HOSTS', default="localhost", cast=lambda v: [s.strip() for s in v.split(' ')])
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default="localhost", cast=lambda v: [s.strip() for s in v.split(' ')])
 
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default="http://localhost:8000", cast=lambda v: [s.strip() for s in v.split(' ')])
 
