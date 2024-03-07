@@ -2,9 +2,44 @@
 import module from "./home.module.css";
 import CloseWindow from "./closewindow";
 import ItemOrder from "./itemOrder";
+import { useState } from "react";
+import axios from "../../axios.js"
 
-const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMaterialChange, materials, quantityValues, handleQuantityChange, handleItemRemove}) => {
-    
+const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMaterialChange, materials, quantityValues, handleQuantityChange, handleItemRemove, setOrders, files}) => {
+
+  const [items, setItems] = useState([])
+
+  const sendDataToServer = async () => {
+    try {
+      const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
+      
+      for (let index=0; index<data.length; index++){
+        const item = {
+          Material: materialValues[index],
+          Length: data[index].total_length,
+          SvgFile: data[index].image,
+          DxfFile: files[index],
+          Height: data[index].size_y,
+          Width: data[index].size_x,
+          Name: data[index].image_name,
+          Count: quantityValues[index],
+          Price: items[index],
+        }
+
+        // await axios.post('/detail/', item , {
+        //   headers: {
+        //     Authorization: `Bearer ${jwtToken}`,
+        //   },
+        // });
+      }
+
+      goPlacingOrder()
+
+    } catch (error) {
+      console.error('Ошибка при отправке данных:', error);
+    }
+  };
+
     return  (
       <div className={`absolute inset-0 flex justify-center pt-[6%] bg-opacity-60 bg-black z-20 h-full ${module.divCalculate}`}>
         <div className={`bg-white w-full max-h-[740px] mx-[42px] rounded-3xl relative pt-[16px] ${module.ffjjhh}`}>
@@ -21,10 +56,12 @@ const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMat
                 item={item} 
                 key = {index}
                 index={index}
+                items = {items}
+                setItems = {setItems}
               />
             ))}
             <div className="flex justify-end">
-              <div className={`mr-[16px] ${module.buttonOkey}`} onClick={goPlacingOrder}>
+              <div className={`mr-[16px] ${module.buttonOkey}`} onClick={sendDataToServer}>
                 Далее
               </div>
             </div>

@@ -1,18 +1,37 @@
 import trash from "../../images/trash.svg";
 import queshion from "../../images/queshion.svg";
 import module from "./home.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef  } from "react";
 
-const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quantityValues, handleQuantityChange, handleItemRemove, index}) => {
+const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quantityValues, handleQuantityChange, handleItemRemove, index, items, setItems}) => {
 
     const [diapazon, setDiapazon] = useState([])
 
-    console.log(item)
+    const [onQuestion, setOnQuestion] = useState(false)
 
-    console.log(materials)
+    const imgRef = useRef(null);
 
-    console.log(diapazon)
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (imgRef.current && !imgRef.current.contains(event.target) && onQuestion) {
+          setOnQuestion(false);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [onQuestion]);
 
+    useEffect(() => {
+      const priceDetail = getPriceDetailByCount();
+      setItems(prevItems => {
+        const updatedItems = [...prevItems];
+        updatedItems[index] = priceDetail;
+        return updatedItems;
+      });
+    }, []);
 
     function getSVGWidth(svgString) {
         const parser = new DOMParser();
@@ -57,9 +76,9 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
         };
         diap.push(doc);
       }
+      diap.sort((a,b) => a.countList - b.countList)
       setDiapazon(diap)
     }
-
 
     useEffect(() => {
       getResult();
@@ -69,7 +88,7 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
   const getPriceOneDetailByCount = () => {
     const count = quantityValues[index]
     for (let i=0; i<diapazon.length-1; i++){
-      if (diapazon[i].countList <= count && diapazon[i+1].countList < count){
+      if (diapazon[i].countList <= count && diapazon[i+1].countList > count){
         return diapazon[i].TotalSumOneDetal
       }
     }
@@ -79,16 +98,18 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
 
   const getPriceDetailByCount = () => {
     const count = quantityValues[index]
-    console.log(count)
     
     for (let i=0; i<diapazon.length-1; i++){
-      if (diapazon[i].countList <= count && diapazon[i+1].countList < count){
+      if (diapazon[i].countList <= count && diapazon[i+1].countList > count){
         return diapazon[i].TotalSumOneDetal*count
       }
     }
     return diapazon[diapazon.length-1]?.TotalSumOneDetal*count
   }
-    
+
+  const hintOn = () => {
+    setOnQuestion(!onQuestion)
+  }  
 
     return ( 
         <div key={item.id} className={module.cartCalc}>
@@ -134,13 +155,24 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
                       value={quantityValues[index]}
                       onChange={(e) => handleQuantityChange(index, e.target.value)}
                     />
-                    <span className={`${module.spanPriceItem} flex items-center`}>
+                    <span className={`${module.spanPriceItem} flex items-center relative`}>
                       цена {getPriceOneDetailByCount()}р/деталь
                       <img
+                        ref={imgRef}
                         src={queshion}
                         alt="queshion"
                         className="ml-[4px] w-[12px] h-[12px] flex items-center"
+                        onClick={hintOn}
                       />
+                      {onQuestion && 
+                        <div className={module.questionWindow}>
+                          <div>
+                            {diapazon.map((item, i) => (
+                              <div key={i}>От {item.countList} шт. - цена {item.TotalSumOneDetal} р/деталь</div>
+                            ))}
+                          </div>
+                        </div>
+                      }
                     </span>
                   </div>
                   <div className={module.AllPriceItem}>ИТОГО: <span>{getPriceDetailByCount()} RUB</span></div>
