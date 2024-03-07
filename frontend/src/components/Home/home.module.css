@@ -539,3 +539,25 @@
         width: 100%;
     }
 }
+.questionWindow{
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 8px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    @apply items-center -mr-[230px] mt-[25px]
+
+}
+
+@media (max-width: 1000px) {
+    .questionWindow div{
+        font-size: 10px !important;
+    }
+    .questionWindow{
+        @apply items-center -mr-[150px] -mt-[50px]
+    }
+}

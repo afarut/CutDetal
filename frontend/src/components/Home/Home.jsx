@@ -26,6 +26,7 @@ const Home = () => {
   const [materials, setMaterials] = useState([])
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([])
+  const [orders, setOrders] = useState([])    
 
   console.log(quantityValues)
 
@@ -104,6 +105,12 @@ const Home = () => {
       setFiles([]);
       return;
     }
+
+    const formData = new FormData();
+
+    acceptedFiles.forEach(file => {
+      formData.append('files', file);
+    });
 
     try {
       const convertedFiles = await Promise.all(
@@ -206,6 +213,8 @@ const Home = () => {
         quantityValues = {quantityValues} 
         handleQuantityChange = {handleQuantityChange}
         handleItemRemove={handleItemRemove}
+        setOrders={setOrders}
+        files={files}
         /> : "" }
       {placingOrder ? <PlacingOrder 
         name={name} 
