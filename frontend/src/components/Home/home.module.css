@@ -407,13 +407,135 @@
     .loadPopupOkey{
         width: 140px !important;
         height: 140px !important;
-    }
-    .processWindowText{
-        font-size: 37px;
+        margin-bottom: 16px;
     }
     .buttonOkey{
-        width: 100% !important;
+        width: 90% !important;
         height: 50px !important;
         font-size: 23px !important;
+        margin-left: 5% !important;
+        margin-right: 5% !important;
+    }
+    .processWindowText{
+        font-size: 23px;
+    }
+    .divGap{
+        gap: 12px !important;
+    }
+
+}
+
+@media (max-width: 600px) {
+    .title span {
+        font-size: 30px;
+        line-height: 36px;
+    }
+    
+    .buttonOkey {
+        padding: 12px 48px;
+        font-size: 18px;
+    }
+    
+}
+
+@media (min-width: 601px) and (max-width: 959px) {
+    .title span {
+        font-size: 40px;
+        line-height: 48px;
+    }
+    
+    .buttonOkey {
+        padding: 18px 64px;
+        font-size: 24px;
+    }
+    
+}
+
+@media (min-width: 960px) {
+    .title span {
+        font-size: 70px;
+        line-height: 85px;
+    }
+    
+    .buttonOkey {
+        padding: 24px 86px;
+        font-size: 30px;
+    }
+    
+}
+
+.TitleMobile{
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .cartCalc{
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 12px !important;
+        gap: 8px !important;
+    }
+    .TitleMobile{
+        font-weight: 700 !important;
+        font-size: 32px !important;
+        line-height: 36px;
+        display: block;
+        width: 80%;
+    }
+    .calcItemName{
+        display: none;
+    }
+    .titleCalc{
+        font-size: 24px;
+        width: 80%;
+    }
+    .divCalculate{
+        padding-top: 10%;
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+    .divSvgDXF{
+        margin-top: 8px;
+        width: 100%;
+    }
+    .materialInput, .inputDivCount{
+        @apply flex flex-col items-start mt-[0] gap-[0]
+    }
+    .ffjjhh{
+        @apply mx-[0]
+    }
+    .materialInput select, .inputDivCount input{
+        height: 25px !important;
+    }
+    .materialInput div, .inputDivCount div{
+        font-size: 18px;
+    }
+    .materialInput select{
+        margin-bottom: 8px;
+    }
+    .spanPriceItem{
+        margin-top: 4px;
+    }
+    .AllPriceItem{
+        display: flex;
+        justify-content: space-between;
+        font-size: 20px;
+    }
+    .divScroll{
+        @apply max-h-[600px]
+    }
+    .rotatedImage img{
+        width: 24px;
+        height: 24px;
+    }
+    .placingTitle{
+        font-size: 30px;
+        line-height: 36px;
+    }
+    .buttonPlacing{
+        @apply flex flex-col gap-[8px]
+    }
+    .buttonPlacing div{
+        width: 100%;
     }
 }
