@@ -178,6 +178,8 @@ const Home = () => {
     }
   };
 
+  console.log(process.env.HOST)
+
   return (
     <div className="">
       {visibleError ? <VisibleError /> : "" }
