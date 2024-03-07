@@ -56,5 +56,107 @@
 }
 
 .materialInfoContainer div {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.popupInputsWrapper input {
+  border: 1.21px solid rgba(10, 43, 163, 1);
+  border-radius: 9.69px;
+  padding-left: 8px;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.cancelButton {
+  border-radius: 13px;
+  border: 3px solid rgba(0, 0, 0, 0.04);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgba(55, 46, 153, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.closeButton {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: center;
+
+  color: #fff;
+  border-radius: 13px;
+  gap: 10px;
+  background-color: rgba(10, 43, 163, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 3px solid rgba(10, 43, 163, 1);
+}
+
+.addMaterialTitle {
+  font-family: Montserrat;
+  font-size: 37px;
+  font-weight: 400;
+  line-height: 45px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.AddRangeButton {
+  box-shadow: 0px 0px 15.899999618530273px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 29px;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: rgba(0, 160, 35, 1);
+}
+
+.addMaterialFormWrapper {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.addMaterialFormWrapper input {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 8px;
+  border: 1.21px solid rgba(10, 43, 163, 1);
+  border-radius: 10px;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #000;
+}
+
+.singleInput {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.range {
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
 }

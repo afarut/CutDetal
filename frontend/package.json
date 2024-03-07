@@ -3,15 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth-kit/react-router": "^3.1.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.7",
+    "file-saver": "^2.0.5",
     "framer-motion": "^11.0.8",
     "react": "^18.2.0",
+    "react-auth-kit": "^3.1.2",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
+    "svg-to-img": "^2.0.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

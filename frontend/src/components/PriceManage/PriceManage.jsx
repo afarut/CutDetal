@@ -1,14 +1,66 @@
+import React, { useRef, useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+
+import PopupEdit from "./PopupEdit";
+import PopupAddMaterial from "./PopupAddMaterial";
+
+import PriceManageItem from "./PriceManageItem";
+import trashIcon from "../../images/trash.svg";
+import axios from "../../axios.js";
+
 import module from "./PriceManage.module.css";
 
-import { NavLink } from "react-router-dom";
-import PriceManageItem from "./PriceManageItem";
-
 const PriceManage = () => {
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [isPopupAddMaterialVisible, setPopupAddMaterialVisible] =
+    useState(false);
+  const popupRef = useRef(null);
+  const [currentMaterial, setCurrentMaterial] = useState(null)
+  const [allMaterials, setAllMaterials] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    axios
+      .get("/material")
+      .then((response) => {
+        setAllMaterials(response.data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [isPopupVisible, isPopupAddMaterialVisible, isDeleting]);
+
+  const handleClickOutside = (event) => {
+    if (popupRef.current && !popupRef.current.contains(event.target)) {
+      setPopupVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isPopupVisible) {
+      document.body.style.overflow = "hidden";
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.body.style.overflow = "auto";
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isPopupVisible]);
+
   return (
-    <div className="px-[30px] mt-[15px] lg:px-[36px]">
-        <div className="flex justify-between items-center mb-[15px]">
-        <button className={`${module.buttonWrapper} px-[29px] py-[7px] bg-white`}>+ Добавить материал</button>
-        <NavLink to={'/'}>
+    <div className="px-8 mt-6 lg:px-12">
+      <div className="flex justify-between items-center mb-[15px]">
+        <button
+          onClick={() => setPopupAddMaterialVisible(true)}
+          className={`${module.buttonWrapper} px-[29px] py-[7px] bg-white`}
+        >
+          + Добавить материал
+        </button>
+        <NavLink to="/">
           <svg
             width="20"
             height="20"
@@ -24,13 +76,31 @@ const PriceManage = () => {
               strokeLinejoin="round"
             />
           </svg>
-          </NavLink>
-        </div>
+        </NavLink>
+      </div>
 
-        <PriceManageItem />
-        <PriceManageItem />
-        <PriceManageItem />
-        <PriceManageItem />
+      {allMaterials.map((material) => (
+        <PriceManageItem
+          material={material}
+          name={material.name}
+          weigth={material.weight}
+          ranges={material.ranges}
+          priceForSquareMeter={material.price_by_square_meter}
+          setPopupVisible={setPopupVisible}
+          key={material.id}
+          setCurrentMaterial={setCurrentMaterial}
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
+        />
+      ))}
+
+      {isPopupVisible && <PopupEdit material={currentMaterial} setPopupVisible={setPopupVisible} />}
+
+      {isPopupAddMaterialVisible && (
+        <PopupAddMaterial
+          setPopupAddMaterialVisible={setPopupAddMaterialVisible}
+        />
+      )}
     </div>
   );
 };

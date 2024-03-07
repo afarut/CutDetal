@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from 'react-router-dom'
 import module from "./Header.module.css";
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+
+import axios from '../../axios'
+
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
 
 import cutDetalLogo from '../../images/cutdetallogo.svg'
@@ -12,6 +16,26 @@ const Header = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const popupRef = useRef(null);
+  const isAuthenticated = useIsAuthenticated()
+  useEffect(() => {
+    console.log(isAuthenticated())
+    if (isAuthenticated()) {
+      const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
+
+      axios.get("/user/", {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+      .then((userResponse) => {
+        // console.log(userResponse.data);
+        setUser(userResponse.data)
+      })
+      .catch((error) => {
+        console.log(error.response?.data.message);
+      });
+    }
+  }, [])
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
