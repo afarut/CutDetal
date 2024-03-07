@@ -1,4 +1,3 @@
-FROM nginx:1.21-alpine
-
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d 
+FROM nginx:stable-alpine
+COPY --from=build /app/frontend/build /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]

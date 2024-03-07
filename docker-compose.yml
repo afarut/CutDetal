@@ -16,25 +16,32 @@ services:
       - postgres_data:/var/lib/postgresql/data/
   web:
     build: ./backend
+    restart: always
     expose:
         - "8000"
     depends_on:
-      - nginx
+      - react
     volumes:
       - backend_media:/backend/media
       - ./backend/staticfiles:/backend/staticfiles
     env_file:
       - '.env'
-  nginx:
-    build: ./nginx
+  react:
+    build: ./frontend
+    restart: always
+    container_name: react
     ports:
       - 8000:80
+    env_file:
+      - './frontend/.env'
     depends_on:
       - db
     volumes:
       - ./backend/staticfiles:/admin_static
+      - ./frontend/node_modules:/frontend/node_modules
 
 volumes:
   postgres_data:
   backend_media:
   staticfiles:
+  node_modules:
