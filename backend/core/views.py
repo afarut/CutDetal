@@ -37,8 +37,8 @@ def dxf_view(request):
             return JsonResponse({
                 "status": "error",
                 "error_message": result["error_message"]
-            })
-    
+            }) 
+		
 class DetailApiView(CreateAPIView, ListAPIView):
 	serializer_class = DetailWithOrderStatus
 	queryset = Detail.objects.all()
