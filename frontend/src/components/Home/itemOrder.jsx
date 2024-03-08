@@ -31,7 +31,8 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
         updatedItems[index] = priceDetail;
         return updatedItems;
       });
-    }, []);
+    }, [quantityValues, materialValues]);
+
 
     function getSVGWidth(svgString) {
         const parser = new DOMParser();
@@ -80,6 +81,8 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
       setDiapazon(diap)
     }
 
+    
+
     useEffect(() => {
       getResult();
   }, [materialValues, index]);
@@ -106,7 +109,7 @@ const ItemOrder = ({item, materialValues, handleMaterialChange, materials, quant
     }
     return diapazon[diapazon.length-1]?.TotalSumOneDetal*count
   }
-
+  console.log(getPriceDetailByCount())
   const hintOn = () => {
     setOnQuestion(!onQuestion)
   }  

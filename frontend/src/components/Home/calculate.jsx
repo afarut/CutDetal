@@ -15,22 +15,18 @@ const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMat
       
       for (let index=0; index<data.length; index++){
         const item = {
-          Material: materialValues[index],
-          Length: data[index].total_length,
-          SvgFile: data[index].image,
-          DxfFile: files[index],
-          Height: data[index].size_y,
-          Width: data[index].size_x,
-          Name: data[index].image_name,
-          Count: quantityValues[index],
-          Price: items[index],
+          material_id: materialValues[index],
+          length: data[index].total_length,
+          svg_file: data[index].image,
+          dxf_file_base64: files[index],
+          height: data[index].size_y,
+          width: data[index].size_x,
+          name: data[index].image_name,
+          count: quantityValues[index],
+          price: items[index],
         }
-
-        await axios.post('/detail/save/', item , {
-          // headers: {
-          //   Authorization: `Bearer ${jwtToken}`,
-          // },
-        });
+        console.log(data)
+        await axios.post('/detail/save/', item);
       }
 
       goPlacingOrder()
