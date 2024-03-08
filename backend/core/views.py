@@ -6,10 +6,10 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSaveSerialazer
-from .models import Detail, Order, Material, Range
+from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSaveSerialazer, DXFSizeSerialazer
+from .models import Detail, Order, Material, Range, DXFSize
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, RetrieveAPIView
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
@@ -90,7 +90,6 @@ class RangeGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
     queryset = Range.objects.all()
 
 
-
 class DeleteDetailFromOrder(APIView):
     serializer_class = DetailSerializer
     def delete(self, request, pk):
@@ -109,3 +108,18 @@ class DeleteDetailFromOrder(APIView):
 class UserGet(APIView):
     def get(self, request):
         return JsonResponse({"isAdmin": request.user.is_staff, "isSuperAdmin": request.user.is_superuser})
+
+
+class DXFSizeGetApiView(APIView):
+    permission_classes = []
+    def get(self, request):
+        return JsonResponse({"size": DXFSize().get().size})
+
+
+class DXFSizeUpdateApiView(APIView):
+    permission_classes = []
+    def get(self, request, size):
+        inst = DXFSize().get()
+        inst.size = size
+        inst.save()
+        return JsonResponse({"size": DXFSize().get().size})
