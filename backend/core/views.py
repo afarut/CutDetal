@@ -15,8 +15,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import authentication_classes, permission_classes
 
 
+@authentication_classes([])
+@permission_classes([])
 @csrf_exempt
 def dxf_view(request):
 
