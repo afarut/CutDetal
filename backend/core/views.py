@@ -6,7 +6,7 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer
+from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSave
 from .models import Detail, Order, Material, Range
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
@@ -25,7 +25,7 @@ def dxf_view(request):
 
     if request.method == "POST":
         form = forms.UploadFileForm(json.loads(request.body.decode()), request.FILES)
-        result = utils.calc_dxf(form.data["base64file"], "name img from frontend")
+        result = utils.calc_dxf(form.data["base64file"], form.data["namefile"])
         if result['success']:
             return JsonResponse({
                 "status": "success",
@@ -47,6 +47,12 @@ class DetailApiView(CreateAPIView, ListAPIView):
 	queryset = Detail.objects.all()
 	filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
 	filterset_fields = ["order__status"]
+
+
+class DetailSave(CreateAPIView):
+	serializer_class = DetailSave
+	queryset = Detail.objects.all()
+
 	
 
 class OrderApiView(CreateAPIView, ListAPIView):
