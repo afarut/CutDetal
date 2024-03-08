@@ -26,7 +26,8 @@ const Home = () => {
   const [materials, setMaterials] = useState([])
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([])
-  const [orders, setOrders] = useState([])    
+  const [orders, setOrders] = useState([])
+  const [detailsIds, setDetailsIds] = useState([])    
 
   console.log(quantityValues)
 
@@ -199,6 +200,8 @@ const Home = () => {
       {formLoading ? <formLoading /> : "" }
       {formUpload ? <FormUpload windowClose={windowClose}/> : "" }
       {calculate ? <Calculate 
+        setDetailsIds = {setDetailsIds}
+        detailsIds = {detailsIds}
         goPlacingOrder = {goPlacingOrder}
         windowClose = {windowClose} 
         data = {data}
