@@ -86,14 +86,27 @@ class DetailSave(serializers.Serializer):
             price=cd["price"]
         )
 
+    def save(self):
+        cd = self.validated_data
+        image = create_image(cd["dxf_file_base64"].replace("data:application/octet-stream;base64,", ""), "dxf")
+        cd["dxf_file"] = image
+        return Detail.objects.create(
+            name=cd["name"],
+            material_id=cd["material_id"],
+            width=cd["width"],
+            height=cd["height"],
+            dxf_file=cd["dxf_file"],
+            svg_file=cd["svg_file"],
+            length=cd["length"],
+            count=cd["count"],
+            price=cd["price"]
+        )
 
 
 class DetailWithOrderStatus(serializers.ModelSerializer):
     order_status = serializers.ReadOnlyField(source='order.status', allow_null=True, default=0)
     order = OrderCroppedSerialazer(read_only=True)
     material_data = MaterialSerializer(read_only=True, source="material")
-    svg_file_base64 = serializers.CharField()
-    dxf_file_base64 = serializers.CharField()
 
 
     class Meta:
@@ -113,17 +126,14 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
             "date",
             "price",
             "material_data",
-            "svg_file_base64",
-            "dxf_file_base64",
             )
         extra_kwargs = {
+            #"name": {'write_only': True},
             "length": {'write_only': True},
             "width": {'write_only': True},
-            "name": {'write_only': True},
             "width": {'write_only': True},
             "height": {'write_only': True},
             "material": {"write_only": True},
-            "dxf_file_base64": {"write_only": True},
             "date": {'read_only': True},
             "material_data": {'read_only': True},
         }

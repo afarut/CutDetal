@@ -6,7 +6,7 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer
+from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSave
 from .models import Detail, Order, Material, Range
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
@@ -47,6 +47,13 @@ class DetailApiView(CreateAPIView, ListAPIView):
 	queryset = Detail.objects.all()
 	filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
 	filterset_fields = ["order__status"]
+
+
+class DetailSave(CreateAPIView):
+	serializer_class = DetailSave
+	queryset = Detail.objects.all()
+	permission_classes = []
+
 	
 
 class OrderApiView(CreateAPIView, ListAPIView):

@@ -65,5 +65,6 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
 
 
 def create_image(image_bytes, ext):
-    image = ImageFile(io.BytesIO(base64.b64decode(image_bytes).decode('latin-1')), name=f'foo.{ext}')
+    #print(type(base64.b64decode(image_bytes).decode('latin-1')))
+    image = ImageFile(io.BytesIO(base64.b64decode(image_bytes).decode('latin-1').encode()), name=f'foo.{ext}')
     return image
