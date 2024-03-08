@@ -11,7 +11,7 @@ const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMat
 
   const sendDataToServer = async () => {
     try {
-      const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
+      // const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
       
       for (let index=0; index<data.length; index++){
         const item = {
@@ -26,11 +26,11 @@ const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMat
           Price: items[index],
         }
 
-        // await axios.post('/detail/', item , {
-        //   headers: {
-        //     Authorization: `Bearer ${jwtToken}`,
-        //   },
-        // });
+        await axios.post('/detail/save/', item , {
+          // headers: {
+          //   Authorization: `Bearer ${jwtToken}`,
+          // },
+        });
       }
 
       goPlacingOrder()
