@@ -3,6 +3,10 @@ from requests import Session
 from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
+import io
+from django.core.files.images import ImageFile
+import base64
+
 
 def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=settings.LOGIN, password=settings.PASSWORD):
     # Создаем сессию с аутентификацией
@@ -58,3 +62,8 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
             "size_y": 0,
             "version": ''
         }
+
+
+def create_image(image_bytes, ext):
+    image = ImageFile(io.BytesIO(base64.b64decode(image_bytes).decode('latin-1')), name=f'foo.{ext}')
+    return image
