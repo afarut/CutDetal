@@ -83,7 +83,7 @@ class DetailSave(serializers.Serializer):
             svg_file=cd["svg_file"],
             length=cd["length"],
             count=cd["count"],
-            price=cd["price"]
+            price=cd["price"] 
         )
 
     def save(self):
