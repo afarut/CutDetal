@@ -65,9 +65,9 @@ class DetailSave(serializers.Serializer):
     dxf_file_base64 = serializers.CharField()
     name = serializers.CharField()
     material_id = serializers.IntegerField()
-    width = serializers.IntegerField()
-    height = serializers.IntegerField()
-    length = serializers.IntegerField()
+    width = serializers.FloatField()
+    height = serializers.FloatField()
+    length = serializers.FloatField()
     count = serializers.IntegerField()
     price = serializers.IntegerField()
 
@@ -101,6 +101,20 @@ class DetailSave(serializers.Serializer):
             count=cd["count"],
             price=cd["price"]
         )
+
+    def update(self, instance, validated_data):
+        image = create_image(cd["dxf_file_base64"].replace("data:application/octet-stream;base64,", ""), "dxf")
+        validated_data["dxf_file"] = image
+        instance.name = validated_data.get("name", instance.name)
+        instance.material_id = validated_data.get("material_id", instance.material_id)
+        instance.width = validated_data.get("width", instance.width)
+        instance.height = validated_data.get("height", instance.height)
+        instance.dxf_file = validated_data.get("dxf_file", instance.dxf_file)
+        instance.svg_file = validated_data.get("svg_file", instance.svg_file)
+        instance.length = validated_data.get("length", instance.length)
+        instance.count = validated_data.get("count", instance.count)
+        instance.price = validated_data.get("price", instance.price)
+        return instance
 
 
 class DetailWithOrderStatus(serializers.ModelSerializer):

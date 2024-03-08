@@ -5,3 +5,7 @@ from rest_framework.views import APIView
 class CreateOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method == "POST"
+
+class EditOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method == "PUT"
