@@ -52,6 +52,7 @@ class DetailApiView(CreateAPIView, ListAPIView):
 class DetailSave(CreateAPIView):
 	serializer_class = DetailSave
 	queryset = Detail.objects.all()
+	permission_classes = []
 
 	
 
