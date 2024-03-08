@@ -6,7 +6,7 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSave
+from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSaveSerialazer
 from .models import Detail, Order, Material, Range
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
@@ -44,68 +44,68 @@ def dxf_view(request):
             })
     
 class DetailApiView(CreateAPIView, ListAPIView):
-	serializer_class = DetailWithOrderStatus
-	queryset = Detail.objects.all()
-	filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-	filterset_fields = ["order__status"]
+    serializer_class = DetailWithOrderStatus
+    queryset = Detail.objects.all()
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_fields = ["order__status"]
 
 
 class DetailSave(CreateAPIView):
-	serializer_class = DetailSave
-	queryset = Detail.objects.all()
-	permission_classes = []
+    serializer_class = DetailSaveSerialazer
+    queryset = Detail.objects.all()
+    permission_classes = []
 
 
-class DetailUpdateAPIView(UpdateAPIView):
-	serializer_class = DetailSave
-	queryset = Detail.objects.all()
-	permissions = []
-	
+class DetailUpdateAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = DetailSaveSerialazer
+    queryset = Detail.objects.all()
+    permission_classes = []
+    
 
 class OrderApiView(CreateAPIView, ListAPIView):
-	serializer_class = OrderCreateSerializer
-	queryset = Order.objects.all()
-	permission_classes = [CreateOnly|IsAuthenticated]
+    serializer_class = OrderCreateSerializer
+    queryset = Order.objects.all()
+    permission_classes = [CreateOnly|IsAuthenticated]
 
 
 class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
-	serializer_class = MaterialEditSerialazer
-	queryset = Material.objects.all()
+    serializer_class = MaterialEditSerialazer
+    queryset = Material.objects.all()
 
 
 class MaterialApiview(CreateAPIView, ListAPIView):
-	serializer_class = MaterialSerializer
-	queryset = Material.objects.all()
-	permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = MaterialSerializer
+    queryset = Material.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class RangesApiview(CreateAPIView, ListAPIView):
-	serializer_class = RangeSerialazer
-	queryset = Range.objects.all()
-	permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = RangeSerialazer
+    queryset = Range.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class RangeGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
-	serializer_class = RangeSerialazer
-	queryset = Range.objects.all()
+    serializer_class = RangeSerialazer
+    queryset = Range.objects.all()
 
 
 
 class DeleteDetailFromOrder(APIView):
-	serializer_class = DetailSerializer
-	def delete(self, request, pk):
-		result = True
-		error = ""
-		try:
-			detail = Detail.objects.get(pk=pk)
-		except Detail.DoesNotExist:
-			error = "DoesNotExist"
-			result = False
-		detail.order = None
-		detail.save()
-		return JsonResponse({"result": result, "error": error})
+    serializer_class = DetailSerializer
+    def delete(self, request, pk):
+        result = True
+        error = ""
+        try:
+            detail = Detail.objects.get(pk=pk)
+        except Detail.DoesNotExist:
+            error = "DoesNotExist"
+            result = False
+        detail.order = None
+        detail.save()
+        return JsonResponse({"result": result, "error": error})
 
 
 class UserGet(APIView):
-	def get(self, request):
-		return JsonResponse({"isAdmin": request.user.is_staff, "isSuperAdmin": request.user.is_superuser})
+    def get(self, request):
+        return JsonResponse({"isAdmin": request.user.is_staff, "isSuperAdmin": request.user.is_superuser})

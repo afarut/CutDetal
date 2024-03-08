@@ -60,9 +60,9 @@ class OrderCroppedSerialazer(serializers.ModelSerializer):
             "date",
             )
 
-class DetailSave(serializers.Serializer):
+class DetailSaveSerialazer(serializers.Serializer):
     svg_file = serializers.CharField()
-    dxf_file_base64 = serializers.CharField()
+    dxf_file = serializers.CharField()
     name = serializers.CharField()
     material_id = serializers.IntegerField()
     width = serializers.FloatField()
@@ -72,23 +72,7 @@ class DetailSave(serializers.Serializer):
     price = serializers.IntegerField()
 
     def create(self, cd):
-        image = create_image(cd["dxf_file_base64"].replace("data:application/octet-stream;base64,", ""), "dxf")
-        cd["dxf_file"] = image
-        return Detail.objects.create(
-            name=cd["name"],
-            material_id=cd["material_id"],
-            width=cd["width"],
-            height=cd["height"],
-            dxf_file=cd["dxf_file"],
-            svg_file=cd["svg_file"],
-            length=cd["length"],
-            count=cd["count"],
-            price=cd["price"]
-        )
-
-    def save(self):
-        cd = self.validated_data
-        image = create_image(cd["dxf_file_base64"].replace("data:application/octet-stream;base64,", ""), "dxf")
+        image = create_image(cd["dxf_file"].replace("data:application/octet-stream;base64,", ""), "dxf")
         cd["dxf_file"] = image
         return Detail.objects.create(
             name=cd["name"],
@@ -103,7 +87,7 @@ class DetailSave(serializers.Serializer):
         )
 
     def update(self, instance, validated_data):
-        image = create_image(cd["dxf_file_base64"].replace("data:application/octet-stream;base64,", ""), "dxf")
+        image = create_image(validated_data["dxf_file"].replace("data:application/octet-stream;base64,", ""), "dxf")
         validated_data["dxf_file"] = image
         instance.name = validated_data.get("name", instance.name)
         instance.material_id = validated_data.get("material_id", instance.material_id)
@@ -114,6 +98,7 @@ class DetailSave(serializers.Serializer):
         instance.length = validated_data.get("length", instance.length)
         instance.count = validated_data.get("count", instance.count)
         instance.price = validated_data.get("price", instance.price)
+        instance.save()
         return instance
 
 
