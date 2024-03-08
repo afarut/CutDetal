@@ -14,4 +14,6 @@ urlpatterns = [
     path("user/", views.UserGet.as_view(), name="user"),
     path("range/", views.RangesApiview.as_view(), name="ranges"),
     path("range/<int:pk>/", views.RangeGetEditDeleteApiView.as_view(), name="ranges_edit_get_delete"),
+    path("get/size/", views.DXFSizeGetApiView.as_view(), name="size_global"),
+    path("set/size/<int:size>/", views.DXFSizeUpdateApiView.as_view(), name="size_global"),
 ] 

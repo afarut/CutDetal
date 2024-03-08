@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from .models import Material, Order, Detail, Range
+from .models import Material, Order, Detail, Range, DXFSize
 from .utils import create_image
+
+
+class DXFSizeSerialazer(serializers.ModelSerializer):
+    class Meta:
+        model = DXFSize
+        fields = "__all__"
 
 
 class RangeSerialazer(serializers.ModelSerializer):
