@@ -117,17 +117,12 @@ const Home = () => {
         acceptedFiles.map(convertBase64)
       );
       setFiles(convertedFiles);
-      const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1]
+
       for (let i = 0; i < convertedFiles.length; i++) {
         await axios
           .post(
             "/dxf/",
             { base64file: convertedFiles[i].replace("data:application/octet-stream;base64,", "") },
-            {
-              headers: {
-                Authorization: `Bearer ${jwtToken}`
-              }
-            }
           )
           .then((response) => {
             setData(prevData => [...prevData, response.data]);
