@@ -89,7 +89,7 @@
 }
 
 .popupItemsWrapper div:last-child {
-  border-bottom: 0;
+  /* border-bottom: 0; */
   /* margin-bottom: 20px; */
 }
 

@@ -18,7 +18,7 @@ const Calculate = ({goPlacingOrder, windowClose, data, materialValues, handleMat
           material_id: materialValues[index],
           length: data[index].total_length,
           svg_file: data[index].image,
-          dxf_file_base64: files[index],
+          dxf_file: files[index],
           height: data[index].size_y,
           width: data[index].size_x,
           name: data[index].image_name,

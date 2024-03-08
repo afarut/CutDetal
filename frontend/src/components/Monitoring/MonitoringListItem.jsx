@@ -7,6 +7,7 @@ const MonitoringListItem = ({
   material,
   count,
   price,
+  name
 }) => {
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
@@ -27,7 +28,7 @@ const MonitoringListItem = ({
       className={`${module.listItemWrapper} px-[18px] lg:px-[42px] mb-[8px] lg:mb-[14px] mx-[31px]`}
     >
       <div className={`flex justify-start items-center py-[15px] lg:py-[20px]`}>
-        <div className="w-1/4">
+        <div className="w-1/4 flex justify-center items-center">
           <svg
             height="190"
             viewBox={`0 0 ${getSVGWidth(image)} ${getSVGHeight(
@@ -47,9 +48,9 @@ const MonitoringListItem = ({
           </div>
           <div>
             <span className="font-semibold">Имя файла: </span>
-            <span className={`${module.fileName} text-[16px] lg:text-[21px]`}>
-              {fileName}
-            </span>
+            <a href={fileName} className={`${module.fileName} text-[16px] lg:text-[21px]`}>
+              {name}
+            </a>
           </div>
           <div>
             <span className="font-semibold">Материал: </span>
