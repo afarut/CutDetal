@@ -119,10 +119,11 @@ const Home = () => {
       setFiles(convertedFiles);
 
       for (let i = 0; i < convertedFiles.length; i++) {
+        console.log(acceptedFiles[i].name)
         await axios
           .post(
             "/dxf/",
-            { base64file: convertedFiles[i].replace("data:application/octet-stream;base64,", "") },
+            { base64file: convertedFiles[i].replace("data:application/octet-stream;base64,", ''), namefile: acceptedFiles[i].name },
           )
           .then((response) => {
             setData(prevData => [...prevData, response.data]);
