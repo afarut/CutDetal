@@ -25,7 +25,7 @@ def dxf_view(request):
 
     if request.method == "POST":
         form = forms.UploadFileForm(json.loads(request.body.decode()), request.FILES)
-        result = utils.calc_dxf(form.data["base64file"], "name img from frontend")
+        result = utils.calc_dxf(form.data["base64file"], form.data["namefile"])
         if result['success']:
             return JsonResponse({
                 "status": "success",

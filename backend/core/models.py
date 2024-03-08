@@ -36,7 +36,7 @@ class Detail(models.Model):
 	width = models.FloatField()
 	height = models.FloatField()
 	dxf_file = models.FileField(upload_to="dxf")
-	svg_file = models.FileField(upload_to="svg")
+	svg_file = models.TextField()
 	length = models.FloatField()
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="details")
 	count = models.PositiveIntegerField(default=1)
