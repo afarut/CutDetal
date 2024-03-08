@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import axios from '../../axios.js'
+import axios from "../../axios.js";
 
 import module from "./Monitoring.module.css";
 
@@ -13,15 +13,25 @@ import MonitoringFilter from "./MonitoringFilter.jsx";
 const Monitoring = () => {
   const authUser = useAuthUser();
   const [isCalculationsChosen, setIsCalculationsChosen] = useState(true);
-  const [selectedOption, setSelectedOption] = useState('');
-  const [data, setData] = useState([])
+  const [selectedOption, setSelectedOption] = useState("");
+  const [data, setData] = useState([]);
+
+  const jwtToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("_auth="))
+    .split("=")[1];
 
   useEffect(() => {
-
-    axios.get(`/detail/${selectedOption}`).then((response) => {
-      setData(response.data)
-    })
-  }, [selectedOption])
+    axios
+      .get(`/detail/${selectedOption}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+      });
+  }, [selectedOption]);
 
   console.log(selectedOption);
 
@@ -77,9 +87,16 @@ const Monitoring = () => {
         </div>
       </div>
 
-      <MonitoringFilter selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+      <MonitoringFilter
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
 
-      {isCalculationsChosen ? <MonitorCalculations data={data} /> : <MonitorOrders />}
+      {isCalculationsChosen ? (
+        <MonitorCalculations data={data} />
+      ) : (
+        <MonitorOrders />
+      )}
     </div>
   );
 };

@@ -79,7 +79,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center">
-        <div className={`${module.navigationWrapper} hidden lg:block`}>
+        {/* <div className={`${module.navigationWrapper} hidden lg:block`}>
           <ul
             className={`flex justify-center items-center  ${
               !user ? "mr-[10px]" : ""
@@ -90,18 +90,18 @@ const Header = () => {
             <li>Бизнес</li>
             <li>О нас</li>
           </ul>
-        </div>
+        </div> */}
 
         {!user ? (
           <>
             <div
               className={`${module.userAuthButtonWrapper} hidden lg:flex items-center`}
             >
-              <div
+              {/* <div
                 className={`${module.signUpButton} px-[22px] py-[10px] mr-[20px] ml-[10px]`}
               >
                 <button>Регистрация</button>
-              </div>
+              </div> */}
               <div
                 onClick={toggleLoginPopup}
                 className={`${module.logInButton} px-[22px] py-[10px]`}
@@ -136,7 +136,7 @@ const Header = () => {
                   className={`${module.popupItemsWrapper} flex justify-center items-center flex-col`}
                 >
                   <>
-                    <div>
+                    {/* <div>
                       <span>Контакты</span>
                     </div>
                     <div>
@@ -147,12 +147,12 @@ const Header = () => {
                     </div>
                     <div>
                       <span>О нас</span>
-                    </div>
+                    </div> */}
                     {!user ? (
                       <>
-                        <div>
+                        {/* <div>
                           <span>Регистрация</span>
-                        </div>
+                        </div> */}
                         <div onClick={toggleLoginPopup}>
                           <span>Логин</span>
                         </div>
