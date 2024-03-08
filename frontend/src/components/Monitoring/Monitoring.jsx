@@ -17,12 +17,8 @@ const Monitoring = () => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1]
-    axios.get(`/detail/${selectedOption}`, {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`
-      }
-    }).then((response) => {
+
+    axios.get(`/detail/${selectedOption}`).then((response) => {
       setData(response.data)
     })
   }, [selectedOption])
