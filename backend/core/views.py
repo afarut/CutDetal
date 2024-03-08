@@ -11,11 +11,12 @@ from .models import Detail, Order, Material, Range
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from django.http import JsonResponse
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import authentication_classes, permission_classes
+from .permissions import CreateOnly
 
 
 @authentication_classes([])
@@ -53,12 +54,12 @@ class DetailSave(CreateAPIView):
 	serializer_class = DetailSave
 	queryset = Detail.objects.all()
 	permission_classes = []
-
 	
 
 class OrderApiView(CreateAPIView, ListAPIView):
 	serializer_class = OrderCreateSerializer
 	queryset = Order.objects.all()
+	permission_classes = [CreateOnly|IsAuthenticated]
 
 
 class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
