@@ -1,7 +1,6 @@
 *.db
 *.sqlite
 *.sqlite3
-
 .env
 /env
 /venv
