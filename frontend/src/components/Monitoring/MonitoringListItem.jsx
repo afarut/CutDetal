@@ -1,3 +1,6 @@
+import { useState } from "react";
+import PopupSvg from "./PopupSvg.jsx";
+
 import module from "./Monitoring.module.css";
 
 const MonitoringListItem = ({
@@ -7,8 +10,10 @@ const MonitoringListItem = ({
   material,
   count,
   price,
-  name
+  name,
 }) => {
+  const [isPopupOpen, setIsClosePopup] = useState(false);
+
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(svgString, "text/xml");
@@ -30,10 +35,10 @@ const MonitoringListItem = ({
       <div className={`flex justify-start items-center py-[15px] lg:py-[20px]`}>
         <div className="w-1/4 flex justify-center items-center">
           <svg
+            onClick={() => setIsClosePopup(true)}
+            className="cursor-pointer"
             height="190"
-            viewBox={`0 0 ${getSVGWidth(image)} ${getSVGHeight(
-              image
-            )}`}
+            viewBox={`0 0 ${getSVGWidth(image)} ${getSVGHeight(image)}`}
             dangerouslySetInnerHTML={{ __html: image }}
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="xMinYMin meet"
@@ -48,7 +53,10 @@ const MonitoringListItem = ({
           </div>
           <div>
             <span className="font-semibold">Имя файла: </span>
-            <a href={fileName} className={`${module.fileName} text-[16px] lg:text-[21px]`}>
+            <a
+              href={fileName}
+              className={`${module.fileName} text-[16px] lg:text-[21px]`}
+            >
               {name}
             </a>
           </div>
@@ -66,6 +74,15 @@ const MonitoringListItem = ({
           </div>
         </div>
       </div>
+
+      {isPopupOpen && (
+        <PopupSvg
+          image={image}
+          width={getSVGWidth(image)}
+          height={getSVGHeight(image)}
+          setIsClosePopup={setIsClosePopup}
+        />
+      )}
     </div>
   );
 };
