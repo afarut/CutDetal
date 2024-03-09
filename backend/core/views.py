@@ -43,7 +43,7 @@ def dxf_view(request):
                 "error_message": result["error_message"]
             })
     
-class DetailApiView(CreateAPIView, ListAPIView):
+class DetailApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus
     queryset = Detail.objects.all()
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]

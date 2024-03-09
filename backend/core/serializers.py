@@ -66,7 +66,7 @@ class OrderCroppedSerialazer(serializers.ModelSerializer):
             "date",
             )
 
-class DetailSaveSerialazer(serializers.Serializer):
+class DetailSaveSerialazer(serializers.ModelSerializer):
     svg_file = serializers.CharField()
     dxf_file = serializers.CharField()
     name = serializers.CharField()
@@ -76,6 +76,22 @@ class DetailSaveSerialazer(serializers.Serializer):
     length = serializers.FloatField()
     count = serializers.IntegerField()
     price = serializers.IntegerField()
+
+    class Meta:
+        model = Detail
+        fields = (
+            "id",
+            "svg_file",
+            "dxf_file",
+            "name",
+            "material_id",
+            "width",
+            "height",
+            "length",
+            "count",
+            "price",
+            )
+
 
     def create(self, cd):
         image = create_image(cd["dxf_file"].replace("data:application/octet-stream;base64,", ""), "dxf")
