@@ -15,6 +15,7 @@ const Monitoring = () => {
   const [isCalculationsChosen, setIsCalculationsChosen] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]);
+  
 
   const jwtToken = document.cookie
     .split("; ")

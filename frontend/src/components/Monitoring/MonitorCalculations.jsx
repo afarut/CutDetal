@@ -1,6 +1,9 @@
+import { useState } from "react";
 import MonitoringListItem from "./MonitoringListItem";
 
 const MonitorCalculations = ({data}) => {
+  
+
   return (
     <div>
       {data.map((el) => (
