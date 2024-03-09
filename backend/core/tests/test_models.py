@@ -1,8 +1,5 @@
 from django.test import TestCase
-from ..models import Material
-from ..models import Range
-from ..models import Order
-from ..models import Detail
+from ..models import Material,Range,Order,Detail
 
 
 class MaterialModelTest(TestCase):
