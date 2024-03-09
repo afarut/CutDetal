@@ -15,26 +15,28 @@ const Monitoring = () => {
   const [isCalculationsChosen, setIsCalculationsChosen] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]);
-  
+  const [currentPage, setCurrentPage] = useState(1)
+  const [prev, setPrev] = useState(null)
+  const [next, setNext] = useState(null)
 
   const jwtToken = document.cookie
     .split("; ")
     .find((row) => row.startsWith("_auth="))
     .split("=")[1];
 
-  useEffect(() => {
-    axios
-      .get(`/detail/${selectedOption}`, {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      })
-      .then((response) => {
-        setData(response.data);
-      });
-  }, [selectedOption]);
-
-  console.log(selectedOption);
+    useEffect(() => {
+      axios
+        .get(`/detail/${selectedOption}${selectedOption === '' ? '?' : '&'}page=${currentPage}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        })
+        .then((response) => {
+          setNext(response.data.next)
+          setPrev(response.data.previous)
+          setData(response.data.results);
+        });
+    }, [selectedOption, currentPage]);
 
   return (
     <div className="">
@@ -94,7 +96,7 @@ const Monitoring = () => {
       />
 
       {isCalculationsChosen ? (
-        <MonitorCalculations data={data} />
+        <MonitorCalculations prev={prev} next={next} currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} />
       ) : (
         <MonitorOrders />
       )}
