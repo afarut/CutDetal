@@ -100,6 +100,11 @@
   border: 3px solid rgba(10, 43, 163, 1);
 }
 
+.closeButtonActive {
+  @apply bg-slate-500;
+  border: 3px solid rgba(110, 116, 139, 1);
+}
+
 .addMaterialTitle {
   font-family: Montserrat;
   font-size: 37px;

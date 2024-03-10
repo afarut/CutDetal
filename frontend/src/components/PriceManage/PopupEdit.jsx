@@ -6,7 +6,7 @@ import axios from "../../axios.js";
 import module from "./PriceManage.module.css";
 import PopupEditInput from "./PopupEditInput";
 
-const Popup = ({ setPopupVisible, material }) => {
+const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
   const [squaredMeterPrice, setSquaredMeterPrice] = useState(
     material.price_by_square_meter
   );
@@ -48,6 +48,7 @@ const Popup = ({ setPopupVisible, material }) => {
       .split("=")[1];
   
     try {
+      setIsLoading(true)
       const materialResponse = await axios.put(
         `/material/${material.id}/`,
         {
@@ -81,7 +82,7 @@ const Popup = ({ setPopupVisible, material }) => {
       });
   
       await Promise.all(rangeRequests);
-  
+      setIsLoading(false)
       setPopupVisible(false);
     } catch (error) {
       console.error(error.message);
@@ -160,7 +161,7 @@ const Popup = ({ setPopupVisible, material }) => {
               <button>Отмена</button>
             </div>
             <div
-              className={`${module.closeButton} mt-[8px] lg:mt-[0] flex justify-center items-center lg:ml-[13px] w-full lg:w-fit px-[50px] py-[10px]`}
+              className={`${isLoading ? module.closeButtonActive : module.closeButton} mt-[8px] lg:mt-[0] flex justify-center items-center lg:ml-[13px] w-full lg:w-fit px-[50px] py-[10px]`}
             >
               <button type="submit">Сохранить</button>
             </div>

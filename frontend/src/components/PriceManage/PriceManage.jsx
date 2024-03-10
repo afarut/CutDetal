@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import PopupEdit from "./PopupEdit";
 import PopupAddMaterial from "./PopupAddMaterial";
+import LoadingProcess from "../Home/loadingProcess.jsx";
 
 import PriceManageItem from "./PriceManageItem";
 import trashIcon from "../../images/trash.svg";
@@ -18,17 +19,28 @@ const PriceManage = () => {
   const [currentMaterial, setCurrentMaterial] = useState(null)
   const [allMaterials, setAllMaterials] = useState([]);
   const [isDeleting, setIsDeleting] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [prev, setPrev] = useState(null);
+  const [next, setNext] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    if (!isPopupVisible && !isPopupAddMaterialVisible) {
+      setIsLoading(true)
+    }
+
     axios
-      .get("/material")
+      .get(`/material?page=${currentPage}`)
       .then((response) => {
-        setAllMaterials(response.data);
+        setNext(response.data.next);
+        setPrev(response.data.previous);
+        setAllMaterials(response.data.results);
+        setIsLoading(false)
       })
       .catch((error) => {
         console.error(error.message);
       });
-  }, [isPopupVisible, isPopupAddMaterialVisible, isDeleting]);
+  }, [isPopupVisible, isPopupAddMaterialVisible, isDeleting, currentPage]);
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -52,7 +64,8 @@ const PriceManage = () => {
   }, [isPopupVisible]);
 
   return (
-    <div className="px-8 mt-6 lg:px-12">
+    <>
+      {!isLoading ? <div className="px-8 mt-6 lg:px-12">
       <div className="flex justify-between items-center mb-[15px]">
         <button
           onClick={() => setPopupAddMaterialVisible(true)}
@@ -94,14 +107,30 @@ const PriceManage = () => {
         />
       ))}
 
-      {isPopupVisible && <PopupEdit material={currentMaterial} setPopupVisible={setPopupVisible} />}
+      {isPopupVisible && <PopupEdit material={currentMaterial} setIsLoading={setIsLoading} isLoading={isLoading} setPopupVisible={setPopupVisible} />}
 
       {isPopupAddMaterialVisible && (
         <PopupAddMaterial
           setPopupAddMaterialVisible={setPopupAddMaterialVisible}
         />
       )}
+
+<div className="flex justify-center items-center mb-[10px]">
+      <div
+        onClick={() => setCurrentPage(currentPage - 1)}
+        className={`${!prev && 'hidden' } lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+      >
+        Предыдущая страница
+      </div>
+      <div
+        onClick={() => setCurrentPage(currentPage + 1)}
+        className={`ml-[20px] ${!next && 'hidden' } lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+      >
+        Следующая страница
+      </div>
     </div>
+    </div> : <div className="mt-[50px] flex justify-center items-center mb-[50px]"><LoadingProcess /></div> }
+    </>
   );
 };
 
