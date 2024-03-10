@@ -77,6 +77,13 @@ class MaterialApiview(CreateAPIView, ListAPIView):
     serializer_class = MaterialSerializer
     queryset = Material.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = None
+
+
+class MaterialApiviewWithPaggination(CreateAPIView, ListAPIView): # To fix
+    serializer_class = MaterialSerializer
+    queryset = Material.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class RangesApiview(CreateAPIView, ListAPIView):
