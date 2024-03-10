@@ -12,31 +12,39 @@ import MonitoringFilter from "./MonitoringFilter.jsx";
 
 const Monitoring = () => {
   const authUser = useAuthUser();
+  const [isLoading, setIsLoading] = useState(false);
   const [isCalculationsChosen, setIsCalculationsChosen] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1)
-  const [prev, setPrev] = useState(null)
-  const [next, setNext] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [prev, setPrev] = useState(null);
+  const [next, setNext] = useState(null);
 
   const jwtToken = document.cookie
     .split("; ")
     .find((row) => row.startsWith("_auth="))
     .split("=")[1];
 
-    useEffect(() => {
-      axios
-        .get(`/detail/${selectedOption}${selectedOption === '' ? '?' : '&'}page=${currentPage}`, {
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(
+        `/detail/${selectedOption}${
+          selectedOption === "" ? "?" : "&"
+        }page=${currentPage}`,
+        {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },
-        })
-        .then((response) => {
-          setNext(response.data.next)
-          setPrev(response.data.previous)
-          setData(response.data.results);
-        });
-    }, [selectedOption, currentPage]);
+        }
+      )
+      .then((response) => {
+        setNext(response.data.next);
+        setPrev(response.data.previous);
+        setData(response.data.results);
+        setIsLoading(false);
+      });
+  }, [selectedOption, currentPage]);
 
   return (
     <div className="">
@@ -96,7 +104,14 @@ const Monitoring = () => {
       />
 
       {isCalculationsChosen ? (
-        <MonitorCalculations prev={prev} next={next} currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} />
+        <MonitorCalculations
+          isLoading={isLoading}
+          prev={prev}
+          next={next}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          data={data}
+        />
       ) : (
         <MonitorOrders />
       )}
