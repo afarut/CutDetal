@@ -30,7 +30,7 @@ const PriceManage = () => {
     }
 
     axios
-      .get(`/material?page=${currentPage}`)
+      .get(`/material/with_paggination/?page=${currentPage}`)
       .then((response) => {
         setNext(response.data.next);
         setPrev(response.data.previous);
