@@ -125,7 +125,7 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
 
 
 class DetailWithOrderStatus(serializers.ModelSerializer):
-    order_status = serializers.ReadOnlyField(source='order.status', allow_null=True, default=0)
+    order_status = serializers.ReadOnlyField(source='order.status', default=-1)
     order = OrderCroppedSerialazer(read_only=True)
     material_data = MaterialSerializer(read_only=True, source="material")
 
