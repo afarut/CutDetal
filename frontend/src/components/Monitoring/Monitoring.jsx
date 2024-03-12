@@ -30,41 +30,54 @@ const Monitoring = () => {
     .find((row) => row.startsWith("_auth="))
     .split("=")[1];
 
-  useEffect(() => {
+  const handleChangePage = (val) => {
+    setIsCalculationsChosen(val)
     setSelectedOption("");
     setCurrentPage(1);
     setPrev(null);
     setNext(null);
-  }, [isCalculationsChosen]);
+  };
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(
-        `/detail/${selectedOption}${
-          selectedOption === "" ? "?" : "&"
-        }page=${currentPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        if (isCalculationsChosen) {
+    if (isCalculationsChosen) {
+      axios
+        .get(
+          `/detail/${selectedOption}${
+            selectedOption === "" ? "?" : "&"
+          }page=${currentPage}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        )
+        .then((response) => {
           setNext(response.data.next);
           setPrev(response.data.previous);
           setData(response.data.results);
           setIsLoading(false);
-        } else {
-          setOrders(
-            response.data.results.filter((item) => item.order !== null)
-          );
-          setPrev(response.data.previous);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    } else {
+      axios
+        .get(`/detail/exclude/?order_status=-1${selectedOption !== '' ? `&${selectedOption.slice(1)}` : ''}&page=${currentPage}`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        })
+        .then((response) => {
           setNext(response.data.next);
+          setPrev(response.data.previous);
+          setOrders(response.data.results);
           setIsLoading(false);
-        }
-      });
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    }
   }, [selectedOption, currentPage, isCalculationsChosen]);
 
   return (
@@ -102,7 +115,7 @@ const Monitoring = () => {
         className={`lg:px-[42px] mt-[8px] flex-col lg:flex-row flex justify-center items-center`}
       >
         <div
-          onClick={() => setIsCalculationsChosen(true)}
+          onClick={() => handleChangePage(true)}
           className={`${module.buttonsSelectorWrapper} ${
             isCalculationsChosen ? module.active : ""
           } text-[31px] w-full flex justify-center`}
@@ -110,7 +123,7 @@ const Monitoring = () => {
           <span>Только расчёт</span>
         </div>
         <div
-          onClick={() => setIsCalculationsChosen(false)}
+          onClick={() => handleChangePage(false)}
           className={`${module.buttonsSelectorWrapper} ${
             !isCalculationsChosen ? module.active : ""
           } lg:ml-[35px] text-[31px] w-full flex justify-center`}
