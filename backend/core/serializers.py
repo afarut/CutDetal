@@ -51,7 +51,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             "details",
             "date",
             )
-        #depth=1
+        # depth=1
 
 
 class OrderCroppedSerialazer(serializers.ModelSerializer):

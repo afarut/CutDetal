@@ -145,11 +145,10 @@ const ItemOrder = ({
         className={`${module.divSvgDXF} w-[26%] flex justify-center items-center relative`}
       >
         <div className="w-full h-full flex justify-center items-center">
-          <div className="flex justify-center items-center w-full h-full">
-            <div className="flex justify-center items-center relative">
+          <div className="flex w-full justify-center items-center h-full">
+            <div className="flex justify-center w-full items-center relative">
               <svg
                 onClick={handleIsPopupOpen}
-                height="190"
                 viewBox={`0 0 ${getSVGWidth(item.image)} ${getSVGHeight(
                   item.image
                 )}`}

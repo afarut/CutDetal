@@ -11,6 +11,9 @@ import { NavLink } from "react-router-dom";
 import MonitoringFilter from "./MonitoringFilter.jsx";
 
 const Monitoring = () => {
+  // const location = useLocation()
+  // const {pathname} = location
+
   const authUser = useAuthUser();
   const [isLoading, setIsLoading] = useState(false);
   const [isCalculationsChosen, setIsCalculationsChosen] = useState(true);
@@ -20,10 +23,19 @@ const Monitoring = () => {
   const [prev, setPrev] = useState(null);
   const [next, setNext] = useState(null);
 
+  const [orders, setOrders] = useState([]);
+
   const jwtToken = document.cookie
     .split("; ")
     .find((row) => row.startsWith("_auth="))
     .split("=")[1];
+
+  useEffect(() => {
+    setSelectedOption("");
+    setCurrentPage(1);
+    setPrev(null);
+    setNext(null);
+  }, [isCalculationsChosen]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -39,12 +51,21 @@ const Monitoring = () => {
         }
       )
       .then((response) => {
-        setNext(response.data.next);
-        setPrev(response.data.previous);
-        setData(response.data.results);
-        setIsLoading(false);
+        if (isCalculationsChosen) {
+          setNext(response.data.next);
+          setPrev(response.data.previous);
+          setData(response.data.results);
+          setIsLoading(false);
+        } else {
+          setOrders(
+            response.data.results.filter((item) => item.order !== null)
+          );
+          setPrev(response.data.previous);
+          setNext(response.data.next);
+          setIsLoading(false);
+        }
       });
-  }, [selectedOption, currentPage]);
+  }, [selectedOption, currentPage, isCalculationsChosen]);
 
   return (
     <div className="">
@@ -113,7 +134,14 @@ const Monitoring = () => {
           data={data}
         />
       ) : (
-        <MonitorOrders />
+        <MonitorOrders
+          isLoading={isLoading}
+          orders={orders}
+          prev={prev}
+          next={next}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       )}
     </div>
   );
