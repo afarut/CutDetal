@@ -1,4 +1,8 @@
-import module from './Monitoring.module.css'
+import module from "./Monitoring.module.css";
+
+import { useState } from "react";
+
+import PopupSvg from "./PopupSvg.jsx";
 
 const MonitoringOrdersItem = ({
   image,
@@ -12,20 +16,47 @@ const MonitoringOrdersItem = ({
   phoneNumber,
   email,
   typeOfClient,
-  status
+  status,
+  nameOfFile,
+  orderId
 }) => {
+  const [isPopupOpen, setIsClosePopup] = useState(false);
+
+  function getSVGWidth(svgString) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(svgString, "text/xml");
+    const svgElement = xmlDoc.getElementsByTagName("svg")[0];
+    return svgElement.getAttribute("width");
+  }
+
+  function getSVGHeight(svgString) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(svgString, "text/xml");
+    const svgElement = xmlDoc.getElementsByTagName("svg")[0];
+    return svgElement.getAttribute("height");
+  }
   return (
     <div
-      className={`${module.listItemWrapper} px-[18px] pb-[10px] mx-[12px] lg:px-[42px] mb-[8px] lg:mb-[14px] lg:mx-[31px]`}
+      className={`${module.listItemWrapper} px-[18px] pb-[10px] mx-[12px] lg:px-[42px] mb-[8px] lg:mb-[14px] lg:mx-[31px] relative`}
     >
-      <div className={`flex-col lg:flex-row flex justify-between lg:items-start py-[15px] lg:py-[20px]`}>
+      <div
+        className={`flex-col lg:flex-row flex justify-between lg:items-start py-[15px] lg:py-[20px]`}
+      >
         <div className="lg:w-1/4 lg:flex lg:justify-center">
-        <img className="lg:w-[170px] h-[190px] order-1 lg:order-1" src={image} alt="imageofdxf" />
+          <svg
+            onClick={() => setIsClosePopup(true)}
+            className="cursor-pointer"
+            height="190"
+            viewBox={`0 0 ${getSVGWidth(image)} ${getSVGHeight(image)}`}
+            dangerouslySetInnerHTML={{ __html: image }}
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMinYMin meet"
+          />
         </div>
         <div
           className={`${module.ItemInfoWrapper} lg:w-1/4 order-3 text-[16px] lg:text-[21px] flex flex-col`}
         >
-          <div className='mb-[10px]'>
+          <div className="mb-[10px]">
             <span className={`${module.titles}`}>Данные расчёта</span>
           </div>
           <div>
@@ -34,9 +65,12 @@ const MonitoringOrdersItem = ({
           </div>
           <div>
             <span className="font-semibold">Имя файла: </span>
-            <span className={`${module.fileName} text-[16px] lg:text-[21px]`}>
-              {fileName}
-            </span>
+            <a
+              href={fileName}
+              className={`${module.fileName} text-[16px] lg:text-[21px]`}
+            >
+              {nameOfFile}
+            </a>
           </div>
           <div>
             <span className="font-semibold">Материал: </span>
@@ -55,7 +89,7 @@ const MonitoringOrdersItem = ({
         <div
           className={`${module.ItemInfoWrapper} lg:w-1/4 order-4 lg:ml-[10px] text-[16px] lg:text-[21px] flex flex-col`}
         >
-          <div className='mb-[10px]'>
+          <div className="mb-[10px]">
             <span className={`${module.titles}`}>Данные клиента:</span>
           </div>
           <div>
@@ -64,17 +98,19 @@ const MonitoringOrdersItem = ({
           </div>
           <div>
             <span className="font-semibold">Имя: </span>
-            <span className={`text-[16px] lg:text-[21px]`}>
-              {customerName}
-            </span>
+            <span className={`text-[16px] lg:text-[21px]`}>{customerName}</span>
           </div>
           <div>
             <span className="font-semibold">Телефон: </span>
-            <span className={`${module.fileName} text-[16px] lg:text-[21px]`}>{phoneNumber}</span>
+            <a href={`tel:${phoneNumber}`} className={`${module.fileName} text-[16px] lg:text-[21px]`}>
+              {phoneNumber}
+            </a>
           </div>
           <div>
             <span className="font-semibold">Email: </span>
-            <span className={`${module.fileName} text-[16px] lg:text-[21px]`}>{email}</span>
+            <a href={`mailto:${email}`} className={`${module.fileName} text-[16px] lg:text-[21px]`}>
+              {email}
+            </a>
           </div>
           <div>
             <span className="font-semibold">Вид клиента: </span>
@@ -82,13 +118,29 @@ const MonitoringOrdersItem = ({
           </div>
         </div>
 
-        <div className='lg:w-1/4 lg:ml-[10px] mt-[15px] mb-[15px] lg:mt-[0px] lg:order-4 order-2'>
-        <div className={`${module.statesWrapper}  flex items-start`}>
-        <span>Статус: </span>
-        <span className={`${status === 'выполнен' ? module.done : module.waitingForConfirm} ml-[5px]`}>{status}</span>
+        <div className="lg:w-1/4 lg:ml-[10px] mt-[15px] mb-[15px] lg:mt-[0px] lg:order-4 order-2">
+          <div className={`${module.statesWrapper}  flex items-start`}>
+            <span>Статус: </span>
+            <span
+              className={`${
+                status === "выполнен" ? module.done : module.waitingForConfirm
+              } ml-[5px]`}
+            >
+              {status}
+            </span>
+          </div>
         </div>
-        </div>
+        <span className="absolute bottom-5 right-5 text-gray-500">#{orderId}</span>
       </div>
+
+      {isPopupOpen && (
+        <PopupSvg
+          image={image}
+          width={getSVGWidth(image)}
+          height={getSVGHeight(image)}
+          setIsClosePopup={setIsClosePopup}
+        />
+      )}
     </div>
   );
 };
