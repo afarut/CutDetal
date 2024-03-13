@@ -40,7 +40,7 @@ const PopupSvg = ({ image, height, width, setIsClosePopup }) => {
             </svg>
           </button>
         <div className="p-4 w-full h-[100%]">
-          <TransformWrapper limitToBounds={false} centerOnInit={true}>
+          <TransformWrapper limitToBounds={false} centerOnInit={true} minScale={0}>
             <TransformComponent wrapperClass="!w-full !h-[100%]">
               <svg
                 onClick={() => setIsClosePopup(true)}

@@ -7,6 +7,7 @@ urlpatterns = [
     path('dxf/', views.dxf_view, name='dxf_view'),
     path("detail/<int:pk>/", views.DetailUpdateAPIView.as_view(), name="update_detail"),
     path("detail/save/", views.DetailSave.as_view(), name="detail_save"),
+    path("detail/exclude/", views.DetailExcludeApiView.as_view(), name="detail_exclude"),
     path("detail/", views.DetailApiView.as_view(), name="detail"),
     path("dxf/confirm/", views.dxf_confirm, name="dxf_confirm"),
     path("order/", views.OrderApiView.as_view(), name="order"),

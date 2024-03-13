@@ -19,6 +19,7 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import authentication_classes, permission_classes
 from .permissions import CreateOnly, EditOnly
+from .filters import ExcludeDetailFilter, DetailFilter
 
 
 
@@ -123,11 +124,19 @@ def dxf_confirm(request):
     # Return error response if the request method is not POST
     return JsonResponse({"status": "error", "error_message": "Метод не разрешен"})
 
+    
+class DetailExcludeApiView(ListAPIView):
+    serializer_class = DetailWithOrderStatus
+    queryset = Detail.objects.all()
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_class = ExcludeDetailFilter
+
+
 class DetailApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus
     queryset = Detail.objects.all()
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-    filterset_fields = ["order__status"]
+    filterset_class = DetailFilter
 
 
 class DetailSave(CreateAPIView):

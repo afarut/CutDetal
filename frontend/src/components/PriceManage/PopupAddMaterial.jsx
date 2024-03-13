@@ -10,6 +10,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
   const [from, setFrom] = useState("");
   const [till, setTill] = useState("");
   const [price, setPrice] = useState("");
+  const [error, showError] = useState(false)
 
   const [ranges, setRanges] = useState([]);
 
@@ -20,6 +21,13 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
       setPopupAddMaterialVisible(false);
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      showError(false)
+    }
+  }, [from, till])
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     document.addEventListener("mousedown", handleClickOutside);
@@ -31,10 +39,20 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
   }, []);
 
   const handleAddRange = () => {
-    setRanges([...ranges, { start: from, end: till, price: price }]);
-    setFrom("");
-    setTill("");
-    setPrice("");
+    // console.log(`from: ${from}, till: ${till}`)
+    if (parseFloat(from) < parseFloat(till)) {
+      if (ranges.length >= 1) {
+        setRanges([...ranges, { start: from, end: till, price: price }].sort((a, b) => a.start - b.start))
+      } else {
+        setRanges([...ranges, { start: from, end: till, price: price }]);
+      }
+      // setRanges(ranges.sort((a, b) => a.start - b.start));
+      setFrom("");
+      setTill("");
+      setPrice("");
+    } else {
+      showError(true)
+    }
   };
 
   const handleSave = () => {
@@ -149,6 +167,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
           <div className="mb-[8px]">
             <label htmlFor="from">От: </label>
             <input
+            className={`${error ? 'border !border-red-500': ''}`}
               type="number"
               id="from"
               value={from}
@@ -159,6 +178,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
           <div className="mb-[8px]">
             <label htmlFor="till">До: </label>
             <input
+            className={`${error ? 'border !border-red-500': ''}`}
               type="number"
               id="till"
               value={till}

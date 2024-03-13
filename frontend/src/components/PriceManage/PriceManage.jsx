@@ -34,7 +34,7 @@ const PriceManage = () => {
       .then((response) => {
         setNext(response.data.next);
         setPrev(response.data.previous);
-        setAllMaterials(response.data.results);
+        setAllMaterials(response.data.results.sort((a, b) => a.start - b.start));
         setIsLoading(false)
       })
       .catch((error) => {
