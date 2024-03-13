@@ -19,6 +19,7 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
     # Создаем клиента SOAP с использованием WSDL и сессии с аутентификацией
     client = Client(wsdl=wsdl, transport=Transport(session=session))
 
+
     response = client.service.CalcDXF(
         FileDXF=file_content_base64,
         NameFile=name_file,
@@ -40,7 +41,9 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
 
         total_length = sum([entity.SRLength for entity in response.SRTab.SREntity])
         # Подготавливаем данные для JSON-ответа
+
         result = {
+            
             "success": success,
             "error_message": error_message,
             "total_length": total_length,

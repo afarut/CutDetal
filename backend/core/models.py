@@ -32,16 +32,16 @@ class Order(models.Model):
 
 class Detail(models.Model):
     name = models.CharField(max_length=70)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True)
     width = models.FloatField()
     height = models.FloatField()
     dxf_file = models.FileField(upload_to="dxf")
     svg_file = models.TextField()
     length = models.FloatField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="details")
-    count = models.PositiveIntegerField(default=1)
+    count = models.PositiveIntegerField(default=1, null=True, blank=True)
     date = models.DateField(auto_now=True)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return self.name

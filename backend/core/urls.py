@@ -8,6 +8,7 @@ urlpatterns = [
     path("detail/<int:pk>/", views.DetailUpdateAPIView.as_view(), name="update_detail"),
     path("detail/save/", views.DetailSave.as_view(), name="detail_save"),
     path("detail/", views.DetailApiView.as_view(), name="detail"),
+    path("dxf/confirm/", views.dxf_confirm, name="dxf_confirm"),
     path("order/", views.OrderApiView.as_view(), name="order"),
     path("material/<int:pk>/", views.MaterialGetEditDeleteApiView.as_view(), name="materials_edit_create_delete"),
     path("material/", views.MaterialApiview.as_view(), name="material"),

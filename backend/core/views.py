@@ -1,5 +1,7 @@
+from types import NoneType
 from django import forms
 import json
+from django.core import serializers
 from django.shortcuts import render
 from django.http import JsonResponse
 from .import utils 
@@ -19,6 +21,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from .permissions import CreateOnly, EditOnly
 
 
+
 @authentication_classes([])
 @permission_classes([])
 @csrf_exempt
@@ -28,21 +31,98 @@ def dxf_view(request):
         form = forms.UploadFileForm(json.loads(request.body.decode()), request.FILES)
         result = utils.calc_dxf(form.data["base64file"], form.data["namefile"])
         if result['success']:
+            new_detail = Detail.objects.create(
+                name = result["image_name"],
+                material = None,
+                width = result["size_x"],
+                height =  result["size_y"],
+                dxf_file = utils.create_image(form.data["base64file"].replace("data:application/octet-stream;base64,", ""), "dxf"),
+                svg_file = result["image"].decode(), 
+                length = result["total_length"],
+                count = None,
+                price = None,
+                )
             return JsonResponse({
+                "id": new_detail.id,
                 "status": "success",
                 "total_length": result["total_length"],
                 "image": result["image"].decode(), 
                 "size_x": result["size_x"],
                 "size_y": result["size_y"],
                 "version": result["version"],
-                "image_name": result["image_name"]
+                "image_name": result["image_name"],
             })
         else:
             return JsonResponse({
                 "status": "error",
                 "error_message": result["error_message"]
             })
-    
+    return JsonResponse({
+        "status": "error",
+        "error_message": "Метод не разрешен"
+    })
+
+
+@authentication_classes([])
+@permission_classes([])
+@csrf_exempt
+def dxf_confirm(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode())
+
+        # Create a form instance and populate it with data from the request
+        form = forms.DxfConfirmForm(data)
+
+        # Check if the form is valid
+        if form.is_valid():
+            # Extract cleaned data from the form
+            username = form.cleaned_data["username"]
+            email = form.cleaned_data["email"]
+            phone_number = form.cleaned_data["phone_number"]
+            details = form.cleaned_data["details"]
+
+            # Create a new order
+            order = Order.objects.create(
+                username=username,
+                email=email,
+                phone_number=phone_number
+            )
+
+            # Process details
+            for detail in details:
+                print(type(detail))
+                # Assuming each detail is a dictionary with required keys
+                detail_id = detail.get("detail_id")
+                material_id = detail.get("material_id")
+                price = detail.get("price")
+                quantity = detail.get("count")
+
+                try:
+                    material_obj = Material.objects.get(id=material_id)
+                    # Retrieve the detail object from the database
+                    detail_obj = Detail.objects.get(id=detail_id)
+
+                    # Update detail object with material, price, and quantity
+                    detail_obj.material = material_obj
+                    detail_obj.price = price
+                    detail_obj.count = quantity
+                    detail_obj.save()
+
+                    # Associate detail with the order
+                    order.details.add(detail_obj)
+                except Detail.DoesNotExist:
+                    # Handle if detail with provided ID doesn't exist
+                    pass
+
+            return JsonResponse({"status": "success", "order_id": order.id})
+
+        else:
+            # Return validation errors if the form is not valid
+            return JsonResponse({"status": "error", "errors": form.errors})
+
+    # Return error response if the request method is not POST
+    return JsonResponse({"status": "error", "error_message": "Метод не разрешен"})
+
 class DetailApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus
     queryset = Detail.objects.all()
