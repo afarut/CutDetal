@@ -80,13 +80,15 @@ def dxf_confirm(request):
             username = form.cleaned_data["username"]
             email = form.cleaned_data["email"]
             phone_number = form.cleaned_data["phone_number"]
+            is_individual = form.cleaned_data["is_individual"]
             details = form.cleaned_data["details"]
-
+            print(is_individual)
             # Create a new order
             order = Order.objects.create(
                 username=username,
                 email=email,
-                phone_number=phone_number
+                phone_number=phone_number,
+                is_individual=is_individual
             )
 
             # Process details
