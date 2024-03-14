@@ -16,7 +16,7 @@ const MonitoringFilter = ({ selectedOption, setSelectedOption }) => {
         >
           <option value={""}>Сортировать</option>
           <option value={"?ordering=count"}>Количество</option>
-          <option value={"?ordering=date"}>Дата</option>
+          <option value={"?ordering=-date"}>Дата</option>
           <option value={"?ordering=price"}>Цена</option>
           <option value={"?ordering=material"}>Материал</option>
         </select>
