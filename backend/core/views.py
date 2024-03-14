@@ -18,7 +18,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import authentication_classes, permission_classes
-from .permissions import CreateOnly, EditOnly
+from .permissions import CreateOnly, EditOnly, IsAuthAndSuperAdminOnly, ReadOnly
 from .filters import ExcludeDetailFilter, DetailFilter
 
 
@@ -162,16 +162,17 @@ class OrderApiView(CreateAPIView, ListAPIView):
 class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = MaterialEditSerialazer
     queryset = Material.objects.all()
+    permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
 
 
 class MaterialApiview(CreateAPIView, ListAPIView):
     serializer_class = MaterialSerializer
     queryset = Material.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
     pagination_class = None
 
 
-class MaterialApiviewWithPaggination(CreateAPIView, ListAPIView): # To fix
+class MaterialApiviewWithPaggination(ListAPIView): # To fix
     serializer_class = MaterialSerializer
     queryset = Material.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -180,12 +181,13 @@ class MaterialApiviewWithPaggination(CreateAPIView, ListAPIView): # To fix
 class RangesApiview(CreateAPIView, ListAPIView):
     serializer_class = RangeSerialazer
     queryset = Range.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
 
 
 class RangeGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = RangeSerialazer
     queryset = Range.objects.all()
+    permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
 
 
 class DeleteDetailFromOrder(APIView):
@@ -215,7 +217,7 @@ class DXFSizeGetApiView(APIView):
 
 
 class DXFSizeUpdateApiView(APIView):
-    permission_classes = []
+    permission_classes = [SuperAdminOnly]
     def get(self, request, size):
         inst = DXFSize().get()
         inst.size = size
