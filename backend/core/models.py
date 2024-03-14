@@ -29,6 +29,9 @@ class Order(models.Model):
     is_individual = models.BooleanField(null=True, blank=True)
     date = models.DateField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.username}:{self.date}"
+
 
 class Detail(models.Model):
     name = models.CharField(max_length=70)
