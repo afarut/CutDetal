@@ -2,7 +2,6 @@ import module from "./home.module.css";
 import CloseWindow from "./closewindow";
 import ItemOrder from "./itemOrder";
 import { useState } from "react";
-import axios from "../../axios.js";
 import PopupSvg from "../Monitoring/PopupSvg.jsx";
 
 const Calculate = ({
@@ -15,48 +14,12 @@ const Calculate = ({
   quantityValues,
   handleQuantityChange,
   handleItemRemove,
-  setOrders,
-  files,
-  setDetailsIds,
-  detailsIds,
+  items,
+  setItems
 }) => {
-  const [items, setItems] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [imageInfo, setImageInfo] = useState({});
 
-  const sendDataToServer = async () => {
-    try {
-      // const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
-
-      for (let index = 0; index < data.length; index++) {
-        const item = {
-          material_id: materialValues[index],
-          length: data[index].total_length,
-          svg_file: data[index].image,
-          dxf_file: files[index],
-          height: data[index].size_y,
-          width: data[index].size_x,
-          name: data[index].image_name,
-          count: quantityValues[index],
-          price: items[index],
-        };
-
-        await axios
-          .post("/detail/save/", item)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error(error.message);
-          });
-      }
-
-      goPlacingOrder();
-    } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
-    }
-  };
-  console.log(isPopupOpen)
   return (
     <>
       {isPopupOpen ? (
@@ -98,7 +61,7 @@ const Calculate = ({
               <div className="flex justify-end">
                 <div
                   className={`mr-[16px] ${module.buttonOkey}`}
-                  onClick={sendDataToServer}
+                  onClick={goPlacingOrder}
                 >
                   Далее
                 </div>
