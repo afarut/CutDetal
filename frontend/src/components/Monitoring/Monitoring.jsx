@@ -118,7 +118,7 @@ const Monitoring = () => {
           onClick={() => handleChangePage(true)}
           className={`${module.buttonsSelectorWrapper} ${
             isCalculationsChosen ? module.active : ""
-          } text-[31px] w-full flex justify-center`}
+          } text-[31px] w-full flex justify-center cursor-pointer`}
         >
           <span>Только расчёт</span>
         </div>
@@ -126,7 +126,7 @@ const Monitoring = () => {
           onClick={() => handleChangePage(false)}
           className={`${module.buttonsSelectorWrapper} ${
             !isCalculationsChosen ? module.active : ""
-          } lg:ml-[35px] text-[31px] w-full flex justify-center`}
+          } lg:ml-[35px] text-[31px] w-full flex justify-center cursor-pointer`}
         >
           <span>Оформленные заказы</span>
         </div>

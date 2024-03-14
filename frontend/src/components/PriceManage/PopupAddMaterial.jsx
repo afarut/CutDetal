@@ -11,6 +11,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
   const [till, setTill] = useState("");
   const [price, setPrice] = useState("");
   const [error, showError] = useState(false)
+  const [showErrorPrice, setShowErrorPrice] = useState(false)
 
   const [ranges, setRanges] = useState([]);
 
@@ -25,8 +26,9 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
   useEffect(() => {
     if (error) {
       showError(false)
+      setShowErrorPrice(false)
     }
-  }, [from, till])
+  }, [from, till, price])
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -40,20 +42,32 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
 
   const handleAddRange = () => {
     // console.log(`from: ${from}, till: ${till}`)
-    if (parseFloat(from) < parseFloat(till)) {
+    const isValidPrice = parseFloat(price) > 0;
+    const isValidRange = parseFloat(from) < parseFloat(till) && parseFloat(from) > 0;
+    
+    if (isValidPrice && isValidRange) {
       if (ranges.length >= 1) {
-        setRanges([...ranges, { start: from, end: till, price: price }].sort((a, b) => a.start - b.start))
+        setRanges([...ranges, { start: from, end: till, price: price }].sort((a, b) => a.start - b.start));
       } else {
         setRanges([...ranges, { start: from, end: till, price: price }]);
       }
-      // setRanges(ranges.sort((a, b) => a.start - b.start));
       setFrom("");
       setTill("");
       setPrice("");
+      showError(false);
+      setShowErrorPrice(false);
     } else {
-      showError(true)
+      if (!isValidPrice && !isValidRange) {
+        showError(true);
+        setShowErrorPrice(true);
+      } else if (!isValidPrice) {
+        setShowErrorPrice(true);
+      } else {
+        showError(true);
+      }
     }
   };
+  
 
   const handleSave = () => {
     const jwtToken = document.cookie
@@ -189,6 +203,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
           <div className="mb-[8px]">
             <label htmlFor="price">Цена: </label>
             <input
+            className={`${showErrorPrice ? 'border !border-red-500': ''}`}
               type="number"
               id="price"
               value={price}
@@ -206,12 +221,12 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
         <div className="flex justify-end items-center mt-[25px] flex-col lg:flex-row">
           <div
             onClick={() => setPopupAddMaterialVisible(false)}
-            className={`${module.cancelButton} flex justify-center items-center w-full lg:w-1/3 px-[50px] py-[10px]`}
+            className={`${module.cancelButton} cursor-pointer flex justify-center items-center w-full lg:w-1/3 px-[50px] py-[10px]`}
           >
             <button>Отмена</button>
           </div>
           <div
-            className={`${module.closeButton} mt-[8px] lg:mt-[0] flex justify-center items-center lg:ml-[13px] w-full lg:w-2/3 px-[50px] py-[10px]`}
+            className={`${module.closeButton} cursor-pointer mt-[8px] lg:mt-[0] flex justify-center items-center lg:ml-[13px] w-full lg:w-2/3 px-[50px] py-[10px]`}
           >
             <button onClick={handleSave} type="submit">
               Сохранить

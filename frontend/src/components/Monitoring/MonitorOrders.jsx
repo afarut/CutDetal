@@ -3,27 +3,6 @@ import LoadingProcess from "../Home/loadingProcess.jsx";
 import MonitoringOrdersItem from "./MonitoringOrdersItem";
 
 const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentPage }) => {
-  // const [orders, setOrders] = useState([])
-
-  // const jwtToken = document.cookie
-  //   .split("; ")
-  //   .find((row) => row.startsWith("_auth="))
-  //   .split("=")[1];
-
-  // useEffect(() => {
-  //   axios.get('/detail/', {
-  //     headers: {
-  //       Authorization: `Bearer ${jwtToken}`,
-  //     },
-  //   }).then((response) => {
-  //     setOrders(response.data.results.filter((item) => item.order !== null))
-  //   }).catch((error) => {
-  //     console.error(error.message)
-  //   })
-  // }, [])
-
-  console.log(orders);
-
   return (
     <div>
       {isLoading ? (
@@ -46,7 +25,6 @@ const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentP
               phoneNumber={el.order.phone_number}
               email={el.order.email}
               typeOfClient={el.is_individual === 1 ? "физ.лицо" : "юр.лицо"}
-              status={el.order_status === 0 ? "Подтверждение" : "Выполнен"}
               orderId={el.order.id}
               key={index}
             />
@@ -58,7 +36,7 @@ const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentP
           onClick={() => setCurrentPage(currentPage - 1)}
           className={`${
             !prev && "hidden"
-          } lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+          } lg:px-[10px] lg:py-[8px] cursor-pointer bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
         >
           Предыдущая страница
         </div>
@@ -66,7 +44,7 @@ const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentP
           onClick={() => setCurrentPage(currentPage + 1)}
           className={`ml-[20px] ${
             !next && "hidden"
-          } lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+          } lg:px-[10px] lg:py-[8px] cursor-pointer bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
         >
           Следующая страница
         </div>

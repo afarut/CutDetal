@@ -7,9 +7,6 @@ const MonitoringListItem = ({
   image,
   date,
   fileName,
-  material,
-  count,
-  price,
   name,
 }) => {
   const [isPopupOpen, setIsClosePopup] = useState(false);
@@ -47,7 +44,7 @@ const MonitoringListItem = ({
         <div
           className={`${module.ItemInfoWrapper} ml-[10px] text-[16px] lg:text-[21px] flex flex-col`}
         >
-          <div>
+          <div className="lg:mb-[30px] mb-[15px]">
             <span className="font-semibold">Дата расчёта: </span>
             <span className="text-[16px] lg:text-[21px]">{date}</span>
           </div>
@@ -60,7 +57,7 @@ const MonitoringListItem = ({
               {name}
             </a>
           </div>
-          <div>
+          {/* <div>
             <span className="font-semibold">Материал: </span>
             <span className="text-[16px] lg:text-[21px]">{material}</span>
           </div>
@@ -71,7 +68,7 @@ const MonitoringListItem = ({
           <div>
             <span className="font-semibold">Итог по цене: </span>
             <span className="text-[16px] lg:text-[21px]">{price} RUB</span>
-          </div>
+          </div> */}
         </div>
       </div>
 
