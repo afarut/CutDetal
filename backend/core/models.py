@@ -26,7 +26,7 @@ class Order(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
     status = models.PositiveSmallIntegerField(choices=VERBOSE_STATUS_TYPE, default=0)
-    is_individual = models.BooleanField(default=True)
+    is_individual = models.BooleanField(null=True, blank=True)
     date = models.DateField(auto_now=True)
 
 
