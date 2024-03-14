@@ -145,6 +145,7 @@ const ItemOrder = ({
           <div className="flex w-full justify-center items-center h-full">
             <div className="flex justify-center w-full items-center relative">
               <svg
+              height={190}
                 onClick={handleIsPopupOpen}
                 viewBox={`0 0 ${getSVGWidth(item.image)} ${getSVGHeight(
                   item.image
