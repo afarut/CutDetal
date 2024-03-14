@@ -13,7 +13,9 @@ const ItemOrder = ({
   handleItemRemove,
   setItems,
   setIsPopupOpen,
-  setImageInfo
+  setImageInfo,
+  items,
+  index
 }) => {
   const [diapazon, setDiapazon] = useState([]);
 
@@ -134,6 +136,10 @@ const ItemOrder = ({
   const hintOn = () => {
     setOnQuestion(!onQuestion);
   };
+
+  if (isNaN(items[item.id])) {
+    items[item.id] = getPriceDetailByCount()
+  }
 
   return (
     <div key={item.id} className={module.cartCalc}>
