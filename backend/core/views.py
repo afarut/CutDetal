@@ -217,7 +217,7 @@ class DXFSizeGetApiView(APIView):
 
 
 class DXFSizeUpdateApiView(APIView):
-    permission_classes = [SuperAdminOnly]
+    permission_classes = [IsAuthAndSuperAdminOnly]
     def get(self, request, size):
         inst = DXFSize().get()
         inst.size = size
