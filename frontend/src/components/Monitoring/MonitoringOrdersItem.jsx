@@ -16,7 +16,6 @@ const MonitoringOrdersItem = ({
   phoneNumber,
   email,
   typeOfClient,
-  status,
   nameOfFile,
   orderId
 }) => {
@@ -42,7 +41,7 @@ const MonitoringOrdersItem = ({
       <div
         className={`flex-col lg:flex-row flex justify-between lg:items-start py-[15px] lg:py-[20px]`}
       >
-        <div className="lg:w-1/4 lg:flex lg:justify-center">
+        <div className="lg:w-1/3 lg:flex lg:justify-center">
           <svg
             onClick={() => setIsClosePopup(true)}
             className="cursor-pointer"
@@ -54,7 +53,7 @@ const MonitoringOrdersItem = ({
           />
         </div>
         <div
-          className={`${module.ItemInfoWrapper} lg:w-1/4 order-3 text-[16px] lg:text-[21px] flex flex-col`}
+          className={`${module.ItemInfoWrapper} lg:w-1/3 order-3 text-[16px] lg:text-[21px] flex flex-col`}
         >
           <div className="mb-[10px]">
             <span className={`${module.titles}`}>Данные расчёта</span>
@@ -87,7 +86,7 @@ const MonitoringOrdersItem = ({
         </div>
 
         <div
-          className={`${module.ItemInfoWrapper} lg:w-1/4 order-4 lg:ml-[10px] text-[16px] lg:text-[21px] flex flex-col`}
+          className={`${module.ItemInfoWrapper} lg:w-1/3 order-4 lg:ml-[10px] text-[16px] lg:text-[21px] flex flex-col`}
         >
           <div className="mb-[10px]">
             <span className={`${module.titles}`}>Данные клиента:</span>
@@ -118,7 +117,7 @@ const MonitoringOrdersItem = ({
           </div>
         </div>
 
-        <div className="lg:w-1/4 lg:ml-[10px] mt-[15px] mb-[15px] lg:mt-[0px] lg:order-4 order-2">
+        {/* <div className="lg:w-1/4 lg:ml-[10px] mt-[15px] mb-[15px] lg:mt-[0px] lg:order-4 order-2">
           <div className={`${module.statesWrapper}  flex items-start`}>
             <span>Статус: </span>
             <span
@@ -129,7 +128,7 @@ const MonitoringOrdersItem = ({
               {status}
             </span>
           </div>
-        </div>
+        </div> */}
         <span className="absolute bottom-5 right-5 text-gray-500">#{orderId}</span>
       </div>
 

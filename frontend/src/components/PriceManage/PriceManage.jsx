@@ -6,7 +6,6 @@ import PopupAddMaterial from "./PopupAddMaterial";
 import LoadingProcess from "../Home/loadingProcess.jsx";
 
 import PriceManageItem from "./PriceManageItem";
-import trashIcon from "../../images/trash.svg";
 import axios from "../../axios.js";
 
 import module from "./PriceManage.module.css";
@@ -34,7 +33,7 @@ const PriceManage = () => {
       .then((response) => {
         setNext(response.data.next);
         setPrev(response.data.previous);
-        setAllMaterials(response.data.results.sort((a, b) => a.start - b.start));
+        setAllMaterials(response.data.results);
         setIsLoading(false)
       })
       .catch((error) => {
@@ -118,13 +117,13 @@ const PriceManage = () => {
 <div className="flex justify-center items-center mb-[10px]">
       <div
         onClick={() => setCurrentPage(currentPage - 1)}
-        className={`${!prev && 'hidden' } lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+        className={`${!prev && 'hidden' } cursor-pointer lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
       >
         Предыдущая страница
       </div>
       <div
         onClick={() => setCurrentPage(currentPage + 1)}
-        className={`ml-[20px] ${!next && 'hidden' } lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+        className={`ml-[20px] ${!next && 'hidden' } cursor-pointer lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
       >
         Следующая страница
       </div>

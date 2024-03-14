@@ -12,7 +12,7 @@ const MonitoringFilter = ({ selectedOption, setSelectedOption }) => {
         <select
           value={selectedOption}
           onChange={(e) => setSelectedOption(e.target.value)}
-          className={`${module.filterButton} flex justify-center items-center pl-[17px] py-[13px] lg:pl-[17px] lg:pr-[30px] lg:py-[13px] pr-[30px]`}
+          className={`${module.filterButton} cursor-pointer flex justify-center items-center pl-[17px] py-[13px] lg:pl-[17px] lg:pr-[30px] lg:py-[13px] pr-[30px]`}
         >
           <option value={""}>Сортировать</option>
           <option value={"?ordering=count"}>Количество</option>

@@ -55,8 +55,9 @@ const PriceManageItem = ({
             className="mr-[15px] lg:ml-[17px] cursor-pointer"
             onClick={editClickHandler}
             src={pencilIcon}
+            alt="pencil"
           />
-          <img height={27} className="cursor-pointer" onClick={handleDelete} src={trashIcon} />
+          <img height={27} className="cursor-pointer" onClick={handleDelete} src={trashIcon} alt="trash" />
         </div>
       </div>
 
@@ -80,7 +81,7 @@ const PriceManageItem = ({
         </div>
         <div className={`${module.materialInfoContainer} flex flex-col`}>
           <span className={`${module.titleInfo} mb-[5px]`}>За пог. метр:</span>
-          {ranges.map((el) => (
+          {ranges.sort((a, b) => a.start - b.start).map((el) => (
             <div key={el.id}>
               <span className={`${module.fieldDesc}`}>
                 От {el.start} до {el.stop}м:{" "}
