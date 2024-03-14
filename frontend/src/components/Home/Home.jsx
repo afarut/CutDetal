@@ -27,9 +27,8 @@ const Home = () => {
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([])
   const [orders, setOrders] = useState([])
-  const [detailsIds, setDetailsIds] = useState([])    
-
-  console.log(quantityValues)
+  const [detailsIds, setDetailsIds] = useState([])   
+  const [items, setItems] = useState([]); 
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -60,14 +59,43 @@ const Home = () => {
     setIsIndividual(event.target.id === "Физическое лицо");
   };
 
-  const handleSubmit = (event) => {
+  const sendDataToServer = async () => {
+    setFormLoading(true);
+  
+    try {
+      let detailsDataUpdate = [] 
+      for (let index = 0; index < data.length; index++) {
+        const item = {
+          detail_id: data[index].id,
+          material_id: materialValues[data[index].id],
+          count: quantityValues[data[index].id],
+          price: items[data[index].id],
+        };
+        detailsDataUpdate.push(item)
+      }
+      const dataUpdate = {
+        username: name,
+        email: email,
+        phone_number: phoneNumber,
+        is_individual: isIndividual,
+        details: detailsDataUpdate
+      }
+      await axios.post("/dxf/confirm/", dataUpdate);
+      
+      setFormLoading(false);
+      setFormUpload(true);
+      
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      setFormLoading(false);
+    }
+  };
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setPlacingOrder(false);
-    setFormLoading(true);
-    ///тут запрос к бд
-    //если вернуло статус ок, то
-    setFormLoading(false);
-    setFormUpload(true);
+  
+    await sendDataToServer();
   };
 
   useEffect(() => {
@@ -120,7 +148,6 @@ const Home = () => {
       setFiles(convertedFiles);
 
       for (let i = 0; i < convertedFiles.length; i++) {
-        console.log(acceptedFiles[i].name)
         await axios
           .post(
             "/dxf/",
@@ -128,8 +155,16 @@ const Home = () => {
           )
           .then((response) => {
             setData(prevData => [...prevData, response.data]);
-            setQuantityValues(prevData => [...prevData, 1])
-            setMaterialValues(prevData => [...prevData, materials[0].id])
+            setQuantityValues(prevData => {
+              const newData = [...prevData];
+              newData[response.data.id] = 1;
+              return newData;
+          });
+          setMaterialValues(prevData => {
+            const newData = [...prevData];
+            newData[response.data.id] = materials[0].id;
+            return newData;
+        });
           })
           .catch((error) => {
             console.error(error.message);
@@ -175,15 +210,20 @@ const Home = () => {
     setCalculate(true);
   };
 
-  const handleItemRemove = (index) => {
-    const newData = [...data];
-    newData.splice(index, 1);
+  const handleItemRemove = (id) => {
+    const newData = [];
+    for (let i=0; i<data.length; i++){
+      if (data[i].id !== id){
+        newData.push(data[i])
+      }
+    }
     setData(newData);
 
     const newMaterialValues = [...materialValues];
+
     const newQuantityValues = [...quantityValues];
-    newMaterialValues.splice(index, 1);
-    newQuantityValues.splice(index, 1);
+    newMaterialValues.splice(id, 1);
+    newQuantityValues.splice(id, 1);
 
     setMaterialValues(newMaterialValues);
     setQuantityValues(newQuantityValues);
@@ -214,6 +254,8 @@ const Home = () => {
         handleItemRemove={handleItemRemove}
         setOrders={setOrders}
         files={files}
+        setItems={setItems}
+        items={items}
         /> : "" }
       {placingOrder ? <PlacingOrder 
         name={name} 

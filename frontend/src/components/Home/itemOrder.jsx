@@ -2,7 +2,6 @@ import trash from "../../images/trash.svg";
 import queshion from "../../images/queshion.svg";
 import module from "./home.module.css";
 import { useState, useEffect, useRef } from "react";
-import PopupSvg from "../Monitoring/PopupSvg";
 
 const ItemOrder = ({
   item,
@@ -12,10 +11,7 @@ const ItemOrder = ({
   quantityValues,
   handleQuantityChange,
   handleItemRemove,
-  index,
-  items,
   setItems,
-  isPopupOpen,
   setIsPopupOpen,
   setImageInfo
 }) => {
@@ -26,9 +22,11 @@ const ItemOrder = ({
   const imgRef = useRef(null);
 
   const handleIsPopupOpen = () => {
-    setImageInfo({image: item.image, 
-                  width: getSVGWidth(item.image),
-                  height: getSVGHeight(item.image)})
+    setImageInfo({
+      image: item.image,
+      width: getSVGWidth(item.image),
+      height: getSVGHeight(item.image)
+    })
     setIsPopupOpen(true)
   }
 
@@ -53,7 +51,7 @@ const ItemOrder = ({
     const priceDetail = getPriceDetailByCount();
     setItems((prevItems) => {
       const updatedItems = [...prevItems];
-      updatedItems[index] = priceDetail;
+      updatedItems[item.id] = priceDetail;
       return updatedItems;
     });
   }, [quantityValues, materialValues]);
@@ -77,7 +75,7 @@ const ItemOrder = ({
     const Y = item.size_y;
     const length = item.total_length;
     const material = materials.find(
-      (el) => el.id == parseInt(materialValues[index])
+      (el) => el.id == parseInt(materialValues[item.id])
     );
     const ranges = material?.ranges;
 
@@ -100,7 +98,7 @@ const ItemOrder = ({
         TotalSumOneDetal: Math.ceil(
           (((X * Y) / 1000000) * material.price_by_square_meter * sum +
             (length / 1000) * sum * ranges[i].price) /
-            sum
+          sum
         ),
       };
       diap.push(doc);
@@ -111,10 +109,10 @@ const ItemOrder = ({
 
   useEffect(() => {
     getResult();
-  }, [materialValues, index]);
+  }, [materialValues]);
 
   const getPriceOneDetailByCount = () => {
-    const count = quantityValues[index];
+    const count = quantityValues[item.id];
     for (let i = 0; i < diapazon.length - 1; i++) {
       if (diapazon[i].countList <= count && diapazon[i + 1].countList > count) {
         return diapazon[i].TotalSumOneDetal;
@@ -124,7 +122,7 @@ const ItemOrder = ({
   };
 
   const getPriceDetailByCount = () => {
-    const count = quantityValues[index];
+    const count = quantityValues[item.id];
 
     for (let i = 0; i < diapazon.length - 1; i++) {
       if (diapazon[i].countList <= count && diapazon[i + 1].countList > count) {
@@ -133,7 +131,6 @@ const ItemOrder = ({
     }
     return diapazon[diapazon.length - 1]?.TotalSumOneDetal * count;
   };
-  console.log(getPriceDetailByCount());
   const hintOn = () => {
     setOnQuestion(!onQuestion);
   };
@@ -170,8 +167,8 @@ const ItemOrder = ({
             name="material"
             id="material"
             className="w-[165px] h-[30px]"
-            value={materialValues[index]}
-            onChange={(e) => handleMaterialChange(index, e.target.value)}
+            value={materialValues[item.id]}
+            onChange={(e) => handleMaterialChange(item.id, e.target.value)}
           >
             <option value="0" hidden>
               Выберите
@@ -189,8 +186,8 @@ const ItemOrder = ({
             type="text"
             className="w-[165px] h-[30px]"
             placeholder="Введите число"
-            value={quantityValues[index]}
-            onChange={(e) => handleQuantityChange(index, e.target.value)}
+            value={quantityValues[item.id]}
+            onChange={(e) => handleQuantityChange(item.id, e.target.value)}
           />
           <span
             className={`${module.spanPriceItem} flex items-center relative`}
@@ -226,7 +223,7 @@ const ItemOrder = ({
           src={trash}
           alt="trash"
           className="cursor-pointer"
-          onClick={() => handleItemRemove(index)}
+          onClick={() => handleItemRemove(item.id)}
         />
       </div>
     </div>
