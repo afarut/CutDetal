@@ -80,6 +80,7 @@ const Home = () => {
         is_individual: isIndividual,
         details: detailsDataUpdate
       }
+  
       await axios.post("/dxf/confirm/", dataUpdate);
       
       setFormLoading(false);

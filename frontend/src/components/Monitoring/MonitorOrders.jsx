@@ -3,6 +3,7 @@ import LoadingProcess from "../Home/loadingProcess.jsx";
 import MonitoringOrdersItem from "./MonitoringOrdersItem";
 
 const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentPage }) => {
+
   return (
     <div>
       {isLoading ? (
@@ -24,7 +25,7 @@ const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentP
               customerName={el.order.username}
               phoneNumber={el.order.phone_number}
               email={el.order.email}
-              typeOfClient={el.is_individual === 1 ? "физ.лицо" : "юр.лицо"}
+              typeOfClient={el.order.is_individual === true ? "физ.лицо" : "юр.лицо"}
               orderId={el.order.id}
               key={index}
             />
