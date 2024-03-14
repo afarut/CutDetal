@@ -92,13 +92,13 @@ const PlacingOrder = ({ name, handleNameChange, phoneNumber, handlePhoneNumberCh
               </div>
               <div className={`flex gap-[8px] mt-[20px] ${module.buttonPlacing}`}>
                 <div
-                  className={`w-1/2 ${module.buttonsOrderRow1}`}
+                  className={`lg:!w-1/2 w-full ${module.buttonsOrderRow1} cursor-pointer`}
                   onClick={goPrevPlacingOrder}
                 >
                   Вернуться к файлам
                 </div>
                 <button
-                  className={`w-1/2 ${module.buttonsOrderRow2}`}
+                  className={`lg:!w-1/2 w-full ${module.buttonsOrderRow2} cursor-pointer`}
                   onClick={handleSubmit}
                   disabled={requiredTrue}
                 >

@@ -145,6 +145,7 @@ const ItemOrder = ({
           <div className="flex w-full justify-center items-center h-full">
             <div className="flex justify-center w-full items-center relative">
               <svg
+              className="cursor-pointer"
               height={190}
                 onClick={handleIsPopupOpen}
                 viewBox={`0 0 ${getSVGWidth(item.image)} ${getSVGHeight(
@@ -198,7 +199,7 @@ const ItemOrder = ({
               ref={imgRef}
               src={queshion}
               alt="queshion"
-              className="ml-[4px] w-[12px] h-[12px] flex items-center"
+              className="ml-[4px] cursor-pointer w-[12px] h-[12px] flex items-center"
               onClick={hintOn}
             />
             {onQuestion && (
