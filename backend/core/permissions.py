@@ -15,7 +15,7 @@ class EditOnly(BasePermission):
 
 class IsAuthAndSuperAdminOnly(BasePermission):
     def has_permission(self, request, view):
-        return request.is_authenticated and request.user.is_superuser
+        return request.user.is_authenticated and request.user.is_superuser
 
 
 class ReadOnly(BasePermission):
