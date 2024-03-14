@@ -41,10 +41,10 @@ const MonitoringOrdersItem = ({
       <div
         className={`flex-col lg:flex-row flex justify-between lg:items-start py-[15px] lg:py-[20px]`}
       >
-        <div className="lg:w-1/3 lg:flex lg:justify-center">
+        <div className="lg:w-1/3 lg:mr-8 flex lg:flex lg:justify-center">
           <svg
             onClick={() => setIsClosePopup(true)}
-            className="cursor-pointer"
+            className="cursor-pointer lg:max-w-full"
             height="190"
             viewBox={`0 0 ${getSVGWidth(image)} ${getSVGHeight(image)}`}
             dangerouslySetInnerHTML={{ __html: image }}
