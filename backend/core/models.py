@@ -27,7 +27,7 @@ class Order(models.Model):
     phone_number = models.CharField(max_length=20)
     status = models.PositiveSmallIntegerField(choices=VERBOSE_STATUS_TYPE, default=0)
     is_individual = models.BooleanField(null=True, blank=True)
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.username}:{self.date}"
@@ -43,7 +43,7 @@ class Detail(models.Model):
     length = models.FloatField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="details")
     count = models.PositiveIntegerField(null=True, blank=True)
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     price = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
