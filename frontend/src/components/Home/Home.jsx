@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { convertBase64 } from "../../utils/convertBase64";
-import axios from '../../axios.js'
+import axios from "../../axios.js";
 import LoadingFiles from "./loadingFiles.jsx";
 import Calculate from "./calculate.jsx";
 import PlacingOrder from "./placingOrder.jsx";
@@ -23,19 +23,21 @@ const Home = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
   const [materialValues, setMaterialValues] = useState([]);
-  const [materials, setMaterials] = useState([])
+  const [materials, setMaterials] = useState([]);
   const [quantityValues, setQuantityValues] = useState([]);
-  const [data, setData] = useState([])
-  const [orders, setOrders] = useState([])
-  const [detailsIds, setDetailsIds] = useState([])   
-  const [items, setItems] = useState([]); 
+  const [data, setData] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [detailsIds, setDetailsIds] = useState([]);
+  const [items, setItems] = useState([]);
+  const [maxFileSize, setMaxFileSize] = useState(1000);
+
+  console.log(maxFileSize);
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
     newMaterialValues[index] = value;
     setMaterialValues(newMaterialValues);
   };
-
 
   const handleQuantityChange = (index, value) => {
     const newQuantityValues = [...quantityValues];
@@ -61,9 +63,9 @@ const Home = () => {
 
   const sendDataToServer = async () => {
     setFormLoading(true);
-  
+
     try {
-      let detailsDataUpdate = [] 
+      let detailsDataUpdate = [];
       for (let index = 0; index < data.length; index++) {
         const item = {
           detail_id: data[index].id,
@@ -71,45 +73,55 @@ const Home = () => {
           count: quantityValues[data[index].id],
           price: items[data[index].id],
         };
-        detailsDataUpdate.push(item)
+        detailsDataUpdate.push(item);
       }
       const dataUpdate = {
         username: name,
         email: email,
         phone_number: phoneNumber,
         is_individual: isIndividual,
-        details: detailsDataUpdate
-      }
-  
+        details: detailsDataUpdate,
+      };
+
       await axios.post("/dxf/confirm/", dataUpdate);
-      
+
       setFormLoading(false);
       setFormUpload(true);
-      
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       setFormLoading(false);
     }
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setPlacingOrder(false);
-  
+
     await sendDataToServer();
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/material/');
-        setMaterials(response.data)
+        const response = await axios.get("/material/");
+        setMaterials(response.data);
       } catch (error) {
-        console.error('Ошибка при получении данных:', error);
+        console.error("Ошибка при получении данных:", error);
       }
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/get/size")
+      .then((response) => {
+        setMaxFileSize(response.data.size)
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   }, []);
 
   const onDrop = async (acceptedFiles) => {
@@ -138,8 +150,8 @@ const Home = () => {
 
     const formData = new FormData();
 
-    acceptedFiles.forEach(file => {
-      formData.append('files', file);
+    acceptedFiles.forEach((file) => {
+      formData.append("files", file);
     });
 
     try {
@@ -150,22 +162,25 @@ const Home = () => {
 
       for (let i = 0; i < convertedFiles.length; i++) {
         await axios
-          .post(
-            "/dxf/",
-            { base64file: convertedFiles[i].replace("data:application/octet-stream;base64,", ''), namefile: acceptedFiles[i].name },
-          )
+          .post("/dxf/", {
+            base64file: convertedFiles[i].replace(
+              "data:application/octet-stream;base64,",
+              ""
+            ),
+            namefile: acceptedFiles[i].name,
+          })
           .then((response) => {
-            setData(prevData => [...prevData, response.data]);
-            setQuantityValues(prevData => {
+            setData((prevData) => [...prevData, response.data]);
+            setQuantityValues((prevData) => {
               const newData = [...prevData];
               newData[response.data.id] = 1;
               return newData;
-          });
-          setMaterialValues(prevData => {
-            const newData = [...prevData];
-            newData[response.data.id] = materials[0].id;
-            return newData;
-        });
+            });
+            setMaterialValues((prevData) => {
+              const newData = [...prevData];
+              newData[response.data.id] = materials[0].id;
+              return newData;
+            });
           })
           .catch((error) => {
             console.error(error.message);
@@ -181,6 +196,7 @@ const Home = () => {
     onDrop,
     accept: [".dxf", ".DXF"],
     multiple: true,
+    maxSize: maxFileSize * 1000,
   });
 
   const windowClose = (event) => {
@@ -192,7 +208,7 @@ const Home = () => {
     setFiles([]);
     setFormUpload(false);
     setCalculate(false);
-    setData([])
+    setData([]);
   };
 
   const goCalc = () => {
@@ -213,9 +229,9 @@ const Home = () => {
 
   const handleItemRemove = (id) => {
     const newData = [];
-    for (let i=0; i<data.length; i++){
-      if (data[i].id !== id){
-        newData.push(data[i])
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].id !== id) {
+        newData.push(data[i]);
       }
     }
     setData(newData);
@@ -230,47 +246,63 @@ const Home = () => {
     setQuantityValues(newQuantityValues);
 
     if (newData.length === 0) {
-        windowClose();
+      windowClose();
     }
-};
+  };
 
   return (
     <div className="">
-      {visibleError ? <VisibleError /> : "" }
-      {loading ? <LoadingFiles uploading={uploading} goCalc={goCalc} windowClose={windowClose} /> : ""}
-      {formLoading ? <formLoading /> : "" }
-      {formUpload ? <FormUpload windowClose={windowClose}/> : "" }
-      {calculate ? <Calculate 
-        setDetailsIds = {setDetailsIds}
-        detailsIds = {detailsIds}
-        goPlacingOrder = {goPlacingOrder}
-        windowClose = {windowClose} 
-        data = {data}
-        setData = {setData}
-        materialValues = {materialValues}
-        handleMaterialChange = {handleMaterialChange} 
-        materials = {materials} 
-        quantityValues = {quantityValues} 
-        handleQuantityChange = {handleQuantityChange}
-        handleItemRemove={handleItemRemove}
-        setOrders={setOrders}
-        files={files}
-        setItems={setItems}
-        items={items}
-        /> : "" }
-      {placingOrder ? <PlacingOrder 
-        name={name} 
-        handleNameChange = {handleNameChange} 
-        phoneNumber = {phoneNumber}
-        handlePhoneNumberChange = {handlePhoneNumberChange}
-        email = {email}
-        handleEmailChange = {handleEmailChange}
-        isIndividual = {isIndividual}
-        handleTypeChange = {handleTypeChange}
-        goPrevPlacingOrder = {goPrevPlacingOrder}
-        handleSubmit = {handleSubmit}
-      /> : "" }
-      <LandingPage getRootProps={getRootProps} getInputProps={getInputProps}/>
+      {visibleError ? <VisibleError /> : ""}
+      {loading ? (
+        <LoadingFiles
+          uploading={uploading}
+          goCalc={goCalc}
+          windowClose={windowClose}
+        />
+      ) : (
+        ""
+      )}
+      {formLoading ? <formLoading /> : ""}
+      {formUpload ? <FormUpload windowClose={windowClose} /> : ""}
+      {calculate ? (
+        <Calculate
+          setDetailsIds={setDetailsIds}
+          detailsIds={detailsIds}
+          goPlacingOrder={goPlacingOrder}
+          windowClose={windowClose}
+          data={data}
+          setData={setData}
+          materialValues={materialValues}
+          handleMaterialChange={handleMaterialChange}
+          materials={materials}
+          quantityValues={quantityValues}
+          handleQuantityChange={handleQuantityChange}
+          handleItemRemove={handleItemRemove}
+          setOrders={setOrders}
+          files={files}
+          setItems={setItems}
+          items={items}
+        />
+      ) : (
+        ""
+      )}
+      {placingOrder ? (
+        <PlacingOrder
+          name={name}
+          handleNameChange={handleNameChange}
+          phoneNumber={phoneNumber}
+          handlePhoneNumberChange={handlePhoneNumberChange}
+          email={email}
+          handleEmailChange={handleEmailChange}
+          isIndividual={isIndividual}
+          handleTypeChange={handleTypeChange}
+          goPrevPlacingOrder={goPrevPlacingOrder}
+          handleSubmit={handleSubmit}
+        />
+      ) : (
+        ""
+      )}
+      <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
     </div>
   );
 };
