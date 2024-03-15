@@ -133,6 +133,7 @@ const Monitoring = () => {
       </div>
 
       <MonitoringFilter
+      isCalculationsChosen={isCalculationsChosen}
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
