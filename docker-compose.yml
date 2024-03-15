@@ -22,7 +22,7 @@ services:
     depends_on:
       - react
     volumes:
-      - backend_media:/backend/media
+      - ./backend/media:/backend/media
       - ./backend/staticfiles:/backend/staticfiles
     env_file:
       - '.env'
@@ -42,6 +42,6 @@ services:
 
 volumes:
   postgres_data:
-  backend_media:
+  media:
   staticfiles:
   node_modules:
