@@ -17,7 +17,9 @@ const MonitoringOrdersItem = ({
   email,
   typeOfClient,
   nameOfFile,
-  orderId
+  orderId,
+  width,
+  height
 }) => {
   const [isPopupOpen, setIsClosePopup] = useState(false);
 
@@ -59,8 +61,8 @@ const MonitoringOrdersItem = ({
             <span className={`${module.titles}`}>Данные расчёта</span>
           </div>
           <div>
-            <span className="font-semibold">Дата расчёта: </span>
-            <span className="text-[16px] lg:text-[21px]">{date}</span>
+            <span className="font-semibold">Размер: </span>
+            <span className="text-[16px] lg:text-[21px]">{`${width}x${height} мм`}</span>
           </div>
           <div>
             <span className="font-semibold">Имя файла: </span>
