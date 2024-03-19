@@ -12,3 +12,4 @@ class DxfConfirmForm(forms.Form):
     phone_number = forms.CharField(widget=forms.TextInput())
     is_individual = forms.NullBooleanField()
     details = SimpleArrayField(forms.JSONField(max_length=100))
+    comment = forms.CharField(widget=forms.TextInput(), required=False)

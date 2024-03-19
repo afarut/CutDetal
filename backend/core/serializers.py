@@ -31,8 +31,10 @@ class MaterialSerializer(serializers.ModelSerializer):
             "weight",
             "ranges",
             "price_by_square_meter",
+            "price_by_incut",
             )
         depth = 1
+        optional_fields = ['price_by_incut',]
         
 
 
@@ -50,8 +52,9 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             "username",
             "details",
             "date",
+            'comment',
             )
-        # depth=1
+        optional_fields = ["comment",]
 
 
 class OrderCroppedSerialazer(serializers.ModelSerializer):
@@ -64,7 +67,9 @@ class OrderCroppedSerialazer(serializers.ModelSerializer):
             "is_individual",
             "email",
             "date",
+            "comment",
             )
+        optional_fields = ["comment",]
 
 class DetailSaveSerialazer(serializers.ModelSerializer):
     svg_file = serializers.CharField()
@@ -76,6 +81,7 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
     length = serializers.FloatField()
     count = serializers.IntegerField()
     price = serializers.IntegerField()
+    incut = serializers.IntegerField()
 
     class Meta:
         model = Detail
@@ -90,7 +96,9 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
             "length",
             "count",
             "price",
+            "incut",
             )
+        optional_fields = ["incut",]
 
 
     def create(self, cd):
@@ -105,6 +113,7 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
             svg_file=cd["svg_file"],
             length=cd["length"],
             count=cd["count"],
+            incut=cd["incut"],
             price=cd["price"]
         )
 
@@ -147,6 +156,7 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
             "date",
             "price",
             "material_data",
+            "incut"
             )
         extra_kwargs = {
             #"name": {'write_only': True},
@@ -158,6 +168,7 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
             "date": {'read_only': True},
             "material_data": {'read_only': True},
         }
+        optional_fields = ["incut",]
         #depth = 1
 
 
@@ -173,12 +184,15 @@ class DetailSerializer(serializers.ModelSerializer):
             "height",
             "width",
             "name",
-            "id"
+            "id",
+            "incut"
             )
         depth = 1
+        optional_fields = ["incut",]
 
 
 class MaterialEditSerialazer(serializers.ModelSerializer):
     class Meta:
         model = Material
         fields = "__all__"
+        optional_fields = ["price_by_incut",]

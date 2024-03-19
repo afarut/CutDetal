@@ -51,7 +51,8 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
             "size_x": response.SRSizeX,
             "size_y": response.SRSizeY,
             "version": response.SRVersion,
-            "image_name": name_file
+            "image_name": name_file,
+            "incut": len(response.SRTab.SREntity)
         }
 
         return result
