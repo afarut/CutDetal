@@ -26,12 +26,12 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
         SRMin=sr_min,
         SRCorner=sr_corner,
         Login=login,
-        Password=password
+        Password=password,
+        Text=0,
     )
 
-
     try:
-        # print(f"Response: {response}")
+        
         if response.SRResult is None:
             success = True
             error_message = ''

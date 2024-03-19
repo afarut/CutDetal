@@ -27,7 +27,6 @@ from .filters import ExcludeDetailFilter, DetailFilter
 @permission_classes([])
 @csrf_exempt
 def dxf_view(request):
-
     if request.method == "POST":
         form = forms.UploadFileForm(json.loads(request.body.decode()), request.FILES)
         result = utils.calc_dxf(form.data["base64file"], form.data["namefile"])
