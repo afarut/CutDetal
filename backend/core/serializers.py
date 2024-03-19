@@ -161,7 +161,6 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
         extra_kwargs = {
             #"name": {'write_only': True},
             "length": {'write_only': True},
-            "width": {'write_only': True},
             "material": {"write_only": True},
             "date": {'read_only': True},
             "material_data": {'read_only': True},
