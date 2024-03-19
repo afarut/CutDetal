@@ -6,6 +6,7 @@ class Material(models.Model):
     name = models.CharField(max_length=30)
     weight = models.FloatField()
     price_by_square_meter = models.FloatField()
+    price_by_incut = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -28,6 +29,7 @@ class Order(models.Model):
     status = models.PositiveSmallIntegerField(choices=VERBOSE_STATUS_TYPE, default=0)
     is_individual = models.BooleanField(null=True, blank=True)
     date = models.DateTimeField(auto_now=True)
+    comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.username}:{self.date}"
@@ -45,6 +47,7 @@ class Detail(models.Model):
     count = models.PositiveIntegerField(null=True, blank=True)
     date = models.DateTimeField(auto_now=True)
     price = models.IntegerField(null=True, blank=True)
+    incut = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
