@@ -162,8 +162,6 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
             #"name": {'write_only': True},
             "length": {'write_only': True},
             "width": {'write_only': True},
-            "width": {'write_only': True},
-            "height": {'write_only': True},
             "material": {"write_only": True},
             "date": {'read_only': True},
             "material_data": {'read_only': True},
