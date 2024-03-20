@@ -15,9 +15,10 @@ const ItemOrder = ({
   setIsPopupOpen,
   setImageInfo,
   items,
-  index
 }) => {
   const [diapazon, setDiapazon] = useState([]);
+
+  console.log(item.incut, item)
 
   const [onQuestion, setOnQuestion] = useState(false);
 
@@ -99,10 +100,10 @@ const ItemOrder = ({
         PriceRezka: (length / 1000) * sum * ranges[i].price,
         TotalSumOneDetal: Math.ceil(
           (((X * Y) / 1000000) * material.price_by_square_meter * sum +
-            (length / 1000) * sum * ranges[i].price) /
+            (length / 1000) * sum * ranges[i].price + sum * item.incut * material.price_by_incut)  /
           sum
         ),
-      };
+      }; //тут нужно мне количество врезок получить (контуры)
       diap.push(doc);
     }
     diap.sort((a, b) => a.countList - b.countList);
@@ -167,14 +168,17 @@ const ItemOrder = ({
       </div>
       <div className="flex flex-col">
         <div className={module.calcItemName}>{item.image_name}</div>
+        <div className={`${module.materialInput} flex gap-[8px] my-[8px] w-full mt-[16px]`}>
+          Размер: <span className="ml-[16px] font-bold">{item.size_x}х{item.size_y} мм</span>
+        </div>
         <div
-          className={`mt-[28px] ${module.materialInput} flex items-center gap-[8px]`}
+          className={`${module.materialInput} flex items-center gap-[8px]`}
         >
           <div className="flex items-center">Материал:</div>
           <select
             name="material"
             id="material"
-            className="w-[165px] h-[30px]"
+            className="w-auto h-[30px]"
             value={materialValues[item.id]}
             onChange={(e) => handleMaterialChange(item.id, e.target.value)}
           >

@@ -19,9 +19,11 @@ const MonitoringOrdersItem = ({
   nameOfFile,
   orderId,
   width,
-  height
+  height,
+  comment
 }) => {
   const [isPopupOpen, setIsClosePopup] = useState(false);
+  const [commentOn, setCommentOn] = useState(false)
 
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
@@ -39,6 +41,7 @@ const MonitoringOrdersItem = ({
   return (
     <div
       className={`${module.listItemWrapper} px-[18px] pb-[10px] mx-[12px] lg:px-[42px] mb-[8px] lg:mb-[14px] lg:mx-[31px] relative`}
+      onClick={() => setCommentOn(!commentOn)}
     >
       <div
         className={`flex-col lg:flex-row flex justify-between lg:items-start py-[15px] lg:py-[20px]`}
@@ -53,6 +56,9 @@ const MonitoringOrdersItem = ({
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="xMinYMin meet"
           />
+        </div>
+        <div>
+          
         </div>
         <div
           className={`${module.ItemInfoWrapper} lg:w-1/3 order-3 text-[16px] lg:text-[21px] flex flex-col`}
@@ -133,6 +139,12 @@ const MonitoringOrdersItem = ({
         </div> */}
         <span className="absolute bottom-5 right-5 text-gray-500">#{orderId}</span>
       </div>
+      <div className={`w-full justify-end ${commentOn ? 'flex' : 'hidden'} `}>
+        <div className={`lg:w-2/3 lg:mr-8 flex lg:flex lg:justify-center ${module.commentWindow}`}>
+          {comment}
+        </div>
+      </div>
+      
 
       {isPopupOpen && (
         <PopupSvg
