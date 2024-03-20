@@ -11,6 +11,9 @@ const MonitorCalculations = ({
   prev,
   isLoading
 }) => {
+  console.log(data)
+
+
   return (
     <>
       {isLoading ? <div className="flex justify-center items-center mb-[50px]"><LoadingProcess /></div> : <div>
@@ -19,6 +22,8 @@ const MonitorCalculations = ({
         image={el.svg_file}
         fileName={el.dxf_file}
         date={el.date}
+        width={el.width}
+        height={el.height}
         name={el.name}
         key={el.id}
       />

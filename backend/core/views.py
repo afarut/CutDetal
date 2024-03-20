@@ -41,6 +41,7 @@ def dxf_view(request):
                 length = result["total_length"],
                 count = None,
                 price = None,
+                incut = result["incut"],
                 )
             return JsonResponse({
                 "id": new_detail.id,
@@ -51,6 +52,7 @@ def dxf_view(request):
                 "size_y": result["size_y"],
                 "version": result["version"],
                 "image_name": result["image_name"],
+                "incut": result["incut"],
             })
         else:
             return JsonResponse({

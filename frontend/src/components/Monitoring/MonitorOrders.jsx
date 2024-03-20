@@ -4,6 +4,8 @@ import MonitoringOrdersItem from "./MonitoringOrdersItem";
 
 const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentPage }) => {
 
+  console.log(orders)
+
   return (
     <div>
       {isLoading ? (
@@ -22,6 +24,8 @@ const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentP
               nameOfFile={el.name}
               price={el.price}
               dateOfOrder={el.date}
+              width={el.width}
+              height={el.height}
               customerName={el.order.username}
               phoneNumber={el.order.phone_number}
               email={el.order.email}

@@ -8,6 +8,8 @@ const MonitoringListItem = ({
   date,
   fileName,
   name,
+  width,
+  height
 }) => {
   const [isPopupOpen, setIsClosePopup] = useState(false);
 
@@ -44,9 +46,13 @@ const MonitoringListItem = ({
         <div
           className={`${module.ItemInfoWrapper} ml-[10px] text-[16px] lg:text-[21px] flex flex-col`}
         >
-          <div className="lg:mb-[30px] mb-[15px]">
+          <div className="lg:mb-[15px] mb-[7.5px]">
             <span className="font-semibold">Дата расчёта: </span>
             <span className="text-[16px] lg:text-[21px]">{date}</span>
+          </div>
+          <div className="lg:mb-[15px] mb-[7.5px]">
+            <span className="font-semibold">Размер: </span>
+            <span className="text-[16px] lg:text-[21px]">{`${width}x${height} мм`}</span>
           </div>
           <div>
             <span className="font-semibold">Имя файла: </span>
@@ -57,6 +63,7 @@ const MonitoringListItem = ({
               {name}
             </a>
           </div>
+          
           {/* <div>
             <span className="font-semibold">Материал: </span>
             <span className="text-[16px] lg:text-[21px]">{material}</span>
