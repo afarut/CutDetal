@@ -30,8 +30,7 @@ const Home = () => {
   const [detailsIds, setDetailsIds] = useState([]);
   const [items, setItems] = useState([]);
   const [maxFileSize, setMaxFileSize] = useState(1000);
-
-  console.log(maxFileSize);
+  const [comment, setComment] = useState('')
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -57,11 +56,15 @@ const Home = () => {
     setEmail(event.target.value);
   };
 
+  const handleCommentChange = (event) => {
+    setComment(event.target.value)
+  }
+
   const handleTypeChange = (event) => {
     setIsIndividual(event.target.id === "Физическое лицо");
   };
 
-  const sendDataToServer = async () => {
+  const sendDataToServer = () => {
     setFormLoading(true);
 
     try {
@@ -81,23 +84,26 @@ const Home = () => {
         phone_number: phoneNumber,
         is_individual: isIndividual,
         details: detailsDataUpdate,
+        comment: comment
       };
 
-      await axios.post("/dxf/confirm/", dataUpdate);
+      axios.post("/dxf/confirm/", dataUpdate)
+      .then(
+        setFormLoading(false)
+      )
 
-      setFormLoading(false);
-      setFormUpload(true);
+
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       setFormLoading(false);
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     setPlacingOrder(false);
 
-    await sendDataToServer();
+    sendDataToServer();
   };
 
   useEffect(() => {
@@ -298,6 +304,8 @@ const Home = () => {
           handleTypeChange={handleTypeChange}
           goPrevPlacingOrder={goPrevPlacingOrder}
           handleSubmit={handleSubmit}
+          comment={comment}
+          handleCommentChange ={handleCommentChange}
         />
       ) : (
         ""

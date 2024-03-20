@@ -6,7 +6,7 @@ const UploadingFalse = () => {
         <div className={`flex flex-col items-center gap-[48px] justify-center h-full ${module.divGap}`}>
             <LoadingProcess/>
             <div className={module.processWindowText}>
-                Files in process...
+                Обработка чертежей...
             </div>
         </div>
     );

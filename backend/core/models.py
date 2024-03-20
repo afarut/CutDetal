@@ -3,7 +3,7 @@ from .constants import VERBOSE_STATUS_TYPE
 
 
 class Material(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=100)
     weight = models.FloatField()
     price_by_square_meter = models.FloatField()
     price_by_incut = models.PositiveIntegerField(default=0)

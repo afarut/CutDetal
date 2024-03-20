@@ -9,7 +9,7 @@ const UploadingTrue = ({goCalc, windowClose}) => {
                 <img className={module.loadPopupOkey} src={okey} alt="okey" />
             </div>
             <div className={module.processWindowText}>
-                Files are ready!
+                Чертежи обработаны!
             </div>
             <div className={module.buttonOkey} onClick={goCalc}>
                 К расчету

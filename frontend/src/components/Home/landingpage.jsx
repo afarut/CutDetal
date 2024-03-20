@@ -83,7 +83,7 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                   alt="docIcon"
                 />
                 <div className={module.iconlabel}>
-                  Загрузите <br /> файлы DXF
+                  Выберите материал <br/> и количество
                 </div>
               </div>
               <div className={module.textlabelsblock}>
@@ -98,7 +98,7 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                   alt="docIcon"
                 />
                 <div className={module.iconlabel}>
-                  Загрузите <br /> файлы DXF
+                Отправьте детали <br/> на изготовление
                 </div>
               </div>
               <div className={module.textlabelsblock}>

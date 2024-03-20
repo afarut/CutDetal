@@ -357,8 +357,27 @@
     line-height: 22px;
     letter-spacing: 0%;
     text-align: left;
+    resize: none;
     @apply px-[11px] py-[7px]
 }
+
+.inputDivPOrder textarea{
+    box-sizing: border-box;
+    border: 1.21px solid rgb(10, 43, 163);
+    border-radius: 9.69px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 17.94px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: left;
+    resize: none;
+    height: 90px !important;
+    @apply px-[11px] py-[7px]
+}
+
 .buttonsOrderRow1{
     color: rgb(55, 46, 153);
     font-family: Montserrat;

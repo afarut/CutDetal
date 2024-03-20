@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import module from "./home.module.css"
 
-const PlacingOrder = ({ name, handleNameChange, phoneNumber, handlePhoneNumberChange, email, handleEmailChange, isIndividual, handleTypeChange, goPrevPlacingOrder, handleSubmit }) => {
+const PlacingOrder = ({ name, handleNameChange, phoneNumber, handlePhoneNumberChange, email, handleEmailChange, isIndividual, handleTypeChange, goPrevPlacingOrder, handleSubmit, comment, handleCommentChange }) => {
   const [requiredTrue, setRequiredTrue] = useState(true)
   useEffect(() => {
     if (name !== "" && phoneNumber !== "" && email !== "") {
@@ -56,6 +56,7 @@ const PlacingOrder = ({ name, handleNameChange, phoneNumber, handlePhoneNumberCh
                     onChange={handleEmailChange}
                   />
                 </div>
+                
                 <div
                   className={`flex flex-col gap-[8px] ${module.inputDivPOrder}`}
                 >
@@ -88,6 +89,19 @@ const PlacingOrder = ({ name, handleNameChange, phoneNumber, handlePhoneNumberCh
                       Юридическое лицо
                     </label>
                   </div>
+                </div>
+                <div
+                  className={`flex flex-col gap-[8px] ${module.inputDivPOrder}`}
+                >
+                  <label htmlFor="comment">Комментарий</label>
+                  <textarea
+                    type="text"
+                    id="comment"
+                    placeholder="Оставьте комментарий"
+                    maxLength={210}
+                    value={comment}
+                    onChange={handleCommentChange}
+                  />
                 </div>
               </div>
               <div className={`flex gap-[8px] mt-[20px] ${module.buttonPlacing}`}>

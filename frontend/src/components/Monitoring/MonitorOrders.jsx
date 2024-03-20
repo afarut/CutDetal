@@ -27,6 +27,7 @@ const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentP
               email={el.order.email}
               typeOfClient={el.order.is_individual === true ? "физ.лицо" : "юр.лицо"}
               orderId={el.order.id}
+              comment={el.order.comment}
               key={index}
             />
           ))}
