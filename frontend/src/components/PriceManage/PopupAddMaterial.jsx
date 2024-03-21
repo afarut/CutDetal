@@ -11,6 +11,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
   const [till, setTill] = useState("");
   const [price, setPrice] = useState("");
   const [error, showError] = useState(false)
+  const [incutPrice, setIncutPrice] = useState(0)
   const [showErrorPrice, setShowErrorPrice] = useState(false)
 
   const [ranges, setRanges] = useState([]);
@@ -81,6 +82,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
         name: materialName,
         weight: weightPerSquareMeter,
         price_by_square_meter: pricePerSquareMeter,
+        price_by_incut: incutPrice
       },
       {
         headers: {
@@ -130,16 +132,16 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
     >
       <div
         ref={popupRef}
-        className={`bg-white lg:w-[600px] w-[334px] py-[13px] lg:px-[25px] px-[13px] rounded-[30px]`}
+        className={`bg-white lg:w-[700px] w-[430px] py-[13px] lg:px-[25px] px-[13px] rounded-[30px]`}
       >
         <span className={`${module.addMaterialTitle}`}>
           Добавление материала
         </span>
-        <div className={`${module.addMaterialFormWrapper} flex flex-col`}>
-          <div className={`${module.singleInput}`}>
-            <label htmlFor="materialName">Название: </label>
+        <div className={`${module.addMaterialFormWrapper} flex flex-col max-md:!text-[16px] max-md:!leading-5`}>
+          <div className={`${module.singleInput} flex`}>
+            <label className="w-1/3" htmlFor="materialName">Название: </label>
             <input
-              className="lg:w-[400px] w-[170px]"
+              className="w-2/3 max-md:!py-[4px]"
               type="text"
               id="materialName"
               value={materialName}
@@ -147,10 +149,10 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
               placeholder="Название"
             />
           </div>
-          <div className={`${module.singleInput}`}>
-            <label htmlFor="pricePerSquareMeter">Цена за м&#178;: </label>
+          <div className={`${module.singleInput} flex`}>
+            <label className="w-1/3" htmlFor="pricePerSquareMeter">Цена за м&#178;: </label>
             <input
-              className="lg:w-[400px]"
+              className="w-2/3 max-md:!py-[4px]"
               type="number"
               id="pricePerSquareMeter"
               value={pricePerSquareMeter}
@@ -158,15 +160,27 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
               placeholder="Введите цену"
             />
           </div>
-          <div className={`${module.singleInput}`}>
-            <label htmlFor="weightPerSquareMeter">Вес за м&#178;: </label>
+          <div className={`${module.singleInput} flex`}>
+            <label className="w-1/3" htmlFor="weightPerSquareMeter">Вес за м&#178;: </label>
 
             <input
-              className="lg:w-[400px]"
+              className="flex w-2/3 max-md:!py-[4px]"
               type="number"
               id="weightPerSquareMeter"
               value={weightPerSquareMeter}
               onChange={(e) => setWeightPerSquareMeter(e.target.value)}
+              placeholder="Введите число"
+            />
+          </div>
+          <div className={`${module.singleInput} flex`}>
+            <label className="w-1/3" htmlFor="incutPrice">Цена за врезку: </label>
+
+            <input
+              className="w-2/3 max-md:!py-[4px]"
+              type="number"
+              id="incutPrice"
+              value={incutPrice}
+              onChange={(e) => setIncutPrice(e.target.value)}
               placeholder="Введите число"
             />
           </div>
@@ -181,7 +195,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
           <div className="mb-[8px]">
             <label htmlFor="from">От: </label>
             <input
-            className={`${error ? 'border !border-red-500': ''}`}
+            className={`${error ? 'border !border-red-500': ''} max-md:!py-[4px]`}
               type="number"
               id="from"
               value={from}
@@ -192,7 +206,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
           <div className="mb-[8px]">
             <label htmlFor="till">До: </label>
             <input
-            className={`${error ? 'border !border-red-500': ''}`}
+            className={`${error ? 'border !border-red-500': ''} max-md:!py-[4px]`}
               type="number"
               id="till"
               value={till}
@@ -203,7 +217,7 @@ const PopupAddMaterial = ({ setPopupAddMaterialVisible }) => {
           <div className="mb-[8px]">
             <label htmlFor="price">Цена: </label>
             <input
-            className={`${showErrorPrice ? 'border !border-red-500': ''}`}
+            className={`${showErrorPrice ? 'border !border-red-500': ''} max-md:!py-[4px]`}
               type="number"
               id="price"
               value={price}
