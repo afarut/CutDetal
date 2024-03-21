@@ -106,8 +106,6 @@ def dxf_confirm(request):
             # Process details
             for detail in details:
                 # Assuming each detail is a dictionary with required keys
-                name = detail.get("name")
-                dxf_file = detail.get("dxf_file")
                 detail_id = detail.get("detail_id")
                 material_id = detail.get("material_id")
                 price = detail.get("price")
