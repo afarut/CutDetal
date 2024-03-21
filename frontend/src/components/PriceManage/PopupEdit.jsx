@@ -14,6 +14,7 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
   const [rangePrices, setRangePrices] = useState(
     material.ranges.map((range) => range.price)
   );
+  const [incutPrice, setIncutPrice] = useState(material.price_by_incut);
 
   const popupRef = useRef(null);
 
@@ -46,15 +47,16 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
       .split("; ")
       .find((row) => row.startsWith("_auth="))
       .split("=")[1];
-  
+
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const materialResponse = await axios.put(
         `/material/${material.id}/`,
         {
           name: material.name,
           weight: weight,
           price_by_square_meter: squaredMeterPrice,
+          price_by_incut: incutPrice,
         },
         {
           headers: {
@@ -62,7 +64,7 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
           },
         }
       );
-  
+
       const rangeRequests = material.ranges.map((range, index) => {
         const rangeId = range.id;
         return axios.put(
@@ -80,15 +82,14 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
           }
         );
       });
-  
+
       await Promise.all(rangeRequests);
-      setIsLoading(false)
+      setIsLoading(false);
       setPopupVisible(false);
     } catch (error) {
       console.error(error.message);
     }
   };
-  
 
   return (
     <div className="px-8 lg:px-12 fixed flex justify-center items-center inset-0 bg-gray-800 bg-opacity-60 z-50">
@@ -135,6 +136,17 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
                   onChange={(e) => setWeight(e.target.value)}
                 />
               </div>
+
+              <span className={`${module.titleInfo} mb-[5px] mr-[4px]`}>
+                Цена врезки:
+              </span>
+              <div>
+                <input
+                  id="incutPrice"
+                  value={incutPrice}
+                  onChange={(e) => setIncutPrice(e.target.value)}
+                />
+              </div>
             </div>
             <div className={`${module.materialInfoContainer} flex flex-col`}>
               <span className={`${module.titleInfo} mb-[5px]`}>
@@ -161,7 +173,9 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
               <button>Отмена</button>
             </div>
             <div
-              className={`${isLoading ? module.closeButtonActive : module.closeButton} mt-[8px] lg:mt-[0] flex justify-center items-center lg:ml-[13px] w-full lg:w-fit px-[50px] py-[10px]`}
+              className={`${
+                isLoading ? module.closeButtonActive : module.closeButton
+              } mt-[8px] lg:mt-[0] flex justify-center items-center lg:ml-[13px] w-full lg:w-fit px-[50px] py-[10px]`}
             >
               <button type="submit">Сохранить</button>
             </div>
