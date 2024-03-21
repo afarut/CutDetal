@@ -8,6 +8,8 @@ import PlacingOrder from "./placingOrder.jsx";
 import VisibleError from "./visibleError.jsx";
 import FormUpload from "./formupload.jsx";
 import LandingPage from "./landingpage.jsx";
+import ErrorPopup from "./errorPopup.jsx";
+import VisibleSizeError from "./VisibleSizeError.jsx";
 
 const Home = () => {
   const [files, setFiles] = useState([]);
@@ -22,7 +24,7 @@ const Home = () => {
   const [isIndividual, setIsIndividual] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
-  const [materialValues, setMaterialValues] = useState([]);
+  const [materialValues, setMaterialValues] = useState([]); 
   const [materials, setMaterials] = useState([]);
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([]);
@@ -30,7 +32,10 @@ const Home = () => {
   const [detailsIds, setDetailsIds] = useState([]);
   const [items, setItems] = useState([]);
   const [maxFileSize, setMaxFileSize] = useState(1000);
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState('');
+  const [errorServer, setErrorServer] = useState(false)
+  const [errorSize, setErrorSize] = useState(false)
+  const [fileName, setFileName] = useState('')
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -88,14 +93,26 @@ const Home = () => {
       };
 
       axios.post("/dxf/confirm/", dataUpdate)
-      .then(
-        setFormLoading(false)
-      )
-
+      .then((res) => {
+        if (res.data.status !== 'success'){
+          setErrorServer(true)
+          setFormLoading(false);
+        }
+        else{
+          setFormLoading(false);
+          setFormUpload(true);
+        }
+      })
+      .catch(error => {
+        setFormLoading(false);
+        setErrorServer(true)
+        console.error("Error:", error);
+      });
 
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       setFormLoading(false);
+      setErrorServer(true)
     }
   };
 
@@ -135,7 +152,16 @@ const Home = () => {
     let error = false;
 
     acceptedFiles.forEach((file) => {
-      if (!file.name.toLowerCase().endsWith(".dxf")) {
+      if (file.size > maxFileSize * 1000) {
+        setFileName(file.name)
+        setErrorSize(true)
+        windowClose()
+        setTimeout(() => {
+          setErrorSize(false)
+        }, 3000);
+        return
+      }
+      if (!file.name.toLowerCase().endsWith(".dxf") ) {
         error = true;
         setVisibleError(true);
 
@@ -146,6 +172,8 @@ const Home = () => {
         return;
       }
     });
+
+
 
     if (error) {
       setLoading(false);
@@ -202,19 +230,28 @@ const Home = () => {
     onDrop,
     accept: [".dxf", ".DXF"],
     multiple: true,
-    maxSize: maxFileSize * 1000,
   });
 
   const windowClose = (event) => {
     if (event) {
       event.preventDefault();
     }
+    setMaterialValues([]);
+    setMaterials([])
+    setQuantityValues([]) 
+    setData([]) 
+    setOrders([]) 
+    setDetailsIds([]) 
+    setDetailsIds([]) 
+    setItems([]) 
+    setFiles([])
     setLoading(false);
     setUploading(false);
     setFiles([]);
     setFormUpload(false);
     setCalculate(false);
     setData([]);
+    setErrorServer(false)
   };
 
   const goCalc = () => {
@@ -258,6 +295,7 @@ const Home = () => {
 
   return (
     <div className="">
+      {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
       {visibleError ? <VisibleError /> : ""}
       {loading ? (
         <LoadingFiles
@@ -310,6 +348,9 @@ const Home = () => {
       ) : (
         ""
       )}
+      {errorServer ? (
+        <ErrorPopup windowClose={windowClose}/>
+      ) : ""}
       <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
     </div>
   );

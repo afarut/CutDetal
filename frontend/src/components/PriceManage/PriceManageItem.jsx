@@ -15,6 +15,7 @@ const PriceManageItem = ({
   setCurrentMaterial,
   isDeleting,
   setIsDeleting,
+  priseVrezka
 }) => {
   const editClickHandler = () => {
     setCurrentMaterial(material);
@@ -77,6 +78,10 @@ const PriceManageItem = ({
           <div>
             <span className={`${module.fieldDesc}`}>Вес 1м&#178;: </span>
             <span>{weigth}</span>
+          </div>
+          <div>
+            <span className={`${module.fieldDesc}`}>Цена врезки: </span>
+            <span>{priseVrezka} RUB</span>
           </div>
         </div>
         <div className={`${module.materialInfoContainer} flex flex-col`}>

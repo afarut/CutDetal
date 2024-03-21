@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="210mm" height="297mm" version="1.1" style={{ shapeRendering: 'geometricPrecision', textRendering: 'geometricPrecision', imageRendering: 'optimizeQuality', fillRule: 'evenodd', clipRule: 'evenodd' }} viewBox="0 0 21000 29700" xmlnsXlink="http://www.w3.org/1999/xlink" xmlnsXodm="http://www.corel.com/coreldraw/odm/2003">
+    <defs>
+        <style type="text/css">
+            {`.str1 {stroke:#0A2BA3;stroke-width:555.63;stroke-linejoin:round;stroke-miterlimit:22.9256}`}
+            {`.str0 {stroke:#FF0D00;stroke-width:500;stroke-linejoin:round;stroke-miterlimit:22.9256}`}
+            {`.fil0 {fill:none}`}
+        </style>
+    </defs>
+    <g id="Слой_x0020_1">
+        <metadata id="CorelCorpID_0Corel-Layer"/>
+        <line id="Vector" className="fil0 str0" x1="9444.44" y1="15941.88" x2="11547.34" y2= "13870.79" />
+        <path id="Vector_0" className="fil0 str1" d="M13033.35 14272.73c42.15,185.66 64.37,378.87 64.37,577.28 0,1434.68 -1163.03,2597.71 -2597.71,2597.71 -1434.69,0 -2597.73,-1163.03 -2597.73,-2597.71 0,-1434.69 1163.04,-2597.73 2597.73,-2597.73 303.61,0 595.05,52.08 865.91,147.81"/>
+        <line id="Vector_1" className="fil0 str0" x1="11531.43" y1="15957.79" x2="9460.34" y2= "13854.89" />
+    </g>
+</svg>
