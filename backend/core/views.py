@@ -138,7 +138,7 @@ def dxf_confirm(request):
             xml_base64file = utils.xml_to_base64(xml_file) 
             res = utils.XML_to_1C(xml_base64file)
 
-            return JsonResponse({"status": "success", "order_id": order.id})
+            return JsonResponse({"status": res, "order_id": order.id})
 
         else:
             # Return validation errors if the form is not valid
