@@ -18,8 +18,6 @@ const ItemOrder = ({
 }) => {
   const [diapazon, setDiapazon] = useState([]);
 
-  console.log(item.incut, item)
-
   const [onQuestion, setOnQuestion] = useState(false);
 
   const imgRef = useRef(null);
@@ -103,7 +101,7 @@ const ItemOrder = ({
             (length / 1000) * sum * ranges[i].price + sum * item.incut * material.price_by_incut)  /
           sum
         ),
-      }; //тут нужно мне количество врезок получить (контуры)
+      };
       diap.push(doc);
     }
     diap.sort((a, b) => a.countList - b.countList);

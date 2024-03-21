@@ -98,6 +98,7 @@ const PriceManage = () => {
           weigth={material.weight}
           ranges={material.ranges}
           priceForSquareMeter={material.price_by_square_meter}
+          priseVrezka = {material.price_by_incut}
           setPopupVisible={setPopupVisible}
           key={material.id}
           setCurrentMaterial={setCurrentMaterial}
