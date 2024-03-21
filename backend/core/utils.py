@@ -103,7 +103,6 @@ def XML_to_1C(xml_base64file, login=settings.LOGIN, password=settings.PASSWORD):
     # Создаем клиента SOAP с использованием WSDL и сессии с аутентификацией
     client = Client(wsdl=wsdl, transport=Transport(session=session))
 
-    
     response = client.service.CreateOrder(
         Order=xml_base64file,
         Login=login,
