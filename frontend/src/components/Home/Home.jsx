@@ -94,6 +94,7 @@ const Home = () => {
 
       axios.post("/dxf/confirm/", dataUpdate)
       .then((res) => {
+        console.log(res.data)
         if (res.data.status !== 'success'){
           setErrorServer(true)
           setFormLoading(false);

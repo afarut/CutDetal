@@ -93,15 +93,23 @@ def dxf_confirm(request):
                 comment=comment
             )
 
+            # массивы для XML
+            order_header = {
+                "Name": username,
+                "Phone": phone_number,
+                "Email": email,
+                "ClientType": is_individual,
+                "Comment": comment
+            }
+            calculation_table = []
+
             # Process details
             for detail in details:
-                print(type(detail))
                 # Assuming each detail is a dictionary with required keys
                 detail_id = detail.get("detail_id")
                 material_id = detail.get("material_id")
                 price = detail.get("price")
                 quantity = detail.get("count")
-
                 try:
                     material_obj = Material.objects.get(id=material_id)
                     # Retrieve the detail object from the database
@@ -112,14 +120,25 @@ def dxf_confirm(request):
                     detail_obj.price = price
                     detail_obj.count = quantity
                     detail_obj.save()
+                    calculation_table.append({"FileName": detail_obj.name,
+                                              "DXFLink": detail_obj.dxf_file, 
+                                              "MaterialName": material_obj.name, 
+                                              "Price": price, 
+                                              "Quantity": quantity})
 
                     # Associate detail with the order
                     order.details.add(detail_obj)
+
                 except Detail.DoesNotExist:
                     # Handle if detail with provided ID doesn't exist
                     pass
+                
 
-            return JsonResponse({"status": "success", "order_id": order.id})
+            xml_file = utils.create_order_xml_string(order_header, calculation_table)
+            xml_base64file = utils.xml_to_base64(xml_file) 
+            res = utils.XML_to_1C(xml_base64file)
+
+            return JsonResponse({"status": res, "order_id": order.id})
 
         else:
             # Return validation errors if the form is not valid
