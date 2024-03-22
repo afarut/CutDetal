@@ -149,7 +149,7 @@ const MonitoringOrdersItem = ({
       </div>
       <div
         className={`w-full flex justify-center ${
-          comment === "" ? "hidden" : ""
+          (comment === "") || (comment === null) ? "hidden" : ""
         }`}
       >
         <img className="cursor-pointer" onClick={() => setCommentOn(!commentOn)} width={20} src={commentOn ? arrowUp : arrowDown} alt="arrow" />
