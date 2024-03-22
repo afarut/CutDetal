@@ -18,7 +18,6 @@ const Header = () => {
   const popupRef = useRef(null);
   const isAuthenticated = useIsAuthenticated()
   useEffect(() => {
-    console.log(isAuthenticated())
     if (isAuthenticated()) {
       const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
 

@@ -234,7 +234,9 @@ const Home = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: [".dxf", ".DXF"],
+    accept: {
+      'image/vnd': [".dxf", ".DXF"]
+    },
     multiple: true,
   });
 

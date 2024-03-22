@@ -4,6 +4,9 @@ import { useState } from "react";
 
 import PopupSvg from "./PopupSvg.jsx";
 
+import arrowUp from "../../images/arrow-up.png";
+import arrowDown from "../../images/arrow-down.png";
+
 const MonitoringOrdersItem = ({
   image,
   date,
@@ -20,10 +23,10 @@ const MonitoringOrdersItem = ({
   orderId,
   width,
   height,
-  comment
+  comment,
 }) => {
   const [isPopupOpen, setIsClosePopup] = useState(false);
-  const [commentOn, setCommentOn] = useState(false)
+  const [commentOn, setCommentOn] = useState(false);
 
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
@@ -41,7 +44,6 @@ const MonitoringOrdersItem = ({
   return (
     <div
       className={`${module.listItemWrapper} px-[18px] pb-[10px] mx-[12px] lg:px-[42px] mb-[8px] lg:mb-[14px] lg:mx-[31px] relative`}
-      onClick={() => setCommentOn(!commentOn)}
     >
       <div
         className={`flex-col lg:flex-row flex justify-between lg:items-start py-[15px] lg:py-[20px]`}
@@ -57,9 +59,7 @@ const MonitoringOrdersItem = ({
             preserveAspectRatio="xMinYMin meet"
           />
         </div>
-        <div>
-          
-        </div>
+        <div></div>
         <div
           className={`${module.ItemInfoWrapper} lg:w-1/3 order-3 text-[16px] lg:text-[21px] flex flex-col`}
         >
@@ -109,13 +109,19 @@ const MonitoringOrdersItem = ({
           </div>
           <div>
             <span className="font-semibold">Телефон: </span>
-            <a href={`tel:${phoneNumber}`} className={`${module.fileName} text-[16px] lg:text-[21px]`}>
+            <a
+              href={`tel:${phoneNumber}`}
+              className={`${module.fileName} text-[16px] lg:text-[21px]`}
+            >
               {phoneNumber}
             </a>
           </div>
           <div>
             <span className="font-semibold">Email: </span>
-            <a href={`mailto:${email}`} className={`${module.fileName} text-[16px] lg:text-[21px]`}>
+            <a
+              href={`mailto:${email}`}
+              className={`${module.fileName} text-[16px] lg:text-[21px]`}
+            >
               {email}
             </a>
           </div>
@@ -137,14 +143,24 @@ const MonitoringOrdersItem = ({
             </span>
           </div>
         </div> */}
-        <span className="absolute bottom-5 right-5 text-gray-500">#{orderId}</span>
+        <span className="absolute bottom-5 right-5 text-gray-500">
+          #{orderId}
+        </span>
       </div>
-      <div className={`w-full justify-end ${commentOn ? 'flex' : 'hidden'} `}>
-        <div className={`lg:w-2/3 lg:mr-8 flex lg:flex lg:justify-center ${module.commentWindow}`}>
-          {comment}
-        </div>
+      <div
+        className={`w-full flex justify-center ${
+          comment === "" ? "hidden" : ""
+        }`}
+      >
+        <img className="cursor-pointer" onClick={() => setCommentOn(!commentOn)} width={20} src={commentOn ? arrowUp : arrowDown} alt="arrow" />
       </div>
-      
+      <div
+        className={`w-full justify-center items-center ${
+          commentOn ? "flex" : "hidden"
+        }`}
+      >
+        <div className={`${module.commentWindow}`}>{comment}</div>
+      </div>
 
       {isPopupOpen && (
         <PopupSvg
