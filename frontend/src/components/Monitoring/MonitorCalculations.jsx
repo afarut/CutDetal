@@ -11,7 +11,6 @@ const MonitorCalculations = ({
   prev,
   isLoading
 }) => {
-  console.log(data)
 
 
   return (

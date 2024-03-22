@@ -4,8 +4,6 @@ import MonitoringOrdersItem from "./MonitoringOrdersItem";
 
 const MonitorOrders = ({ orders, isLoading, prev, next, setCurrentPage, currentPage }) => {
 
-  console.log(orders)
-
   return (
     <div>
       {isLoading ? (
