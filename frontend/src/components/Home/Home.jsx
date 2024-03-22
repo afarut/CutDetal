@@ -76,7 +76,6 @@ const Home = () => {
 
     try {
       setFormLoading(true);
-      console.log(formLoading)
       let detailsDataUpdate = [];
       for (let index = 0; index < data.length; index++) {
         const item = {
@@ -209,7 +208,6 @@ const Home = () => {
             namefile: acceptedFiles[i].name,
           })
           .then((response) => {
-            console.log(response.data);
             setData((prevData) => [...prevData, response.data]);
             setQuantityValues((prevData) => {
               const newData = [...prevData];
