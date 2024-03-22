@@ -10,6 +10,8 @@ import FormUpload from "./formupload.jsx";
 import LandingPage from "./landingpage.jsx";
 import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
+import FormLoading from "./formloading.jsx";
+
 
 const Home = () => {
   const [files, setFiles] = useState([]);
@@ -36,6 +38,7 @@ const Home = () => {
   const [errorServer, setErrorServer] = useState(false)
   const [errorSize, setErrorSize] = useState(false)
   const [fileName, setFileName] = useState('')
+  const [idConfirm, setIdConfirm] = useState(null)
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -70,9 +73,10 @@ const Home = () => {
   };
 
   const sendDataToServer = () => {
-    setFormLoading(true);
 
     try {
+      setFormLoading(true);
+      console.log(formLoading)
       let detailsDataUpdate = [];
       for (let index = 0; index < data.length; index++) {
         const item = {
@@ -94,7 +98,7 @@ const Home = () => {
 
       axios.post("/dxf/confirm/", dataUpdate)
       .then((res) => {
-        console.log(res.data)
+        setIdConfirm(res.data.order_id)
         if (res.data.status !== 'success'){
           setErrorServer(true)
           setFormLoading(false);
@@ -205,10 +209,11 @@ const Home = () => {
             namefile: acceptedFiles[i].name,
           })
           .then((response) => {
+            console.log(response.data);
             setData((prevData) => [...prevData, response.data]);
             setQuantityValues((prevData) => {
               const newData = [...prevData];
-              newData[response.data.id] = 1;
+              newData[response.data.id] = 1; 
               return newData;
             });
             setMaterialValues((prevData) => {
@@ -283,8 +288,8 @@ const Home = () => {
     const newMaterialValues = [...materialValues];
 
     const newQuantityValues = [...quantityValues];
-    newMaterialValues.splice(id, 1);
-    newQuantityValues.splice(id, 1);
+    newMaterialValues[id] = null;
+    newQuantityValues[id] = null;
 
     setMaterialValues(newMaterialValues);
     setQuantityValues(newQuantityValues);
@@ -307,9 +312,9 @@ const Home = () => {
       ) : (
         ""
       )}
-      {formLoading ? <formLoading /> : ""}
+      {formLoading ? <FormLoading /> : ""}
       {formUpload ? <FormUpload windowClose={windowClose} /> : ""}
-      {calculate ? (
+      {calculate && data.length>0 ? (
         <Calculate
           setDetailsIds={setDetailsIds}
           detailsIds={detailsIds}
@@ -350,7 +355,7 @@ const Home = () => {
         ""
       )}
       {errorServer ? (
-        <ErrorPopup windowClose={windowClose}/>
+        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm}/>
       ) : ""}
       <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
     </div>
