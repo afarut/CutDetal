@@ -20,7 +20,7 @@ const PriceManageItem = ({
   const editClickHandler = () => {
     setCurrentMaterial(material);
     setPopupVisible(true);
-  };
+  }; 
 
   const handleDelete = () => {
     setIsDeleting(true);

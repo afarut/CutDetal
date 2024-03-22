@@ -173,8 +173,6 @@
     font-family: Montserrat;
     font-size: 36px;
     font-weight: 700;
-    line-height: 44px;
-    letter-spacing: 0%;
     text-align: center;
 }
 
@@ -579,4 +577,8 @@
     .questionWindow{
         @apply items-center -mr-[150px] -mt-[50px]
     }
+}
+
+.textErrorPopup{
+    font-size: 16px;
 }
