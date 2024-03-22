@@ -100,7 +100,7 @@ const Popup = ({ setPopupVisible, material, isLoading, setIsLoading }) => {
         <form onSubmit={handleSubmit}>
           <div className="flex justify-between items-center">
             <span className={`${module.nameOfMaterial} text-[24px]`}>
-              {"Аллюминий"}
+              {material.name}
             </span>
             <img src={trashIcon} alt="delete" />
           </div>
