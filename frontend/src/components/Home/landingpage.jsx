@@ -14,7 +14,7 @@ const LandingPage = ({getRootProps, getInputProps}) => {
               className={`${module.leftpanelLabel} flex justify-between items-center pl-[42px]`}
             >
               <div className={`flex flex-col ${module.title}`}>
-                <span>Быстрый расчет</span>
+                <span>Онлайн расчет</span>
                 <span>стоимости деталей по чертежам DXF</span>
               </div>
             </div>
@@ -58,9 +58,9 @@ const LandingPage = ({getRootProps, getInputProps}) => {
             </div>
           </div>
           <div
-            className={`mt-[75px] mb-[75px] px-[5vw] lg:px-[125px] md:px-[5%] py-[75px] flex flex-col md:flex-row gap-[5vw] ${module.rowLables}`}
+            className={`mt-[75px] mb-[75px] px-[5vw] lg:px-[125px] md:px-[5%] py-[75px] flex flex-col md:flex-row justify-around gap-[5vw] ${module.rowLables}`}
           >
-            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px]">
+            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px] flex-1">
               <div className="flex flex-col gap-[12px] items-center">
                 <img
                   src={fileIcon}
@@ -71,11 +71,11 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                   Загрузите <br /> файлы DXF
                 </div>
               </div>
-              <div className={module.textlabelsblock}>
+              {/* <div className={module.textlabelsblock}>
                 Загрузить один или несколько DXF файлов для обработки
-              </div>
+              </div> */}
             </div>
-            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px]">
+            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px] flex-1">
               <div className="flex flex-col gap-[12px] items-center">
                 <img
                   src={setting}
@@ -86,11 +86,11 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                   Выберите материал <br/> и количество
                 </div>
               </div>
-              <div className={module.textlabelsblock}>
+              {/* <div className={module.textlabelsblock}>
                 Загрузить один или несколько DXF файлов для обработки
-              </div>
+              </div> */}
             </div>
-            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px]">
+            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px] flex-1">
               <div className="flex flex-col gap-[12px] items-center">
                 <img
                   src={docIcon}
@@ -101,9 +101,9 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                 Отправьте детали <br/> на изготовление
                 </div>
               </div>
-              <div className={module.textlabelsblock}>
+              {/* <div className={module.textlabelsblock}>
                 Загрузить один или несколько DXF файлов для обработки
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
