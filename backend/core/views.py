@@ -64,6 +64,40 @@ def dxf_view(request):
         "error_message": "Метод не разрешен"
     })
 
+@authentication_classes([])
+@permission_classes([])
+@csrf_exempt
+def dxf_get(request):
+    if request.method == "GET":
+        ids = request.GET.getlist('ids[]')
+        
+        if not ids:
+            return JsonResponse({
+                "status": "error",
+                "error_message": "нет id"
+            })
+
+        details = Detail.objects.filter(pk__in=ids)
+
+        response_data = []
+        for detail in details:
+            response_data.append({
+                "id": detail.id,
+                "status": "success",
+                "total_length": detail.length,
+                "image": detail.svg_file, 
+                "size_x": detail.width,
+                "size_y": detail.height,
+                "image_name": detail.name,
+                "incut": detail.incut,
+            })
+
+        return JsonResponse(response_data, safe=False)
+
+    return JsonResponse({
+        "status": "error",
+        "error_message": "Метод не разрешен"
+    })
 
 @authentication_classes([])
 @permission_classes([])

@@ -11,6 +11,7 @@ import LandingPage from "./landingpage.jsx";
 import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
+import { useLocation } from "react-router-dom";
 
 
 const Home = () => {
@@ -39,6 +40,60 @@ const Home = () => {
   const [errorSize, setErrorSize] = useState(false)
   const [fileName, setFileName] = useState('')
   const [idConfirm, setIdConfirm] = useState(null)
+
+  const location = useLocation()
+  const {pathname} = location
+
+  const searchParams = new URLSearchParams(location.search);
+  const ids = searchParams.getAll('ids');
+
+  // console.log(ids)
+
+  // if (ids.length !== 0) {
+  //   setUploading(true);
+  // }
+  
+  // if (materials.length !== 0 && ids.length !== 0) {
+  //   console.log(materials)
+  //   getDetailsInfo()
+  // }
+
+  async function getDetailsInfo() {
+    if (materials.length !== 0 && ids.length !== 0) {
+      try {     
+        const response = await axios.get("/dxf/get/", {params: {ids: ids}})
+        console.log(response.data)
+        setData(response.data);
+        console.log(response.data)
+
+        let newQuantityValues = []
+        response.data.map((el) => {
+          newQuantityValues[el.id] = 1
+        })
+        setQuantityValues(newQuantityValues)
+
+        let newMaterialValues = []
+        response.data.map((el) => {
+          newMaterialValues[el.id] = materials[0].id
+        })
+        setMaterialValues(newMaterialValues)
+
+        // setQuantityValues((prevData) => {
+        //   const newData = [...prevData];
+        //   newData[response.data.id] = 1; 
+        //   return newData;
+        // });
+        // setMaterialValues((prevData) => {
+        //   const newData = [...prevData];
+        //   newData[response.data.id] = materials[0].id;
+        //   return newData;
+        // });
+      } catch (error) {
+        console.error(error.message);
+      }
+      goCalc()
+    }
+  }
 
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
@@ -141,6 +196,13 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    if (ids.length !== 0 && materials.length !== 0 && data.length === 0) {
+      setLoading(true)
+      getDetailsInfo();
+    }
+  }, [ids, materials]);
+
+  useEffect(() => {
     axios
       .get("/get/size")
       .then((response) => {
@@ -209,6 +271,7 @@ const Home = () => {
           })
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
+            console.log(response.data)
             setQuantityValues((prevData) => {
               const newData = [...prevData];
               newData[response.data.id] = 1; 
