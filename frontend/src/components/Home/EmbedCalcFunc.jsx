@@ -12,21 +12,15 @@ import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
 
-
 const EmbedCalcFunc = () => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [visibleError, setVisibleError] = useState(false);
   const [calculate, setCalculate] = useState(false);
-  const [placingOrder, setPlacingOrder] = useState(false);
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [isIndividual, setIsIndividual] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
-  const [materialValues, setMaterialValues] = useState([]); 
+  const [materialValues, setMaterialValues] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([]);
@@ -34,98 +28,12 @@ const EmbedCalcFunc = () => {
   const [detailsIds, setDetailsIds] = useState([]);
   const [items, setItems] = useState([]);
   const [maxFileSize, setMaxFileSize] = useState(1000);
-  const [comment, setComment] = useState('');
-  const [errorServer, setErrorServer] = useState(false)
-  const [errorSize, setErrorSize] = useState(false)
-  const [fileName, setFileName] = useState('')
-  const [idConfirm, setIdConfirm] = useState(null)
+  const [errorServer, setErrorServer] = useState(false);
+  const [errorSize, setErrorSize] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [idConfirm, setIdConfirm] = useState(null);
 
-  const handleMaterialChange = (index, value) => {
-    const newMaterialValues = [...materialValues];
-    newMaterialValues[index] = value;
-    setMaterialValues(newMaterialValues);
-  };
-
-  const handleQuantityChange = (index, value) => {
-    const newQuantityValues = [...quantityValues];
-    newQuantityValues[index] = value;
-    setQuantityValues(newQuantityValues);
-  };
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handlePhoneNumberChange = (event) => {
-    setPhoneNumber(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleCommentChange = (event) => {
-    setComment(event.target.value)
-  }
-
-  const handleTypeChange = (event) => {
-    setIsIndividual(event.target.id === "Физическое лицо");
-  };
-
-  const sendDataToServer = () => {
-
-    try {
-      setFormLoading(true);
-      let detailsDataUpdate = [];
-      for (let index = 0; index < data.length; index++) {
-        const item = {
-          detail_id: data[index].id,
-          material_id: materialValues[data[index].id],
-          count: quantityValues[data[index].id],
-          price: items[data[index].id],
-        };
-        detailsDataUpdate.push(item);
-      }
-      const dataUpdate = {
-        username: name,
-        email: email,
-        phone_number: phoneNumber,
-        is_individual: isIndividual,
-        details: detailsDataUpdate,
-        comment: comment
-      };
-
-      axios.post("/dxf/confirm/", dataUpdate)
-      .then((res) => {
-        setIdConfirm(res.data.order_id)
-        if (res.data.status !== 'success'){
-          setErrorServer(true)
-          setFormLoading(false);
-        }
-        else{
-          setFormLoading(false);
-          setFormUpload(true);
-        }
-      })
-      .catch(error => {
-        setFormLoading(false);
-        setErrorServer(true)
-        console.error("Error:", error);
-      });
-
-    } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
-      setFormLoading(false);
-      setErrorServer(true)
-    }
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setPlacingOrder(false);
-
-    sendDataToServer();
-  };
+  const [ids, setIds] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -144,7 +52,7 @@ const EmbedCalcFunc = () => {
     axios
       .get("/get/size")
       .then((response) => {
-        setMaxFileSize(response.data.size)
+        setMaxFileSize(response.data.size);
       })
       .catch((error) => {
         console.error(error.message);
@@ -157,15 +65,15 @@ const EmbedCalcFunc = () => {
 
     acceptedFiles.forEach((file) => {
       if (file.size > maxFileSize * 1000) {
-        setFileName(file.name)
-        setErrorSize(true)
-        windowClose()
+        setFileName(file.name);
+        setErrorSize(true);
+        windowClose();
         setTimeout(() => {
-          setErrorSize(false)
+          setErrorSize(false);
         }, 3000);
-        return
+        return;
       }
-      if (!file.name.toLowerCase().endsWith(".dxf") ) {
+      if (!file.name.toLowerCase().endsWith(".dxf")) {
         error = true;
         setVisibleError(true);
 
@@ -176,8 +84,6 @@ const EmbedCalcFunc = () => {
         return;
       }
     });
-
-
 
     if (error) {
       setLoading(false);
@@ -211,7 +117,7 @@ const EmbedCalcFunc = () => {
             setData((prevData) => [...prevData, response.data]);
             setQuantityValues((prevData) => {
               const newData = [...prevData];
-              newData[response.data.id] = 1; 
+              newData[response.data.id] = 1;
               return newData;
             });
             setMaterialValues((prevData) => {
@@ -233,7 +139,7 @@ const EmbedCalcFunc = () => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'image/vnd': [".dxf", ".DXF"]
+      "image/vnd": [".dxf", ".DXF"],
     },
     multiple: true,
   });
@@ -243,21 +149,21 @@ const EmbedCalcFunc = () => {
       event.preventDefault();
     }
     setMaterialValues([]);
-    setMaterials([])
-    setQuantityValues([]) 
-    setData([]) 
-    setOrders([]) 
-    setDetailsIds([]) 
-    setDetailsIds([]) 
-    setItems([]) 
-    setFiles([])
+    setMaterials([]);
+    setQuantityValues([]);
+    setData([]);
+    setOrders([]);
+    setDetailsIds([]);
+    setDetailsIds([]);
+    setItems([]);
+    setFiles([]);
     setLoading(false);
     setUploading(false);
     setFiles([]);
     setFormUpload(false);
     setCalculate(false);
     setData([]);
-    setErrorServer(false)
+    setErrorServer(false);
   };
 
   const goCalc = () => {
@@ -266,45 +172,23 @@ const EmbedCalcFunc = () => {
     setLoading(false);
   };
 
-  const goPlacingOrder = () => {
-    setCalculate(false);
-    setPlacingOrder(true);
-  };
+  useEffect(() => {
+    let tmp = [];
 
-  const goPrevPlacingOrder = () => {
-    setPlacingOrder(false);
-    setCalculate(true);
-  };
+    data.map((el) => {
+      tmp.push(el.id);
+    });
 
-  const handleItemRemove = (id) => {
-    const newData = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].id !== id) {
-        newData.push(data[i]);
-      }
-    }
-    setData(newData);
-
-    const newMaterialValues = [...materialValues];
-
-    const newQuantityValues = [...quantityValues];
-    newMaterialValues[id] = null;
-    newQuantityValues[id] = null;
-
-    setMaterialValues(newMaterialValues);
-    setQuantityValues(newQuantityValues);
-
-    if (newData.length === 0) {
-      windowClose();
-    }
-  };
-
+    setIds(tmp)
+  }, [data]);
+  console.log(ids)
   return (
-    <div className="">
+    <div className="embedCalcFunc">
       {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
       {visibleError ? <VisibleError /> : ""}
       {loading ? (
         <LoadingFiles
+          ids={ids}
           uploading={uploading}
           goCalc={goCalc}
           windowClose={windowClose}
@@ -314,50 +198,15 @@ const EmbedCalcFunc = () => {
       )}
       {formLoading ? <FormLoading /> : ""}
       {formUpload ? <FormUpload windowClose={windowClose} /> : ""}
-      {calculate && data.length>0 ? (
-        <Calculate
-          setDetailsIds={setDetailsIds}
-          detailsIds={detailsIds}
-          goPlacingOrder={goPlacingOrder}
-          windowClose={windowClose}
-          data={data}
-          setData={setData}
-          materialValues={materialValues}
-          handleMaterialChange={handleMaterialChange}
-          materials={materials}
-          quantityValues={quantityValues}
-          handleQuantityChange={handleQuantityChange}
-          handleItemRemove={handleItemRemove}
-          setOrders={setOrders}
-          files={files}
-          setItems={setItems}
-          items={items}
-        />
-      ) : (
-        ""
-      )}
-      {placingOrder ? (
-        <PlacingOrder
-          name={name}
-          handleNameChange={handleNameChange}
-          phoneNumber={phoneNumber}
-          handlePhoneNumberChange={handlePhoneNumberChange}
-          email={email}
-          handleEmailChange={handleEmailChange}
-          isIndividual={isIndividual}
-          handleTypeChange={handleTypeChange}
-          goPrevPlacingOrder={goPrevPlacingOrder}
-          handleSubmit={handleSubmit}
-          comment={comment}
-          handleCommentChange ={handleCommentChange}
-        />
-      ) : (
-        ""
-      )}
       {errorServer ? (
-        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm}/>
-      ) : ""}
-      <EmbedCalcView getRootProps={getRootProps} getInputProps={getInputProps} />
+        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm} />
+      ) : (
+        ""
+      )}
+      <EmbedCalcView
+        getRootProps={getRootProps}
+        getInputProps={getInputProps}
+      />
     </div>
   );
 };
