@@ -41,16 +41,15 @@ const Home = () => {
   const [fileName, setFileName] = useState('')
   const [idConfirm, setIdConfirm] = useState(null)
 
+  const [ids, setIds] = useState([])
+
   const location = useLocation()
   const { pathname } = location
 
   const searchParams = new URLSearchParams(location.search);
-  const ids = searchParams.getAll('ids');
-
-  console.log(data, items)
 
   async function getDetailsInfo() {
-    if (materials.length !== 0 && ids.length !== 0) {
+    if (materials.length !== 0 && ids.length !== 0 && data.length === 0) {
       try {
         const response = await axios.get("/dxf/get/", { params: { ids: ids } })
 
@@ -58,7 +57,6 @@ const Home = () => {
 
         let newQuantityValues = []
         response.data.map((el) => {
-          console.log(el)
           newQuantityValues[el?.id] = 1
         })
         setQuantityValues(newQuantityValues)
@@ -163,6 +161,8 @@ const Home = () => {
   };
 
   useEffect(() => {
+    setIds(searchParams.getAll('ids'))
+
     const fetchData = async () => {
       try {
         const response = await axios.get("/material/");
@@ -177,7 +177,7 @@ const Home = () => {
 
   useEffect(() => {
     if (ids.length !== 0 && materials.length !== 0 && data.length === 0) {
-      setLoading(true)
+      setLoading(true);
       getDetailsInfo();
     }
   }, [ids, materials]);
@@ -305,6 +305,7 @@ const Home = () => {
     setCalculate(false);
     setErrorServer(false);
     setIdConfirm(null);
+    setIds([])
 };
 
   const goCalc = () => {

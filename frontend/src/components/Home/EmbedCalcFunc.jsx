@@ -3,8 +3,6 @@ import { useDropzone } from "react-dropzone";
 import { convertBase64 } from "../../utils/convertBase64";
 import axios from "../../axios.js";
 import LoadingFiles from "./loadingFiles.jsx";
-import Calculate from "./calculate.jsx";
-import PlacingOrder from "./placingOrder.jsx";
 import VisibleError from "./visibleError.jsx";
 import FormUpload from "./formupload.jsx";
 import EmbedCalcView from "./EmbedCalcView.jsx";
@@ -149,7 +147,6 @@ const EmbedCalcFunc = () => {
       event.preventDefault();
     }
     setMaterialValues([]);
-    setMaterials([]);
     setQuantityValues([]);
     setData([]);
     setOrders([]);
