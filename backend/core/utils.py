@@ -8,6 +8,7 @@ from django.core.files.images import ImageFile
 import base64
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
+import aiohttp
 
 
 def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=settings.LOGIN, password=settings.PASSWORD):
@@ -20,7 +21,6 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
 
     # Создаем клиента SOAP с использованием WSDL и сессии с аутентификацией
     client = Client(wsdl=wsdl, transport=Transport(session=session))
-
 
     response = client.service.CalcDXF(
         FileDXF=file_content_base64,
@@ -68,6 +68,22 @@ def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=set
             "size_y": 0,
             "version": ''
         }
+
+async def ping_web_service(login=settings.LOGIN, password=settings.PASSWORD):
+    session = Session()
+    session.auth = HTTPBasicAuth(login, password)
+
+    # WSDL URL от 1C сервера
+    wsdl = 'http://sr.sk18.ru:8089/CalcServer/ws/SRInterface.1cws?wsdl'
+
+    timeout = aiohttp.ClientTimeout(total=12)
+
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with session.get(wsdl, auth=aiohttp.BasicAuth(login, password)) as response:
+            if response.status == 200:
+                return {"status": True}
+            else:
+                return {"status": False}
 
 def create_order_xml_string(order_header, calculation_table):
     # Root element

@@ -6,6 +6,7 @@ app_name = "core"
 urlpatterns = [
     path('dxf/', views.dxf_view, name='dxf_view'),
     path('dxf/get/', views.dxf_get, name='dxf_get'),
+    path('ping/', views.ping, name='ping'),
     path("detail/<int:pk>/", views.DetailUpdateAPIView.as_view(), name="update_detail"),
     path("detail/save/", views.DetailSave.as_view(), name="detail_save"),
     path("detail/exclude/", views.DetailExcludeApiView.as_view(), name="detail_exclude"),
