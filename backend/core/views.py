@@ -22,7 +22,6 @@ from .permissions import CreateOnly, EditOnly, IsAuthAndSuperAdminOnly, ReadOnly
 from .filters import ExcludeDetailFilter, DetailFilter
 import asyncio
 
-
 @authentication_classes([])
 @permission_classes([])
 @csrf_exempt

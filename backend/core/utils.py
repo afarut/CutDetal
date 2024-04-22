@@ -74,7 +74,7 @@ async def ping_web_service(login=settings.LOGIN, password=settings.PASSWORD):
     session.auth = HTTPBasicAuth(login, password)
 
     # WSDL URL от 1C сервера
-    wsdl = 'http://sr.sk18.ru:8089/CalcServer/ws/SRInterface.1cws?wsdl'
+    wsdl = 'http://sr.sk18.ru:8088/CalcServer/ws/SRInterface.1cws?wsdl'
 
     timeout = aiohttp.ClientTimeout(total=12)
 
