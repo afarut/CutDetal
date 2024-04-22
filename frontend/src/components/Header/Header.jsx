@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from "react-router-dom";
 import module from "./Header.module.css";
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 
-import axios from '../../axios'
+import axios from "../../axios";
 
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
 
-import cutDetalLogo from '../../images/cutdetallogo.svg'
+import cutDetalLogo from "../../images/cutdetallogo.svg";
 
 import Login from "./Login";
 
@@ -16,25 +16,30 @@ const Header = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const popupRef = useRef(null);
-  const isAuthenticated = useIsAuthenticated()
+  const isAuthenticated = useIsAuthenticated();
+
   useEffect(() => {
     if (isAuthenticated()) {
-      const jwtToken = document.cookie.split('; ').find(row => row.startsWith('_auth=')).split('=')[1];
+      const jwtToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("_auth="))
+        .split("=")[1];
 
-      axios.get("/user/", {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      })
-      .then((userResponse) => {
-        // console.log(userResponse.data);
-        setUser(userResponse.data)
-      })
-      .catch((error) => {
-        console.log(error.response?.data.message);
-      });
+      axios
+        .get("/user/", {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        })
+        .then((userResponse) => {
+          // console.log(userResponse.data);
+          setUser(userResponse.data);
+        })
+        .catch((error) => {
+          console.log(error.response?.data.message);
+        });
     }
-  }, [])
+  }, []);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -72,8 +77,8 @@ const Header = () => {
       className={`${module.wrapper} w-[100%] h-[82px] appContainer flex justify-between`}
     >
       <div className="flex justify-center items-center">
-        <NavLink to={'/'}>
-        <img height={50} width={60} src={cutDetalLogo} alt="logo" />
+        <NavLink to={"/"}>
+          <img height={50} width={60} src={cutDetalLogo} alt="logo" />
         </NavLink>
       </div>
 
@@ -94,13 +99,21 @@ const Header = () => {
         {!user ? (
           <>
             <div
-              className={`${module.userAuthButtonWrapper} hidden lg:flex items-center`}
+              className={`${module.userAuthButtonWrapper} hidden lg:flex items-center gap-4`}
             >
               {/* <div
                 className={`${module.signUpButton} px-[22px] py-[10px] mr-[20px] ml-[10px]`}
               >
                 <button>Регистрация</button>
               </div> */}
+              <div
+                onClick={() =>
+                  (window.location.href = "https://cutdetal.ru/instrukciya/")
+                }
+                className={`${module.logInButton} px-[22px] py-[10px]`}
+              >
+                <button>Инструкция</button>
+              </div>
               <div
                 onClick={toggleLoginPopup}
                 className={`${module.logInButton} px-[22px] py-[10px]`}
@@ -114,8 +127,21 @@ const Header = () => {
             className={`${module.navigationWrapper} hidden lg:flex items-center`}
           >
             <ul className="lg:flex items-center">
-            {user.isAdmin && <><NavLink to={'/monitoring'}><li>Мониторинг</li></NavLink></>}
-              {user.isSuperAdmin && <NavLink to={'/manage'}><li>Управление</li></NavLink>}
+              {/* <li>
+                <a href="https://cutdetal.ru/instrukciya/">Инструкция</a>
+              </li> */}
+              {user.isAdmin && (
+                <>
+                  <NavLink to={"/monitoring"}>
+                    <li>Мониторинг</li>
+                  </NavLink>
+                </>
+              )}
+              {user.isSuperAdmin && (
+                <NavLink to={"/manage"}>
+                  <li>Управление</li>
+                </NavLink>
+              )}
             </ul>
           </div>
         )}
@@ -152,17 +178,31 @@ const Header = () => {
                         {/* <div>
                           <span>Регистрация</span>
                         </div> */}
+                        <div onClick={() =>  window.location.href='https://cutdetal.ru/instrukciya/'}>
+                          <span>Инструкция</span>
+                        </div>
                         <div onClick={toggleLoginPopup}>
                           <span>Логин</span>
                         </div>
                       </>
                     ) : (
                       <>
-                        
-                          <div>{user.isAdmin && <><NavLink onClick={togglePopup} to={'/monitoring'}><span>Мониторинг</span></NavLink></>}</div>
-                        
                         <div>
-                          {user.isSuperAdmin && <NavLink onClick={togglePopup} to={'/manage'}><span className="mr-[0]">Управление</span></NavLink>}
+                          {user.isAdmin && (
+                            <>
+                              <NavLink onClick={togglePopup} to={"/monitoring"}>
+                                <span>Мониторинг</span>
+                              </NavLink>
+                            </>
+                          )}
+                        </div>
+
+                        <div>
+                          {user.isSuperAdmin && (
+                            <NavLink onClick={togglePopup} to={"/manage"}>
+                              <span className="mr-[0]">Управление</span>
+                            </NavLink>
+                          )}
                         </div>
                       </>
                     )}
@@ -190,14 +230,22 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              <Login setUser={setUser} popupRef={popupRef} togglePopup={togglePopup} />
+              <Login
+                setUser={setUser}
+                popupRef={popupRef}
+                togglePopup={togglePopup}
+              />
             )}
           </div>
         )}
 
         {isLoginPopupOpen && !isPopupOpen && (
           <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
-            <Login setUser={setUser} togglePopup={toggleLoginPopup} popupRef={popupRef} />
+            <Login
+              setUser={setUser}
+              togglePopup={toggleLoginPopup}
+              popupRef={popupRef}
+            />
           </div>
         )}
       </div>
