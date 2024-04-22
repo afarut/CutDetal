@@ -27,7 +27,7 @@ const Home = () => {
   const [isIndividual, setIsIndividual] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
-  const [materialValues, setMaterialValues] = useState([]); 
+  const [materialValues, setMaterialValues] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([]);
@@ -42,33 +42,24 @@ const Home = () => {
   const [idConfirm, setIdConfirm] = useState(null)
 
   const location = useLocation()
-  const {pathname} = location
+  const { pathname } = location
 
   const searchParams = new URLSearchParams(location.search);
   const ids = searchParams.getAll('ids');
 
-  // console.log(ids)
-
-  // if (ids.length !== 0) {
-  //   setUploading(true);
-  // }
-  
-  // if (materials.length !== 0 && ids.length !== 0) {
-  //   console.log(materials)
-  //   getDetailsInfo()
-  // }
+  console.log(data, items)
 
   async function getDetailsInfo() {
     if (materials.length !== 0 && ids.length !== 0) {
-      try {     
-        const response = await axios.get("/dxf/get/", {params: {ids: ids}})
-        console.log(response.data)
+      try {
+        const response = await axios.get("/dxf/get/", { params: { ids: ids } })
+
         setData(response.data);
-        console.log(response.data)
 
         let newQuantityValues = []
         response.data.map((el) => {
-          newQuantityValues[el.id] = 1
+          console.log(el)
+          newQuantityValues[el?.id] = 1
         })
         setQuantityValues(newQuantityValues)
 
@@ -78,16 +69,6 @@ const Home = () => {
         })
         setMaterialValues(newMaterialValues)
 
-        // setQuantityValues((prevData) => {
-        //   const newData = [...prevData];
-        //   newData[response.data.id] = 1; 
-        //   return newData;
-        // });
-        // setMaterialValues((prevData) => {
-        //   const newData = [...prevData];
-        //   newData[response.data.id] = materials[0].id;
-        //   return newData;
-        // });
       } catch (error) {
         console.error(error.message);
       }
@@ -128,7 +109,6 @@ const Home = () => {
   };
 
   const sendDataToServer = () => {
-
     try {
       setFormLoading(true);
       let detailsDataUpdate = [];
@@ -151,22 +131,22 @@ const Home = () => {
       };
 
       axios.post("/dxf/confirm/", dataUpdate)
-      .then((res) => {
-        setIdConfirm(res.data.order_id)
-        if (res.data.status !== 'success'){
+        .then((res) => {
+          setIdConfirm(res.data.order_id)
+          if (res.data.status !== 'success') {
+            setErrorServer(true)
+            setFormLoading(false);
+          }
+          else {
+            setFormLoading(false);
+            setFormUpload(true);
+          }
+        })
+        .catch(error => {
+          setFormLoading(false);
           setErrorServer(true)
-          setFormLoading(false);
-        }
-        else{
-          setFormLoading(false);
-          setFormUpload(true);
-        }
-      })
-      .catch(error => {
-        setFormLoading(false);
-        setErrorServer(true)
-        console.error("Error:", error);
-      });
+          console.error("Error:", error);
+        });
 
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
@@ -217,35 +197,41 @@ const Home = () => {
     setLoading(true);
     let error = false;
 
-    acceptedFiles.forEach((file) => {
-      if (file.size > maxFileSize * 1000) {
-        setFileName(file.name)
-        setErrorSize(true)
-        windowClose()
-        setTimeout(() => {
-          setErrorSize(false)
-        }, 3000);
-        return
-      }
-      if (!file.name.toLowerCase().endsWith(".dxf") ) {
+    if (acceptedFiles.length === 0) {
         error = true;
         setVisibleError(true);
-
         setTimeout(() => {
-          setVisibleError(false);
+            setVisibleError(false);
         }, 3000);
-
+        windowClose();
         return;
-      }
+    }
+
+    acceptedFiles.forEach((file) => {
+        if (file.size > maxFileSize * 1000) {
+            setFileName(file.name);
+            setErrorSize(true);
+            windowClose();
+            setTimeout(() => {
+                setErrorSize(false);
+            }, 3000);
+            return;
+        }
+        if (!file.name.toLowerCase().endsWith(".dxf")) {
+            error = true;
+            setVisibleError(true);
+            windowClose();
+            setTimeout(() => {
+                setVisibleError(false);
+            }, 3000);
+        }
     });
 
-
-
     if (error) {
-      setLoading(false);
-      setUploading(false);
-      setFiles([]);
-      return;
+        setLoading(false);
+        setUploading(false);
+        setFiles([]);
+        return;
     }
 
     const formData = new FormData();
@@ -274,12 +260,13 @@ const Home = () => {
             console.log(response.data)
             setQuantityValues((prevData) => {
               const newData = [...prevData];
-              newData[response.data.id] = 1; 
+              newData[response.data.id] = 1;
               return newData;
             });
             setMaterialValues((prevData) => {
+
               const newData = [...prevData];
-              newData[response.data.id] = materials[0].id;
+              newData[response.data?.id] = materials[0]?.id;
               return newData;
             });
           })
@@ -303,25 +290,22 @@ const Home = () => {
 
   const windowClose = (event) => {
     if (event) {
-      event.preventDefault();
+        event.preventDefault();
     }
     setMaterialValues([]);
-    setMaterials([])
-    setQuantityValues([]) 
-    setData([]) 
-    setOrders([]) 
-    setDetailsIds([]) 
-    setDetailsIds([]) 
-    setItems([]) 
-    setFiles([])
+    setQuantityValues([]);
+    setData([]);
+    setOrders([]);
+    setDetailsIds([]);
+    setItems([]);
+    setFiles([]);
     setLoading(false);
     setUploading(false);
-    setFiles([]);
     setFormUpload(false);
     setCalculate(false);
-    setData([]);
-    setErrorServer(false)
-  };
+    setErrorServer(false);
+    setIdConfirm(null);
+};
 
   const goCalc = () => {
     setUploading(false);
@@ -365,7 +349,7 @@ const Home = () => {
   return (
     <div className="">
       {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
-      {visibleError ? <VisibleError /> : ""}
+      {visibleError && <VisibleError /> }
       {loading ? (
         <LoadingFiles
           uploading={uploading}
@@ -377,7 +361,7 @@ const Home = () => {
       )}
       {formLoading ? <FormLoading /> : ""}
       {formUpload ? <FormUpload windowClose={windowClose} /> : ""}
-      {calculate && data.length>0 ? (
+      {calculate && data.length > 0 ? (
         <Calculate
           setDetailsIds={setDetailsIds}
           detailsIds={detailsIds}
@@ -412,13 +396,13 @@ const Home = () => {
           goPrevPlacingOrder={goPrevPlacingOrder}
           handleSubmit={handleSubmit}
           comment={comment}
-          handleCommentChange ={handleCommentChange}
+          handleCommentChange={handleCommentChange}
         />
       ) : (
         ""
       )}
       {errorServer ? (
-        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm}/>
+        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm} />
       ) : ""}
       <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
     </div>
