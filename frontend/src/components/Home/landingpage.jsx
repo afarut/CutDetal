@@ -11,16 +11,17 @@ const LandingPage = ({getRootProps, getInputProps}) => {
         <div className={`relative`}>
           <div className={`flex h-auto gap-[16px] ${module.mainLabel}`}>
             <div
-              className={`${module.leftpanelLabel} flex justify-between items-center pl-[42px]`}
+              className={`${module.leftpanelLabel} flex xl:w-2/3 justify-between items-center pl-[42px]`}
             >
               <div className={`flex flex-col ${module.title}`}>
-                <span>Онлайн расчет</span>
-                <span>стоимости деталей по чертежам DXF</span>
+                <span className="xl:!text-[70px]">Онлайн расчет</span>
+                <span className="xl:!text-[70px]">стоимости деталей по <br /> чертежам DXF</span>
               </div>
             </div>
-            <div className="w-full flex justify-end">
+            <div className="xl:w-1/3 p-0">
+            <div className="flex w-full justify-end">
               <div
-                className={`min-w-[450px] max-w-[525px] h-full p-6 relative ${module.pcInputLabel}`}
+                className={`min-w-[450px] max-w-[575px] h-full px-10 py-6 relative ${module.pcInputLabel}`}
                 style={{
                   backgroundImage: `url(${modal})`,
                   backgroundSize: "cover",
@@ -56,9 +57,10 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                 </label>
               </div>
             </div>
+            </div>
           </div>
           <div
-            className={`mt-[75px] mb-[75px] px-[5vw] lg:px-[125px] md:px-[5%] py-12 flex flex-col md:flex-row justify-around gap-[5vw] ${module.rowLables}`}
+            className={`mt-16 mb-16 px-[5vw] lg:px-[125px] md:px-[5%] py-12 flex flex-col md:flex-row justify-around gap-[5vw] ${module.rowLables}`}
           >
             <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-7 flex-1">
               <div className="flex flex-col gap-[12px] items-center">

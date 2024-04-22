@@ -26,7 +26,7 @@ const Footer = () => {
             </ul>
           </div> */}
           <div
-            className={`${module.contactsWrapper} flex items-start flex-col`}
+            className={`${module.contactsWrapper} flex items-start flex-col py-3`}
           >
             <span className={`${module.contacts}`}>Контакты</span>
             <a href="tel:+73412460192">+7 (3412) 46-01-92</a>
