@@ -108,7 +108,23 @@ const Home = () => {
     setIsIndividual(event.target.id === "Физическое лицо");
   };
 
-  const sendDataToServer = () => {
+  const pingServer = async () => {
+    axios.get("/ping")
+        .then((res) => {
+          if (!res.data.status){
+            setServerErrorFiles(true);
+            windowClose()
+            setTimeout(() => {
+              setServerErrorFiles(false);
+            }, 3000);
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+  }
+
+  const sendDataToServer =  () => {
     try {
       setFormLoading(true);
       let detailsDataUpdate = [];
@@ -196,6 +212,7 @@ const Home = () => {
   }, []);
 
   const onDrop = async (acceptedFiles) => {
+    await pingServer()
     setLoading(true);
     let error = false;
 
@@ -236,6 +253,12 @@ const Home = () => {
       return;
     }
 
+    // setServerErrorFiles(true);
+    //         setLoading(false)
+    //         setTimeout(() => {
+    //           setServerErrorFiles(false);
+    //         }, 3000);
+
     const formData = new FormData();
 
     acceptedFiles.forEach((file) => {
@@ -257,18 +280,6 @@ const Home = () => {
             ),
             namefile: acceptedFiles[i].name,
           }),
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              if (data.length===0){
-                setServerErrorFiles(true);
-                setTimeout(() => {
-                  setServerErrorFiles(false);
-                }, 3000);
-                windowClose();
-                reject(new Error("Timeout"));
-              }
-            }, 15000);
-          })
         ])
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
@@ -287,20 +298,10 @@ const Home = () => {
           })
           .catch((error) => {
             console.error(error.message);
-            windowClose();
-            setServerErrorFiles(true);
-            setTimeout(() => {
-              setServerErrorFiles(false);
-            }, 3000);
           });
       }
       setUploading(true);
     } catch (error) {
-      windowClose();
-      setServerErrorFiles(true);
-      setTimeout(() => {
-        setServerErrorFiles(false);
-      }, 3000);
       console.error("Error converting files to Base64:", error);
     }
   };
