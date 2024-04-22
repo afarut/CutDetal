@@ -108,20 +108,24 @@ const Home = () => {
     setIsIndividual(event.target.id === "Физическое лицо");
   };
 
-  const pingServer = async () => {
-    axios.get("/ping")
-        .then((res) => {
-          if (!res.data.status){
-            setServerErrorFiles(true);
-            windowClose()
-            setTimeout(() => {
-              setServerErrorFiles(false);
-            }, 3000);
-          }
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
+  function pingServer() {
+    return axios.get("/ping")
+      .then((res) => {
+        if (!res.data.status) {
+          setServerErrorFiles(true);
+          windowClose();
+          setTimeout(() => {
+            setServerErrorFiles(false);
+          }, 3000);
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        return false;
+      });
   }
 
   const sendDataToServer =  () => {
@@ -212,9 +216,15 @@ const Home = () => {
   }, []);
 
   const onDrop = async (acceptedFiles) => {
-    await pingServer()
+    
     setLoading(true);
     let error = false;
+    let server =  await pingServer()
+
+    console.log(server)
+    if (!server){
+      return
+    }
 
     if (acceptedFiles.length === 0) {
       error = true;
