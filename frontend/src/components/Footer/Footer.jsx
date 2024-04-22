@@ -9,9 +9,9 @@ import cutDetalLogo from '../../images/cutdetallogo.svg'
 const Footer = () => {
   return (
     <>
-      <div className="footer-wrapper w-full xl:items-center bg-white max-xl:px-[42px]">
+      <div className="footer-wrapper w-full xl:items-center bg-white ">
         <div
-          className={`${module.footerNavWrapper} appContainer flex xl:flex-row xl:justify-between flex-col xl:items-center xl:h-[142px]`}
+          className={`${module.footerNavWrapper} appContainer flex xl:flex-row xl:justify-between flex-col xl:items-center `}
         >
           <div className="xl:pl-[42px]">
             <img className="h-[100px] w-[120px] xl:h-[50px] xl:w-[60px] cursor-pointer" src={cutDetalLogo} alt="logo" />
@@ -26,7 +26,7 @@ const Footer = () => {
             </ul>
           </div> */}
           <div
-            className={`${module.contactsWrapper} flex items-start flex-col`}
+            className={`${module.contactsWrapper} flex items-start flex-col py-3`}
           >
             <span className={`${module.contacts}`}>Контакты</span>
             <a href="tel:+73412460192">+7 (3412) 46-01-92</a>

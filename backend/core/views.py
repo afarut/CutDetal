@@ -20,8 +20,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import authentication_classes, permission_classes
 from .permissions import CreateOnly, EditOnly, IsAuthAndSuperAdminOnly, ReadOnly
 from .filters import ExcludeDetailFilter, DetailFilter
-
-
+import asyncio
 
 @authentication_classes([])
 @permission_classes([])
@@ -181,7 +180,17 @@ def dxf_confirm(request):
     # Return error response if the request method is not POST
     return JsonResponse({"status": "error", "error_message": "Метод не разрешен"})
 
-    
+@authentication_classes([])
+@permission_classes([])
+@csrf_exempt
+async def ping(request):
+    if request.method == "GET":
+        try:
+            result = await asyncio.wait_for(utils.ping_web_service(), timeout=12)
+            return JsonResponse(result)
+        except asyncio.TimeoutError:
+            return JsonResponse({"status": False})
+
 class DetailExcludeApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus
     queryset = Detail.objects.all()

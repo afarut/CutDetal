@@ -12,6 +12,7 @@ import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
 import { useLocation } from "react-router-dom";
+import ServerFilesError from "./serverfileserror.jsx";
 
 
 const Home = () => {
@@ -27,7 +28,7 @@ const Home = () => {
   const [isIndividual, setIsIndividual] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formUpload, setFormUpload] = useState(false);
-  const [materialValues, setMaterialValues] = useState([]); 
+  const [materialValues, setMaterialValues] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [quantityValues, setQuantityValues] = useState([]);
   const [data, setData] = useState([]);
@@ -40,35 +41,25 @@ const Home = () => {
   const [errorSize, setErrorSize] = useState(false)
   const [fileName, setFileName] = useState('')
   const [idConfirm, setIdConfirm] = useState(null)
+  const [serverErrorFiles, setServerErrorFiles] = useState(false)
+
+  const [ids, setIds] = useState([])
 
   const location = useLocation()
-  const {pathname} = location
+  const { pathname } = location
 
   const searchParams = new URLSearchParams(location.search);
-  const ids = searchParams.getAll('ids');
-
-  // console.log(ids)
-
-  // if (ids.length !== 0) {
-  //   setUploading(true);
-  // }
-  
-  // if (materials.length !== 0 && ids.length !== 0) {
-  //   console.log(materials)
-  //   getDetailsInfo()
-  // }
 
   async function getDetailsInfo() {
-    if (materials.length !== 0 && ids.length !== 0) {
-      try {     
-        const response = await axios.get("/dxf/get/", {params: {ids: ids}})
-        console.log(response.data)
+    if (materials.length !== 0 && ids.length !== 0 && data.length === 0) {
+      try {
+        const response = await axios.get("/dxf/get/", { params: { ids: ids } })
+
         setData(response.data);
-        console.log(response.data)
 
         let newQuantityValues = []
         response.data.map((el) => {
-          newQuantityValues[el.id] = 1
+          newQuantityValues[el?.id] = 1
         })
         setQuantityValues(newQuantityValues)
 
@@ -78,16 +69,6 @@ const Home = () => {
         })
         setMaterialValues(newMaterialValues)
 
-        // setQuantityValues((prevData) => {
-        //   const newData = [...prevData];
-        //   newData[response.data.id] = 1; 
-        //   return newData;
-        // });
-        // setMaterialValues((prevData) => {
-        //   const newData = [...prevData];
-        //   newData[response.data.id] = materials[0].id;
-        //   return newData;
-        // });
       } catch (error) {
         console.error(error.message);
       }
@@ -127,8 +108,27 @@ const Home = () => {
     setIsIndividual(event.target.id === "Физическое лицо");
   };
 
-  const sendDataToServer = () => {
+  function pingServer() {
+    return axios.get("/ping")
+      .then((res) => {
+        if (!res.data.status) {
+          setServerErrorFiles(true);
+          windowClose();
+          setTimeout(() => {
+            setServerErrorFiles(false);
+          }, 3000);
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        return false;
+      });
+  }
 
+  const sendDataToServer =  () => {
     try {
       setFormLoading(true);
       let detailsDataUpdate = [];
@@ -151,22 +151,22 @@ const Home = () => {
       };
 
       axios.post("/dxf/confirm/", dataUpdate)
-      .then((res) => {
-        setIdConfirm(res.data.order_id)
-        if (res.data.status !== 'success'){
+        .then((res) => {
+          setIdConfirm(res.data.order_id)
+          if (res.data.status !== 'success') {
+            setErrorServer(true)
+            setFormLoading(false);
+          }
+          else {
+            setFormLoading(false);
+            setFormUpload(true);
+          }
+        })
+        .catch(error => {
+          setFormLoading(false);
           setErrorServer(true)
-          setFormLoading(false);
-        }
-        else{
-          setFormLoading(false);
-          setFormUpload(true);
-        }
-      })
-      .catch(error => {
-        setFormLoading(false);
-        setErrorServer(true)
-        console.error("Error:", error);
-      });
+          console.error("Error:", error);
+        });
 
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
@@ -183,6 +183,8 @@ const Home = () => {
   };
 
   useEffect(() => {
+    setIds(searchParams.getAll('ids'))
+
     const fetchData = async () => {
       try {
         const response = await axios.get("/material/");
@@ -197,7 +199,7 @@ const Home = () => {
 
   useEffect(() => {
     if (ids.length !== 0 && materials.length !== 0 && data.length === 0) {
-      setLoading(true)
+      setLoading(true);
       getDetailsInfo();
     }
   }, [ids, materials]);
@@ -214,32 +216,45 @@ const Home = () => {
   }, []);
 
   const onDrop = async (acceptedFiles) => {
+    
     setLoading(true);
     let error = false;
+    let server =  await pingServer()
+
+    console.log(server)
+    if (!server){
+      return
+    }
+
+    if (acceptedFiles.length === 0) {
+      error = true;
+      setVisibleError(true);
+      setTimeout(() => {
+        setVisibleError(false);
+      }, 3000);
+      windowClose();
+      return;
+    }
 
     acceptedFiles.forEach((file) => {
       if (file.size > maxFileSize * 1000) {
-        setFileName(file.name)
-        setErrorSize(true)
-        windowClose()
+        setFileName(file.name);
+        setErrorSize(true);
+        windowClose();
         setTimeout(() => {
-          setErrorSize(false)
+          setErrorSize(false);
         }, 3000);
-        return
+        return;
       }
-      if (!file.name.toLowerCase().endsWith(".dxf") ) {
+      if (!file.name.toLowerCase().endsWith(".dxf")) {
         error = true;
         setVisibleError(true);
-
+        windowClose();
         setTimeout(() => {
           setVisibleError(false);
         }, 3000);
-
-        return;
       }
     });
-
-
 
     if (error) {
       setLoading(false);
@@ -247,6 +262,12 @@ const Home = () => {
       setFiles([]);
       return;
     }
+
+    // setServerErrorFiles(true);
+    //         setLoading(false)
+    //         setTimeout(() => {
+    //           setServerErrorFiles(false);
+    //         }, 3000);
 
     const formData = new FormData();
 
@@ -261,25 +282,27 @@ const Home = () => {
       setFiles(convertedFiles);
 
       for (let i = 0; i < convertedFiles.length; i++) {
-        await axios
-          .post("/dxf/", {
+        await Promise.race([
+          axios.post("/dxf/", {
             base64file: convertedFiles[i].replace(
               "data:application/octet-stream;base64,",
               ""
             ),
             namefile: acceptedFiles[i].name,
-          })
+          }),
+        ])
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
             console.log(response.data)
             setQuantityValues((prevData) => {
               const newData = [...prevData];
-              newData[response.data.id] = 1; 
+              newData[response.data.id] = 1;
               return newData;
             });
             setMaterialValues((prevData) => {
+
               const newData = [...prevData];
-              newData[response.data.id] = materials[0].id;
+              newData[response.data?.id] = materials[0]?.id;
               return newData;
             });
           })
@@ -306,21 +329,19 @@ const Home = () => {
       event.preventDefault();
     }
     setMaterialValues([]);
-    setMaterials([])
-    setQuantityValues([]) 
-    setData([]) 
-    setOrders([]) 
-    setDetailsIds([]) 
-    setDetailsIds([]) 
-    setItems([]) 
-    setFiles([])
+    setQuantityValues([]);
+    setData([]);
+    setOrders([]);
+    setDetailsIds([]);
+    setItems([]);
+    setFiles([]);
     setLoading(false);
     setUploading(false);
-    setFiles([]);
     setFormUpload(false);
     setCalculate(false);
-    setData([]);
-    setErrorServer(false)
+    setErrorServer(false);
+    setIdConfirm(null);
+    setIds([])
   };
 
   const goCalc = () => {
@@ -364,8 +385,9 @@ const Home = () => {
 
   return (
     <div className="">
+      {serverErrorFiles && <ServerFilesError />}
       {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
-      {visibleError ? <VisibleError /> : ""}
+      {visibleError && <VisibleError />}
       {loading ? (
         <LoadingFiles
           uploading={uploading}
@@ -377,7 +399,7 @@ const Home = () => {
       )}
       {formLoading ? <FormLoading /> : ""}
       {formUpload ? <FormUpload windowClose={windowClose} /> : ""}
-      {calculate && data.length>0 ? (
+      {calculate && data.length > 0 ? (
         <Calculate
           setDetailsIds={setDetailsIds}
           detailsIds={detailsIds}
@@ -412,13 +434,13 @@ const Home = () => {
           goPrevPlacingOrder={goPrevPlacingOrder}
           handleSubmit={handleSubmit}
           comment={comment}
-          handleCommentChange ={handleCommentChange}
+          handleCommentChange={handleCommentChange}
         />
       ) : (
         ""
       )}
       {errorServer ? (
-        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm}/>
+        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm} />
       ) : ""}
       <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
     </div>

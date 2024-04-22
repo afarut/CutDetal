@@ -3,14 +3,13 @@ import { useDropzone } from "react-dropzone";
 import { convertBase64 } from "../../utils/convertBase64";
 import axios from "../../axios.js";
 import LoadingFiles from "./loadingFiles.jsx";
-import Calculate from "./calculate.jsx";
-import PlacingOrder from "./placingOrder.jsx";
 import VisibleError from "./visibleError.jsx";
 import FormUpload from "./formupload.jsx";
 import EmbedCalcView from "./EmbedCalcView.jsx";
 import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
+import ServerFilesError from "./serverfileserror.jsx";
 
 const EmbedCalcFunc = () => {
   const [files, setFiles] = useState([]);
@@ -32,7 +31,7 @@ const EmbedCalcFunc = () => {
   const [errorSize, setErrorSize] = useState(false);
   const [fileName, setFileName] = useState("");
   const [idConfirm, setIdConfirm] = useState(null);
-
+  const [serverErrorFiles, setServerErrorFiles] = useState(false)
   const [ids, setIds] = useState([])
 
   useEffect(() => {
@@ -59,9 +58,46 @@ const EmbedCalcFunc = () => {
       });
   }, []);
 
+  function pingServer() {
+    return axios.get("/ping")
+      .then((res) => {
+        if (!res.data.status) {
+          setServerErrorFiles(true);
+          windowClose();
+          setTimeout(() => {
+            setServerErrorFiles(false);
+          }, 3000);
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        return false;
+      });
+  }
+
   const onDrop = async (acceptedFiles) => {
+    
     setLoading(true);
     let error = false;
+    let server =  await pingServer()
+
+    console.log(server)
+    if (!server){
+      return
+    }
+
+    if (acceptedFiles.length === 0) {
+      error = true;
+      setVisibleError(true);
+      setTimeout(() => {
+        setVisibleError(false);
+      }, 3000);
+      windowClose();
+      return;
+    }
 
     acceptedFiles.forEach((file) => {
       if (file.size > maxFileSize * 1000) {
@@ -76,12 +112,10 @@ const EmbedCalcFunc = () => {
       if (!file.name.toLowerCase().endsWith(".dxf")) {
         error = true;
         setVisibleError(true);
-
+        windowClose();
         setTimeout(() => {
           setVisibleError(false);
         }, 3000);
-
-        return;
       }
     });
 
@@ -91,6 +125,12 @@ const EmbedCalcFunc = () => {
       setFiles([]);
       return;
     }
+
+    // setServerErrorFiles(true);
+    //         setLoading(false)
+    //         setTimeout(() => {
+    //           setServerErrorFiles(false);
+    //         }, 3000);
 
     const formData = new FormData();
 
@@ -105,24 +145,27 @@ const EmbedCalcFunc = () => {
       setFiles(convertedFiles);
 
       for (let i = 0; i < convertedFiles.length; i++) {
-        await axios
-          .post("/dxf/", {
+        await Promise.race([
+          axios.post("/dxf/", {
             base64file: convertedFiles[i].replace(
               "data:application/octet-stream;base64,",
               ""
             ),
             namefile: acceptedFiles[i].name,
-          })
+          }),
+        ])
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
+            console.log(response.data)
             setQuantityValues((prevData) => {
               const newData = [...prevData];
               newData[response.data.id] = 1;
               return newData;
             });
             setMaterialValues((prevData) => {
+
               const newData = [...prevData];
-              newData[response.data.id] = materials[0].id;
+              newData[response.data?.id] = materials[0]?.id;
               return newData;
             });
           })
@@ -149,7 +192,6 @@ const EmbedCalcFunc = () => {
       event.preventDefault();
     }
     setMaterialValues([]);
-    setMaterials([]);
     setQuantityValues([]);
     setData([]);
     setOrders([]);
@@ -184,6 +226,7 @@ const EmbedCalcFunc = () => {
   console.log(ids)
   return (
     <div className="embedCalcFunc">
+      {serverErrorFiles && <ServerFilesError />}
       {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
       {visibleError ? <VisibleError /> : ""}
       {loading ? (

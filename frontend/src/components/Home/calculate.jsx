@@ -20,7 +20,7 @@ const Calculate = ({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [imageInfo, setImageInfo] = useState({});
   
-  console.log(data, items)
+  // console.log(data, items)
 
   return (
     <>
