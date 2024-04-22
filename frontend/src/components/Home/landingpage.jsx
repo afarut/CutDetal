@@ -8,7 +8,7 @@ import setting from "../../images/settings icon.png";
 const LandingPage = ({getRootProps, getInputProps}) => {
     return ( 
         <div className="homepage">
-        <div className={`relative ${module.contentWrapper}`}>
+        <div className={`relative`}>
           <div className={`flex h-auto gap-[16px] ${module.mainLabel}`}>
             <div
               className={`${module.leftpanelLabel} flex justify-between items-center pl-[42px]`}
@@ -20,7 +20,7 @@ const LandingPage = ({getRootProps, getInputProps}) => {
             </div>
             <div className="w-full flex justify-end">
               <div
-                className={`min-w-[570px] max-w-[625px] h-full p-[42px] relative ${module.pcInputLabel}`}
+                className={`min-w-[450px] max-w-[525px] h-full p-6 relative ${module.pcInputLabel}`}
                 style={{
                   backgroundImage: `url(${modal})`,
                   backgroundSize: "cover",
@@ -28,12 +28,12 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                 {...getRootProps()}
               >
                 <input {...getInputProps()} />
-                <div className="rounded-3xl bg-white w-full h-full p-[24px] flex flex-col gap-[24px] justify-between">
+                <div className="rounded-3xl bg-white w-full h-full p-[16px] flex flex-col gap-4 justify-between">
                   <div className={`cursor-pointer ${module.windowfile}`}>
                     <div className="flex justify-center items-center h-full w-full">
-                      <div className="flex flex-col gap-[56px]">
+                      <div className="flex flex-col gap-8">
                         <div className="flex justify-center items-center">
-                          <img src={upload} alt="upload" />
+                          <img src={upload} alt="upload" className="w-[18%]"/>
                         </div>
                         <div className={module.underuploadicon}>
                           Или перетащите сюда ваши DXF файлы
@@ -58,13 +58,13 @@ const LandingPage = ({getRootProps, getInputProps}) => {
             </div>
           </div>
           <div
-            className={`mt-[75px] mb-[75px] px-[5vw] lg:px-[125px] md:px-[5%] py-[75px] flex flex-col md:flex-row justify-around gap-[5vw] ${module.rowLables}`}
+            className={`mt-[75px] mb-[75px] px-[5vw] lg:px-[125px] md:px-[5%] py-12 flex flex-col md:flex-row justify-around gap-[5vw] ${module.rowLables}`}
           >
-            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px] flex-1">
+            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-7 flex-1">
               <div className="flex flex-col gap-[12px] items-center">
                 <img
                   src={fileIcon}
-                  className="h-[84px] w-[108px]"
+                  className="w-[6rem]"
                   alt="docIcon"
                 />
                 <div className={module.iconlabel}>
@@ -75,11 +75,11 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                 Загрузить один или несколько DXF файлов для обработки
               </div> */}
             </div>
-            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px] flex-1">
+            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-7 flex-1">
               <div className="flex flex-col gap-[12px] items-center">
                 <img
                   src={setting}
-                  className="h-[84px] w-[84px]"
+                  className="w-[4.75rem]"
                   alt="docIcon"
                 />
                 <div className={module.iconlabel}>
@@ -90,11 +90,11 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                 Загрузить один или несколько DXF файлов для обработки
               </div> */}
             </div>
-            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-[31px] flex-1">
+            <div className="rounded-3xl flex flex-col gap-[12px] bg-white px-[42px] py-7 flex-1">
               <div className="flex flex-col gap-[12px] items-center">
                 <img
                   src={docIcon}
-                  className="h-[84px] w-[75px] "
+                  className="w-[4.5rem] "
                   alt="docIcon"
                 />
                 <div className={module.iconlabel}>

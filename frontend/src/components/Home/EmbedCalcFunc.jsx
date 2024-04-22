@@ -9,6 +9,7 @@ import EmbedCalcView from "./EmbedCalcView.jsx";
 import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
+import ServerFilesError from "./serverfileserror.jsx";
 
 const EmbedCalcFunc = () => {
   const [files, setFiles] = useState([]);
@@ -30,7 +31,7 @@ const EmbedCalcFunc = () => {
   const [errorSize, setErrorSize] = useState(false);
   const [fileName, setFileName] = useState("");
   const [idConfirm, setIdConfirm] = useState(null);
-
+  const [serverErrorFiles, setServerErrorFiles] = useState(false)
   const [ids, setIds] = useState([])
 
   useEffect(() => {
@@ -61,6 +62,16 @@ const EmbedCalcFunc = () => {
     setLoading(true);
     let error = false;
 
+    if (acceptedFiles.length === 0) {
+      error = true;
+      setVisibleError(true);
+      setTimeout(() => {
+        setVisibleError(false);
+      }, 3000);
+      windowClose();
+      return;
+    }
+
     acceptedFiles.forEach((file) => {
       if (file.size > maxFileSize * 1000) {
         setFileName(file.name);
@@ -74,12 +85,10 @@ const EmbedCalcFunc = () => {
       if (!file.name.toLowerCase().endsWith(".dxf")) {
         error = true;
         setVisibleError(true);
-
+        windowClose();
         setTimeout(() => {
           setVisibleError(false);
         }, 3000);
-
-        return;
       }
     });
 
@@ -103,33 +112,58 @@ const EmbedCalcFunc = () => {
       setFiles(convertedFiles);
 
       for (let i = 0; i < convertedFiles.length; i++) {
-        await axios
-          .post("/dxf/", {
+        await Promise.race([
+          axios.post("/dxf/", {
             base64file: convertedFiles[i].replace(
               "data:application/octet-stream;base64,",
               ""
             ),
             namefile: acceptedFiles[i].name,
+          }),
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              if (data.length===0){
+                setServerErrorFiles(true);
+                setTimeout(() => {
+                  setServerErrorFiles(false);
+                }, 3000);
+                windowClose();
+                reject(new Error("Timeout"));
+              }
+            }, 15000);
           })
+        ])
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
+            console.log(response.data)
             setQuantityValues((prevData) => {
               const newData = [...prevData];
               newData[response.data.id] = 1;
               return newData;
             });
             setMaterialValues((prevData) => {
+
               const newData = [...prevData];
-              newData[response.data.id] = materials[0].id;
+              newData[response.data?.id] = materials[0]?.id;
               return newData;
             });
           })
           .catch((error) => {
             console.error(error.message);
+            windowClose();
+            setServerErrorFiles(true);
+            setTimeout(() => {
+              setServerErrorFiles(false);
+            }, 3000);
           });
       }
       setUploading(true);
     } catch (error) {
+      windowClose();
+      setServerErrorFiles(true);
+      setTimeout(() => {
+        setServerErrorFiles(false);
+      }, 3000);
       console.error("Error converting files to Base64:", error);
     }
   };
@@ -181,6 +215,7 @@ const EmbedCalcFunc = () => {
   console.log(ids)
   return (
     <div className="embedCalcFunc">
+      {serverErrorFiles && <ServerFilesError />}
       {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
       {visibleError ? <VisibleError /> : ""}
       {loading ? (

@@ -12,6 +12,7 @@ import ErrorPopup from "./errorPopup.jsx";
 import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
 import { useLocation } from "react-router-dom";
+import ServerFilesError from "./serverfileserror.jsx";
 
 
 const Home = () => {
@@ -40,6 +41,7 @@ const Home = () => {
   const [errorSize, setErrorSize] = useState(false)
   const [fileName, setFileName] = useState('')
   const [idConfirm, setIdConfirm] = useState(null)
+  const [serverErrorFiles, setServerErrorFiles] = useState(false)
 
   const [ids, setIds] = useState([])
 
@@ -198,40 +200,40 @@ const Home = () => {
     let error = false;
 
     if (acceptedFiles.length === 0) {
-        error = true;
-        setVisibleError(true);
-        setTimeout(() => {
-            setVisibleError(false);
-        }, 3000);
-        windowClose();
-        return;
+      error = true;
+      setVisibleError(true);
+      setTimeout(() => {
+        setVisibleError(false);
+      }, 3000);
+      windowClose();
+      return;
     }
 
     acceptedFiles.forEach((file) => {
-        if (file.size > maxFileSize * 1000) {
-            setFileName(file.name);
-            setErrorSize(true);
-            windowClose();
-            setTimeout(() => {
-                setErrorSize(false);
-            }, 3000);
-            return;
-        }
-        if (!file.name.toLowerCase().endsWith(".dxf")) {
-            error = true;
-            setVisibleError(true);
-            windowClose();
-            setTimeout(() => {
-                setVisibleError(false);
-            }, 3000);
-        }
+      if (file.size > maxFileSize * 1000) {
+        setFileName(file.name);
+        setErrorSize(true);
+        windowClose();
+        setTimeout(() => {
+          setErrorSize(false);
+        }, 3000);
+        return;
+      }
+      if (!file.name.toLowerCase().endsWith(".dxf")) {
+        error = true;
+        setVisibleError(true);
+        windowClose();
+        setTimeout(() => {
+          setVisibleError(false);
+        }, 3000);
+      }
     });
 
     if (error) {
-        setLoading(false);
-        setUploading(false);
-        setFiles([]);
-        return;
+      setLoading(false);
+      setUploading(false);
+      setFiles([]);
+      return;
     }
 
     const formData = new FormData();
@@ -247,14 +249,27 @@ const Home = () => {
       setFiles(convertedFiles);
 
       for (let i = 0; i < convertedFiles.length; i++) {
-        await axios
-          .post("/dxf/", {
+        await Promise.race([
+          axios.post("/dxf/", {
             base64file: convertedFiles[i].replace(
               "data:application/octet-stream;base64,",
               ""
             ),
             namefile: acceptedFiles[i].name,
+          }),
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              if (data.length===0){
+                setServerErrorFiles(true);
+                setTimeout(() => {
+                  setServerErrorFiles(false);
+                }, 3000);
+                windowClose();
+                reject(new Error("Timeout"));
+              }
+            }, 15000);
           })
+        ])
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
             console.log(response.data)
@@ -272,10 +287,20 @@ const Home = () => {
           })
           .catch((error) => {
             console.error(error.message);
+            windowClose();
+            setServerErrorFiles(true);
+            setTimeout(() => {
+              setServerErrorFiles(false);
+            }, 3000);
           });
       }
       setUploading(true);
     } catch (error) {
+      windowClose();
+      setServerErrorFiles(true);
+      setTimeout(() => {
+        setServerErrorFiles(false);
+      }, 3000);
       console.error("Error converting files to Base64:", error);
     }
   };
@@ -290,7 +315,7 @@ const Home = () => {
 
   const windowClose = (event) => {
     if (event) {
-        event.preventDefault();
+      event.preventDefault();
     }
     setMaterialValues([]);
     setQuantityValues([]);
@@ -306,7 +331,7 @@ const Home = () => {
     setErrorServer(false);
     setIdConfirm(null);
     setIds([])
-};
+  };
 
   const goCalc = () => {
     setUploading(false);
@@ -349,8 +374,9 @@ const Home = () => {
 
   return (
     <div className="">
+      {serverErrorFiles && <ServerFilesError />}
       {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
-      {visibleError && <VisibleError /> }
+      {visibleError && <VisibleError />}
       {loading ? (
         <LoadingFiles
           uploading={uploading}
