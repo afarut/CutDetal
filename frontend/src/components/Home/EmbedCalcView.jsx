@@ -20,7 +20,7 @@ const EmbedCalcView = ({getRootProps, getInputProps}) => {
                           <img className="w-[35%]" src={upload} alt="upload" />
                         </div>
                         <div className={`${module.underuploadicon} !text-2xl`}>
-                          Или перетащите сюда ваши DXF файлы
+                          Перетащите сюда ваши DXF файлы
                         </div>
                       </div>
                     </div>

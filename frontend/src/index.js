@@ -7,6 +7,14 @@ import createStore from 'react-auth-kit/createStore';
 import AuthProvider from "react-auth-kit";
 import reportWebVitals from "./reportWebVitals";
 
+const domain = window.location.hostname
+
+if (domain === "calc.cutdetal.ru") {
+  document.title = "CutDetal"
+} else {
+  document.title = "CUTL"
+}
+
 const store = createStore({
   authName:'_auth',
   authType:'cookie',

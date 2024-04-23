@@ -8,12 +8,12 @@ import axios from "../../axios";
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
 
 import cutDetalLogo from "../../images/cutdetallogo.svg";
-import logoCutlPro from '../../images/logocutlpro.png'
+import logoCutlPro from "../../images/logocutlpro.png";
 
 import Login from "./Login";
 
 const Header = () => {
-  const domain = window.location.hostname
+  const domain = window.location.hostname;
 
   const [user, setUser] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -81,7 +81,12 @@ const Header = () => {
     >
       <div className="flex justify-center items-center">
         <NavLink to={"/"}>
-          <img height={50} width={60} src={domain === "calc.cutdetal.ru" ? cutDetalLogo : logoCutlPro} alt="logo" />
+          <img
+            height={50}
+            width={60}
+            src={domain === "calc.cutdetal.ru" ? cutDetalLogo : logoCutlPro}
+            alt="logo"
+          />
         </NavLink>
       </div>
 
@@ -109,14 +114,16 @@ const Header = () => {
               >
                 <button>Регистрация</button>
               </div> */}
-              <div
-                onClick={() =>
-                  (window.location.href = "https://cutdetal.ru/instrukciya/")
-                }
-                className={`${module.logInButton} px-[22px] py-[10px]`}
-              >
-                <button>Инструкция</button>
-              </div>
+              {domain === "calc.cutdetal.ru" && (
+                <div
+                  onClick={() =>
+                    (window.location.href = "https://cutdetal.ru/instrukciya/")
+                  }
+                  className={`${module.logInButton} px-[22px] py-[10px]`}
+                >
+                  <button>Инструкция</button>
+                </div>
+              )}
               <div
                 onClick={toggleLoginPopup}
                 className={`${module.logInButton} px-[22px] py-[10px]`}
@@ -181,9 +188,16 @@ const Header = () => {
                         {/* <div>
                           <span>Регистрация</span>
                         </div> */}
-                        <div onClick={() =>  window.location.href='https://cutdetal.ru/instrukciya/'}>
-                          <span>Инструкция</span>
-                        </div>
+                        {domain === "calc.cutdetal.ru" && (
+                          <div
+                            onClick={() =>
+                              (window.location.href =
+                                "https://cutdetal.ru/instrukciya/")
+                            }
+                          >
+                            <span>Инструкция</span>
+                          </div>
+                        )}
                         <div onClick={toggleLoginPopup}>
                           <span>Логин</span>
                         </div>
