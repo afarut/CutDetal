@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import module from "./Header.module.css";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 
@@ -8,10 +8,13 @@ import axios from "../../axios";
 import burgerMenuIcon from "../../images/burgerMenuIcon.svg";
 
 import cutDetalLogo from "../../images/cutdetallogo.svg";
+import logoCutlPro from '../../images/logocutlpro.png'
 
 import Login from "./Login";
 
 const Header = () => {
+  const domain = window.location.hostname
+
   const [user, setUser] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
@@ -78,7 +81,7 @@ const Header = () => {
     >
       <div className="flex justify-center items-center">
         <NavLink to={"/"}>
-          <img height={50} width={60} src={cutDetalLogo} alt="logo" />
+          <img height={50} width={60} src={domain === "calc.cutdetal.ru" ? cutDetalLogo : logoCutlPro} alt="logo" />
         </NavLink>
       </div>
 
