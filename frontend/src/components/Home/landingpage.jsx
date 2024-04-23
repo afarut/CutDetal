@@ -37,7 +37,7 @@ const LandingPage = ({getRootProps, getInputProps}) => {
                           <img src={upload} alt="upload" className="w-[18%]"/>
                         </div>
                         <div className={module.underuploadicon}>
-                          Или перетащите сюда ваши DXF файлы
+                          Перетащите сюда ваши DXF файлы
                         </div>
                       </div>
                     </div>
