@@ -11,6 +11,7 @@ from xml.dom import minidom
 import aiohttp
 
 
+
 def calc_dxf(file_content_base64, name_file, sr_min=0.01, sr_corner=0, login=settings.LOGIN, password=settings.PASSWORD):
     # Создаем сессию с аутентификацией
     session = Session()
