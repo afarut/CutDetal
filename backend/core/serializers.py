@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from .models import Material, Order, Detail, Range, DXFSize
+from .models import Material, Order, Detail, Range, DXFSize, Thickness
 from .utils import create_image
+
+
+class ThicknessSerialazer(serializers.ModelSerializer):
+    class Meta:
+        model = Thickness
+        fields = "__all__"
 
 
 class DXFSizeSerialazer(serializers.ModelSerializer):
@@ -10,6 +16,7 @@ class DXFSizeSerialazer(serializers.ModelSerializer):
 
 
 class RangeSerialazer(serializers.ModelSerializer):
+    thick_value = serializers.CharField(source="thick.value", read_only=True)
     class Meta:
         model = Range
         fields = (
@@ -17,8 +24,11 @@ class RangeSerialazer(serializers.ModelSerializer):
             "start",
             "stop",
             "price",
-            "material"
+            "material",
+            "thick_value",
+            "thick"
             )
+        write_only_fields = ("thick",)
 
 
 class MaterialSerializer(serializers.ModelSerializer):
