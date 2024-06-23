@@ -29,11 +29,16 @@ class Material(models.Model):
     def __str__(self):
         return self.name
 
+class Thickness(models.Model):
+    value = models.FloatField()
+
+
 class Range(models.Model):
     start = models.FloatField()
     finish = models.FloatField()
     price = models.FloatField()
     material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="ranges")
+    thick = models.ForeignKey(Thickness, on_delete=models.CASCADE, related_name="ranges", null=True)
 
     def __str__(self):
         return f"{self.start} - {self.stop} by {self.price}"
