@@ -190,6 +190,18 @@ async def ping(request):
             return JsonResponse(result)
         except asyncio.TimeoutError:
             return JsonResponse({"status": False})
+        
+
+@authentication_classes([])
+@permission_classes([])
+@csrf_exempt
+async def get_materials_view(request):
+    if request.method == "GET":
+        try:
+            result = await asyncio.wait_for(utils.get_materials(), timeout=12)
+            return JsonResponse(result)
+        except asyncio.TimeoutError:
+            return JsonResponse({"status": False})
 
 class DetailExcludeApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus
