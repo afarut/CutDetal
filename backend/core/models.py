@@ -1,20 +1,37 @@
 from django.db import models
+
 from .constants import VERBOSE_STATUS_TYPE
 
 
-class Material(models.Model):
-    name = models.CharField(max_length=100)
-    weight = models.FloatField()
-    price_by_square_meter = models.FloatField()
-    price_by_incut = models.PositiveIntegerField(default=0)
+class MaterialGroup(models.Model):
+    name = models.CharField(max_length=255)
+    cut_type = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
+def get_default_group_id():
+    # Ensure the default group exists and return its ID
+    group, created = MaterialGroup.objects.get_or_create(
+        name='Default Group', cut_type='Default Cut Type'
+    )
+    return group.id
+
+class Material(models.Model):
+    group = models.ForeignKey(MaterialGroup, related_name='materials', on_delete=models.CASCADE, default=get_default_group_id)
+    name = models.CharField(max_length=255)
+    thickness = models.DecimalField(max_digits=5, decimal_places=2)
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    price_d = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    price_v = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.name
 
 class Range(models.Model):
     start = models.FloatField()
-    stop = models.FloatField()
+    finish = models.FloatField()
     price = models.FloatField()
     material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="ranges")
 
@@ -62,8 +79,8 @@ class DXFSize(models.Model):
 
     def get(self):
         if not self.__class__.objects.exists():
-        	instance = self.__class__.objects.create(size=1000)
-        	instance.save()
+            instance = self.__class__.objects.create(size=1000)
+            instance.save()
         else:
         	instance = self.__class__.objects.first()
         return instance

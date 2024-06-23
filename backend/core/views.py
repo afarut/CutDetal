@@ -4,23 +4,27 @@ import json
 from django.core import serializers
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views import View
 from .import utils 
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from .serializers import DetailSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSaveSerialazer, DXFSizeSerialazer
-from .models import Detail, Order, Material, Range, DXFSize
+from .serializers import DetailSerializer, MaterialGroupSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSaveSerialazer, DXFSizeSerialazer
+from .models import Detail, MaterialGroup, Order, Material, Range, DXFSize
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, RetrieveAPIView
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import authentication_classes, permission_classes
 from .permissions import CreateOnly, EditOnly, IsAuthAndSuperAdminOnly, ReadOnly
 from .filters import ExcludeDetailFilter, DetailFilter
 import asyncio
+from django.db.utils import IntegrityError
+from asgiref.sync import sync_to_async
 
 @authentication_classes([])
 @permission_classes([])
@@ -203,11 +207,78 @@ async def get_materials_view(request):
         except asyncio.TimeoutError:
             return JsonResponse({"status": False})
 
+@authentication_classes([])
+@permission_classes([])
+@csrf_exempt
+async def update_materials(request):
+    if request.method == "POST":
+        try:
+            try:
+                await asyncio.wait_for(utils.ping_web_service(), timeout=12)
+            except asyncio.TimeoutError:
+                return JsonResponse({"status": False, "error": "Ping timeout"})
+
+            await sync_to_async(Material.objects.all().delete)()
+            await sync_to_async(MaterialGroup.objects.all().delete)()
+
+            data = await asyncio.wait_for(utils.get_materials(), timeout=12)
+
+            await sync_to_async(create_materials_from_data)(data)
+
+            return JsonResponse({"status": True})
+
+        except asyncio.TimeoutError:
+            return JsonResponse({"status": False, "error": "Fetch timeout"})
+        except IntegrityError as e:
+            return JsonResponse({"status": False, "error": str(e)})
+        except Exception as e:
+            return JsonResponse({"status": False, "error": str(e)})
+
+def create_materials_from_data(data):
+    with transaction.atomic():
+        for group_data in data.get("Group", []):
+            group_name = group_data.get("Name")
+            cut_type = group_data.get("CutType")
+            group = MaterialGroup.objects.create(name=group_name, cut_type=cut_type)
+
+            materials = group_data.get("Material", [])
+            if isinstance(materials, dict):
+                materials = [materials]
+
+            for material_data in materials:
+                material = Material.objects.create(
+                    group=group,
+                    name=material_data.get("Name"),
+                    thickness=material_data.get("Thickness"),
+                    weight=material_data.get("Weight"),
+                    price=material_data.get("Price"),
+                    price_d=material_data.get("PriceD"),
+                    price_v=material_data.get("PriceV"),
+                )
+
+                ranges = material_data.get("Range", [])
+                if isinstance(ranges, dict):
+                    ranges = [ranges]
+
+                for range_data in ranges:
+                    Range.objects.create(
+                        material=material,
+                        start=range_data.get("Start"),
+                        finish=range_data.get("Finish"),
+                        price=range_data.get("Price")
+                    )
+
 class DetailExcludeApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus
     queryset = Detail.objects.all()
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_class = ExcludeDetailFilter
+
+class MaterialGroupApiView(ListAPIView):
+    serializer_class = MaterialGroupSerializer
+    queryset = MaterialGroup.objects.all()
+    permission_classes = []
+    pagination_class = None
 
 
 class DetailApiView(ListAPIView):
