@@ -9,7 +9,7 @@ import base64
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import aiohttp
-
+from django.core.exceptions import ObjectDoesNotExist
 
 def calc_dxf(
     file_content_base64,
@@ -128,7 +128,6 @@ async def get_materials(login=settings.LOGIN, password=settings.PASSWORD):
     data_dict = xml_to_dict(root)
     
     return data_dict
-
 
 def create_order_xml_string(order_header, calculation_table):
     # Root element
