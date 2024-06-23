@@ -24,6 +24,8 @@ const ItemOrder = ({
 
   const [onQuestion, setOnQuestion] = useState(false);
 
+  const [daval, setDaval] = useState(false)
+
   const imgRef = useRef(null);
 
   const handleIsPopupOpen = () => {
@@ -59,7 +61,7 @@ const ItemOrder = ({
       updatedItems[item.id] = priceDetail;
       return updatedItems;
     });
-  }, [quantityValues, materialValues, thicknessOptions, selectedThickness]);
+  }, [quantityValues, materialValues, thicknessOptions, selectedThickness, daval]);
 
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
@@ -79,30 +81,33 @@ const ItemOrder = ({
     const X = item.size_x;
     const Y = item.size_y;
     const length = item.total_length;
-    const material = thicknessOptions[item.id].find(
-      (el) => el.Name == selectedThickness[item.id]
+    const material = thicknessOptions[item.id]?.find(
+      (el) => el.id == parseInt(selectedThickness[item.id])
     );
-    const ranges = material?.Range;
+    const ranges = material?.ranges;
 
     const diap = [];
 
     for (let i = 0; i < ranges?.length; i++) {
-      let sum = Math.ceil(ranges[i].Start / (length / 1000));
+      let sum = Math.ceil(ranges[i].start / (length / 1000));
 
       if (sum === 0) {
         sum = 1;
       }
 
+      const priceMaterial = daval ? material.price_d : material.price
+
       const doc = {
         countList: sum,
-        start: ranges[i].Start,
-        stop: ranges[i].Finish,
+        start: ranges[i].start,
+        stop: ranges[i].finish,
+
         PriceMaterial:
-          ((X * Y) / 1000000) * material.Price * sum,
-        PriceRezka: (length / 1000) * sum * ranges[i].Price,
+          ((X * Y) / 1000000) *  priceMaterial * sum,
+        PriceRezka: (length / 1000) * sum * ranges[i].price,
         TotalSumOneDetal: Math.ceil(
-          (((X * Y) / 1000000) * material.Price * sum +
-            (length / 1000) * sum * ranges[i].Price + sum * item.incut * material.PriceV)  /
+          (((X * Y) / 1000000) * priceMaterial * sum +
+            (length / 1000) * sum * ranges[i].price + sum * item.incut * material.price_v)  /
           sum
         ),
       };
@@ -114,10 +119,10 @@ const ItemOrder = ({
 
   useEffect(() => {
     getResult();
-  }, [materialValues, thicknessOptions, selectedThickness ]);
+  }, [materialValues, thicknessOptions, selectedThickness, daval]);
 
   const getPriceOneDetailByCount = () => {
-    const count = quantityValues[item.id];
+    const count = quantityValues[item.id]==0 ? 1 : quantityValues[item.id];
     for (let i = 0; i < diapazon.length - 1; i++) {
       if (diapazon[i].countList <= count && diapazon[i + 1].countList > count) {
         return diapazon[i].TotalSumOneDetal;
@@ -127,7 +132,7 @@ const ItemOrder = ({
   };
 
   const getPriceDetailByCount = () => {
-    const count = quantityValues[item.id];
+    const count = quantityValues[item.id]==0 ? 1 : quantityValues[item.id];
 
     for (let i = 0; i < diapazon.length - 1; i++) {
       if (diapazon[i].countList <= count && diapazon[i + 1].countList > count) {
@@ -143,7 +148,6 @@ const ItemOrder = ({
   if (isNaN(items[item.id])) {
     items[item.id] = getPriceDetailByCount()
   }
-
 
 
   return (
@@ -192,9 +196,9 @@ const ItemOrder = ({
               <option value="0" hidden>
                 Выберите материал
               </option>
-              {materials.Group.map((item) => (
-                <option key={item.Name} value={item.Name}>
-                  {item.Name}
+              {materials.map((material) => (
+                <option key={material.id} value={material.id}>
+                  {material.name}
                 </option>
               ))}
             </select>
@@ -217,8 +221,8 @@ const ItemOrder = ({
                     Выберите толщину
                   </option>
                   {thicknessOptions?.[item.id]?.map((item) => (
-                    <option key={item.Name} value={item.Name}>
-                      {item.Name}
+                    <option key={item.id} value={item.id}>
+                      {item.name}
                     </option>
                   ))}
                 </select>
@@ -231,20 +235,26 @@ const ItemOrder = ({
         {materialValues[item.id] !== undefined && (
 
         <div className={`${module.materialInput} flex gap-[8px] my-[8px] w-full mt-[16px]`}>
-          Тип резки: <span className="ml-[16px] font-bold">{typeRez[item.id].CutType}</span>
+          Тип резки: <span className="ml-[16px] font-bold">{typeRez[item.id].cut_type}</span>
         </div>
         )}
+
+        <div className={`${module.materialInput} flex items-center gap-6 my-[8px]`}>
+          <label htmlFor="daval">Давальческий материал:</label>
+          <input type="checkbox" name="daval" id="daval" value={daval} onChange={()=>setDaval(!daval)} />
+        </div>
 
         <div className={module.inputDivCount}>
           <div className="flex items-center">Количество: </div>
           <input
-            type="text"
+            type="number"
+            min={1}
             className="w-[165px] h-[30px]"
             placeholder="Введите число"
             value={quantityValues[item.id]}
             onChange={(e) => handleQuantityChange(item.id, e.target.value)}
           />
-          <span
+          {isNaN(getPriceOneDetailByCount())===false ? <span
             className={`${module.spanPriceItem} flex items-center relative`}
           >
             цена {getPriceOneDetailByCount()}р/деталь
@@ -267,11 +277,13 @@ const ItemOrder = ({
                 </div>
               </div>
             )}
-          </span>
+          </span> : ""}
+          
         </div>
-        <div className={module.AllPriceItem}>
+        {isNaN(getPriceDetailByCount())===false ? <div className={module.AllPriceItem}>
           ИТОГО: <span>{getPriceDetailByCount()} RUB</span>
-        </div>
+        </div> : ""}
+        
       </div>
       <div className="absolute top-0 right-0 m-[18px]">
         <img
