@@ -15,29 +15,28 @@ class RangeSerialazer(serializers.ModelSerializer):
         fields = (
             "id",
             "start",
-            "stop",
+            "finish",
             "price",
-            "material"
-            )
-
-
-
-class MaterialSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Material
-        fields = ['id', 'name', 'thickness', 'weight', 'price', 'price_d', 'price_v', 'group']
-        depth = 1
+            "material",
+        )
+        read_only_fields = ('material',)
 
 class MaterialGroupSerializer(serializers.ModelSerializer):
-    # materials = MaterialSerializer(many=True, read_only=True)
-
     class Meta:
         model = MaterialGroup
         fields = (
             "id",
             "name",
             "cut_type"
-            )
+        )
+
+class MaterialSerializer(serializers.ModelSerializer):
+    ranges = RangeSerialazer(many=True, read_only=True)
+    group = MaterialGroupSerializer()
+
+    class Meta:
+        model = Material
+        fields = ['id', 'name', 'thickness', 'weight', 'price', 'price_d', 'price_v', 'group', 'ranges']
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     #detail_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Detail.objects.all())
