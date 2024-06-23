@@ -15,6 +15,10 @@ const ItemOrder = ({
   setIsPopupOpen,
   setImageInfo,
   items,
+  handleThicknessChange,
+  thicknessOptions,
+  selectedThickness,
+  typeRez
 }) => {
   const [diapazon, setDiapazon] = useState([]);
 
@@ -55,7 +59,7 @@ const ItemOrder = ({
       updatedItems[item.id] = priceDetail;
       return updatedItems;
     });
-  }, [quantityValues, materialValues]);
+  }, [quantityValues, materialValues, thicknessOptions, selectedThickness]);
 
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
@@ -75,15 +79,15 @@ const ItemOrder = ({
     const X = item.size_x;
     const Y = item.size_y;
     const length = item.total_length;
-    const material = materials.find(
-      (el) => el.id == parseInt(materialValues[item.id])
+    const material = thicknessOptions[item.id].find(
+      (el) => el.Name == selectedThickness[item.id]
     );
-    const ranges = material?.ranges;
+    const ranges = material?.Range;
 
     const diap = [];
 
     for (let i = 0; i < ranges?.length; i++) {
-      let sum = Math.ceil(ranges[i].start / (length / 1000));
+      let sum = Math.ceil(ranges[i].Start / (length / 1000));
 
       if (sum === 0) {
         sum = 1;
@@ -91,14 +95,14 @@ const ItemOrder = ({
 
       const doc = {
         countList: sum,
-        start: ranges[i].start,
-        stop: ranges[i].stop,
+        start: ranges[i].Start,
+        stop: ranges[i].Finish,
         PriceMaterial:
-          ((X * Y) / 1000000) * material.price_by_square_meter * sum,
-        PriceRezka: (length / 1000) * sum * ranges[i].price,
+          ((X * Y) / 1000000) * material.Price * sum,
+        PriceRezka: (length / 1000) * sum * ranges[i].Price,
         TotalSumOneDetal: Math.ceil(
-          (((X * Y) / 1000000) * material.price_by_square_meter * sum +
-            (length / 1000) * sum * ranges[i].price + sum * item.incut * material.price_by_incut)  /
+          (((X * Y) / 1000000) * material.Price * sum +
+            (length / 1000) * sum * ranges[i].Price + sum * item.incut * material.PriceV)  /
           sum
         ),
       };
@@ -110,7 +114,7 @@ const ItemOrder = ({
 
   useEffect(() => {
     getResult();
-  }, [materialValues]);
+  }, [materialValues, thicknessOptions, selectedThickness ]);
 
   const getPriceOneDetailByCount = () => {
     const count = quantityValues[item.id];
@@ -140,6 +144,8 @@ const ItemOrder = ({
     items[item.id] = getPriceDetailByCount()
   }
 
+
+
   return (
     <div key={item.id} className={module.cartCalc}>
       <div className={module.TitleMobile}>{item.image_name}</div>
@@ -150,8 +156,8 @@ const ItemOrder = ({
           <div className="flex w-full justify-center items-center h-full">
             <div className="flex justify-center w-full items-center relative">
               <svg
-              className="cursor-pointer"
-              height={190}
+                className="cursor-pointer"
+                height={190}
                 onClick={handleIsPopupOpen}
                 viewBox={`0 0 ${getSVGWidth(item.image)} ${getSVGHeight(
                   item.image
@@ -166,30 +172,69 @@ const ItemOrder = ({
       </div>
       <div className="flex flex-col">
         <div className={module.calcItemName}>{item.image_name}</div>
-        <div className={`${module.materialInput} flex gap-[8px] my-[8px] w-full mt-[16px]`}>
+        <div className={`${module.materialInput} flex gap-[8px] my-[16px] w-full `}>
           Размер: <span className="ml-[16px] font-bold">{item.size_x}х{item.size_y} мм</span>
         </div>
-        <div
-          className={`${module.materialInput} flex items-center gap-[8px]`}
-        >
-          <div className="flex items-center">Материал:</div>
-          <select
-            name="material"
-            id="material"
-            className="w-auto h-[30px]"
-            value={materialValues[item.id]}
-            onChange={(e) => handleMaterialChange(item.id, e.target.value)}
+        
+        
+        <div className="flex flex-col gap-[8px]">
+          <div
+            className={`${module.materialInput} flex items-center gap-[8px]`}
           >
-            <option value="0" hidden>
-              Выберите
-            </option>
-            {materials.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
+            <div className="flex items-center">Материал:</div>
+            <select
+              name="material"
+              id="material"
+              className="w-auto h-[30px]"
+              value={materialValues[item.id]}
+              onChange={(e) => handleMaterialChange(item.id, e.target.value)}
+            >
+              <option value="0" hidden>
+                Выберите материал
               </option>
-            ))}
-          </select>
+              {materials.Group.map((item) => (
+                <option key={item.Name} value={item.Name}>
+                  {item.Name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+
+            {materialValues[item.id] !== undefined && (
+              <div
+                className={`${module.materialInput} flex items-center gap-[8px]`}
+              >
+                <div className="flex items-center">Толщина:</div>
+                <select
+                  name="thickness"
+                  id="thickness"
+                  className="w-auto h-[30px]"
+                  value={selectedThickness[item.id]}
+                  onChange={(e) => handleThicknessChange(item.id, e.target.value)}
+                >
+                  <option value="" hidden>
+                    Выберите толщину
+                  </option>
+                  {thicknessOptions?.[item.id]?.map((item) => (
+                    <option key={item.Name} value={item.Name}>
+                      {item.Name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+          </div>
         </div>
+
+        {materialValues[item.id] !== undefined && (
+
+        <div className={`${module.materialInput} flex gap-[8px] my-[8px] w-full mt-[16px]`}>
+          Тип резки: <span className="ml-[16px] font-bold">{typeRez[item.id].CutType}</span>
+        </div>
+        )}
+
         <div className={module.inputDivCount}>
           <div className="flex items-center">Количество: </div>
           <input

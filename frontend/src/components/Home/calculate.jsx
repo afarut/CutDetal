@@ -15,11 +15,15 @@ const Calculate = ({
   handleQuantityChange,
   handleItemRemove,
   items,
-  setItems
+  setItems,
+  handleThicknessChange,
+  thicknessOptions,
+  selectedThickness,
+  typeRez
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [imageInfo, setImageInfo] = useState({});
-  
+
   // console.log(data, items)
 
   return (
@@ -58,6 +62,10 @@ const Calculate = ({
                   setImageInfo={setImageInfo}
                   isPopupOpen={isPopupOpen}
                   setIsPopupOpen={setIsPopupOpen}
+                  handleThicknessChange={handleThicknessChange}
+                  thicknessOptions={thicknessOptions}
+                  selectedThickness={selectedThickness}
+                  typeRez={typeRez}
                 />
               ))}
               <div className="flex justify-end">
