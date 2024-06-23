@@ -65,7 +65,7 @@ const Home = () => {
 
         let newMaterialValues = []
         response.data.map((el) => {
-          newMaterialValues[el.id] = materials[0].id
+          newMaterialValues[el.id] = materials.Group[0].Material[0].Name
         })
         setMaterialValues(newMaterialValues)
 
@@ -76,10 +76,29 @@ const Home = () => {
     }
   }
 
+  const [selectedThickness, setSelectedThickness] = useState([]);
+  const [thicknessOptions, setThicknessOptions] = useState([]);
+  const [typeRez, setTypeRez] = useState([])
+
+
+
+  const handleThicknessChange = (index, value) => {
+    const newThicknessValues = [...selectedThickness];
+    newThicknessValues[index] = value;
+    setSelectedThickness(newThicknessValues);
+  };
+
   const handleMaterialChange = (index, value) => {
     const newMaterialValues = [...materialValues];
     newMaterialValues[index] = value;
     setMaterialValues(newMaterialValues);
+    const materialGroup = materials.Group.find(group => group.Name === value);
+    const newThicknessOptions = [...thicknessOptions]
+    newThicknessOptions[index] = materialGroup ? Array.isArray(materialGroup.Material) === true ? materialGroup.Material : [materialGroup.Material] : []
+    setThicknessOptions(newThicknessOptions);
+    const newTypeRez = [...typeRez]
+    newTypeRez[index] = materialGroup;
+    setTypeRez(newTypeRez)
   };
 
   const handleQuantityChange = (index, value) => {
@@ -187,7 +206,7 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("/material/");
+        const response = await axios.get("/get_materials");
         setMaterials(response.data);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -417,6 +436,10 @@ const Home = () => {
           files={files}
           setItems={setItems}
           items={items}
+          handleThicknessChange={handleThicknessChange}
+          thicknessOptions={thicknessOptions}
+          selectedThickness={selectedThickness}
+          typeRez={typeRez}
         />
       ) : (
         ""
