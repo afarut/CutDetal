@@ -45,6 +45,13 @@ const Home = () => {
 
   const [ids, setIds] = useState([])
 
+
+  const [selectedThickness, setSelectedThickness] = useState([]);
+  const [thicknessOptions, setThicknessOptions] = useState([]);
+  const [typeRez, setTypeRez] = useState([])
+
+  console.log(materials, materialValues)
+
   const location = useLocation()
   const { pathname } = location
 
@@ -63,22 +70,12 @@ const Home = () => {
         })
         setQuantityValues(newQuantityValues)
 
-        let newMaterialValues = []
-        response.data.map((el) => {
-          newMaterialValues[el.id] = materials.Group[0].Material[0].Name
-        })
-        setMaterialValues(newMaterialValues)
-
       } catch (error) {
         console.error(error.message);
       }
       goCalc()
     }
   }
-
-  const [selectedThickness, setSelectedThickness] = useState([]);
-  const [thicknessOptions, setThicknessOptions] = useState([]);
-  const [typeRez, setTypeRez] = useState([])
 
 
 
@@ -92,9 +89,9 @@ const Home = () => {
     const newMaterialValues = [...materialValues];
     newMaterialValues[index] = value;
     setMaterialValues(newMaterialValues);
-    const materialGroup = materials.Group.find(group => group.Name === value);
+    const materialGroup = materials.find(group => group.id === parseInt(value));
     const newThicknessOptions = [...thicknessOptions]
-    newThicknessOptions[index] = materialGroup ? Array.isArray(materialGroup.Material) === true ? materialGroup.Material : [materialGroup.Material] : []
+    newThicknessOptions[index] = materialGroup.materials
     setThicknessOptions(newThicknessOptions);
     const newTypeRez = [...typeRez]
     newTypeRez[index] = materialGroup;
@@ -103,7 +100,7 @@ const Home = () => {
 
   const handleQuantityChange = (index, value) => {
     const newQuantityValues = [...quantityValues];
-    newQuantityValues[index] = value;
+    newQuantityValues[index] = Math.max(1, value);
     setQuantityValues(newQuantityValues);
   };
 
@@ -147,7 +144,7 @@ const Home = () => {
       });
   }
 
-  const sendDataToServer =  () => {
+  const sendDataToServer = () => {
     try {
       setFormLoading(true);
       let detailsDataUpdate = [];
@@ -206,7 +203,7 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("/get_materials");
+        const response = await axios.get("/material_group/");
         setMaterials(response.data);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -235,13 +232,13 @@ const Home = () => {
   }, []);
 
   const onDrop = async (acceptedFiles) => {
-    
+
     setLoading(true);
     let error = false;
-    let server =  await pingServer()
+    let server = await pingServer()
 
     console.log(server)
-    if (!server){
+    if (!server) {
       return
     }
 
@@ -318,12 +315,7 @@ const Home = () => {
               newData[response.data.id] = 1;
               return newData;
             });
-            setMaterialValues((prevData) => {
-
-              const newData = [...prevData];
-              newData[response.data?.id] = materials[0]?.id;
-              return newData;
-            });
+            
           })
           .catch((error) => {
             console.error(error.message);
