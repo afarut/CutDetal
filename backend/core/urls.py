@@ -22,4 +22,5 @@ urlpatterns = [
     path("range/<int:pk>/", views.RangeGetEditDeleteApiView.as_view(), name="ranges_edit_get_delete"),
     path("get/size/", views.DXFSizeGetApiView.as_view(), name="size_global"),
     path("set/size/<int:size>/", views.DXFSizeUpdateApiView.as_view(), name="size_global"),
+    path('get_materials', views.get_materials_view, name='get_materials')
 ] 
