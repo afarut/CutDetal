@@ -9,8 +9,10 @@ from .import utils
 from .import forms
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
+
 from .serializers import DetailSerializer, MaterialGroupSerializer, OrderCreateSerializer, MaterialSerializer, MaterialEditSerialazer, DetailWithOrderStatus, RangeSerialazer, DetailSaveSerialazer, DXFSizeSerialazer
 from .models import Detail, MaterialGroup, Order, Material, Range, DXFSize
+
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, RetrieveAPIView
 from django.http import JsonResponse
@@ -304,6 +306,13 @@ class OrderApiView(CreateAPIView, ListAPIView):
     serializer_class = OrderCreateSerializer
     queryset = Order.objects.all()
     permission_classes = [CreateOnly|IsAuthenticated]
+
+
+class ThicknessListAPIView(ListAPIView, CreateAPIView):
+    serializer_class = ThicknessSerialazer
+    queryset = Thickness.objects.all()
+    permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
+    pagination_class = None
 
 
 class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):

@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from .models import Material, MaterialGroup, Order, Detail, Range, DXFSize
+
 from .utils import create_image
 
 
@@ -17,9 +19,16 @@ class RangeSerialazer(serializers.ModelSerializer):
             "start",
             "finish",
             "price",
-            "material",
-        )
-        read_only_fields = ('material',)
+            "material"
+            )
+
+
+
+class MaterialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Material
+        fields = ['id', 'name', 'thickness', 'weight', 'price', 'price_d', 'price_v', 'group']
+        depth = 1
 
 class MaterialGroupSerializer(serializers.ModelSerializer):
     class Meta:
