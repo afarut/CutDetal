@@ -2,23 +2,14 @@ from django.db import models
 
 from .constants import VERBOSE_STATUS_TYPE
 
-
-class MaterialGroup(models.Model):
-    name = models.CharField(max_length=255)
-    cut_type = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
-def get_default_group_id():
-    # Ensure the default group exists and return its ID
-    group, created = MaterialGroup.objects.get_or_create(
-        name='Default Group', cut_type='Default Cut Type'
-    )
-    return group.id
+# def get_default_group_id():
+#     # Ensure the default group exists and return its ID
+#     group, created = MaterialGroup.objects.get_or_create(
+#         name='Default Group', cut_type='Default Cut Type'
+#     )
+#     return group.id
 
 class Material(models.Model):
-    group = models.ForeignKey(MaterialGroup, related_name='materials', on_delete=models.CASCADE, default=get_default_group_id)
     name = models.CharField(max_length=255)
     thickness = models.DecimalField(max_digits=5, decimal_places=2)
     weight = models.DecimalField(max_digits=5, decimal_places=2)
@@ -29,6 +20,13 @@ class Material(models.Model):
     def __str__(self):
         return self.name
 
+class MaterialGroup(models.Model):
+    name = models.CharField(max_length=255)
+    cut_type = models.CharField(max_length=255)
+    materials = models.ManyToManyField(Material, related_name='groups')
+    
+    def __str__(self):
+        return self.name
 
 class Range(models.Model):
     start = models.FloatField()

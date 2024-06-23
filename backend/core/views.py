@@ -243,13 +243,12 @@ def create_materials_from_data(data):
             cut_type = group_data.get("CutType")
             group = MaterialGroup.objects.create(name=group_name, cut_type=cut_type)
 
-            materials = group_data.get("Material", [])
-            if isinstance(materials, dict):
-                materials = [materials]
+            materials_data = group_data.get("Material", [])
+            if isinstance(materials_data, dict):
+                materials_data = [materials_data]
 
-            for material_data in materials:
+            for material_data in materials_data:
                 material = Material.objects.create(
-                    group=group,
                     name=material_data.get("Name"),
                     thickness=material_data.get("Thickness"),
                     weight=material_data.get("Weight"),
@@ -258,17 +257,17 @@ def create_materials_from_data(data):
                     price_v=material_data.get("PriceV"),
                 )
 
-                ranges = material_data.get("Range", [])
-                if isinstance(ranges, dict):
-                    ranges = [ranges]
-
-                for range_data in ranges:
-                    Range.objects.create(
-                        material=material,
+                ranges_data = material_data.get("Range", [])
+                for range_data in ranges_data:
+                    range_instance = Range.objects.create(
                         start=range_data.get("Start"),
                         finish=range_data.get("Finish"),
-                        price=range_data.get("Price")
+                        price=range_data.get("Price"),
+                        material=material
                     )
+                    material.ranges.add(range_instance)
+
+                group.materials.add(material)
 
 class DetailExcludeApiView(ListAPIView):
     serializer_class = DetailWithOrderStatus

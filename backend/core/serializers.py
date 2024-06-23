@@ -14,41 +14,38 @@ class DXFSizeSerialazer(serializers.ModelSerializer):
 class RangeSerialazer(serializers.ModelSerializer):
     class Meta:
         model = Range
-        fields = (
-            "id",
-            "start",
-            "finish",
-            "price",
-            "material"
-            )
+        fields = ("id", "start", "finish", "price", 'material')
 
-
-
-class MaterialSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Material
-        fields = ['id', 'name', 'thickness', 'weight', 'price', 'price_d', 'price_v', 'group']
-        depth = 1
-
-class MaterialGroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MaterialGroup
-        fields = (
-            "id",
-            "name",
-            "cut_type"
-        )
 
 class MaterialSerializer(serializers.ModelSerializer):
     ranges = RangeSerialazer(many=True, read_only=True)
-    group = MaterialGroupSerializer()
 
     class Meta:
         model = Material
-        fields = ['id', 'name', 'thickness', 'weight', 'price', 'price_d', 'price_v', 'group', 'ranges']
+        fields = [
+            "id",
+            "name",
+            "thickness",
+            "weight",
+            "price",
+            "price_d",
+            "price_v",
+            "ranges",
+        ]
+        depth=1
+
+
+class MaterialGroupSerializer(serializers.ModelSerializer):
+    materials = MaterialSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = MaterialGroup
+        fields = ("id", "name", "cut_type", "materials")
+        depth = 1
+
 
 class OrderCreateSerializer(serializers.ModelSerializer):
-    #detail_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Detail.objects.all())
+    # detail_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Detail.objects.all())
 
     class Meta:
         model = Order
@@ -61,9 +58,11 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             "username",
             "details",
             "date",
-            'comment',
-            )
-        optional_fields = ["comment",]
+            "comment",
+        )
+        optional_fields = [
+            "comment",
+        ]
 
 
 class OrderCroppedSerialazer(serializers.ModelSerializer):
@@ -77,8 +76,11 @@ class OrderCroppedSerialazer(serializers.ModelSerializer):
             "email",
             "date",
             "comment",
-            )
-        optional_fields = ["comment",]
+        )
+        optional_fields = [
+            "comment",
+        ]
+
 
 class DetailSaveSerialazer(serializers.ModelSerializer):
     svg_file = serializers.CharField()
@@ -106,12 +108,15 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
             "count",
             "price",
             "incut",
-            )
-        optional_fields = ["incut",]
-
+        )
+        optional_fields = [
+            "incut",
+        ]
 
     def create(self, cd):
-        image = create_image(cd["dxf_file"].replace("data:application/octet-stream;base64,", ""), "dxf")
+        image = create_image(
+            cd["dxf_file"].replace("data:application/octet-stream;base64,", ""), "dxf"
+        )
         cd["dxf_file"] = image
         return Detail.objects.create(
             name=cd["name"],
@@ -123,11 +128,16 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
             length=cd["length"],
             count=cd["count"],
             incut=cd["incut"],
-            price=cd["price"]
+            price=cd["price"],
         )
 
     def update(self, instance, validated_data):
-        image = create_image(validated_data["dxf_file"].replace("data:application/octet-stream;base64,", ""), "dxf")
+        image = create_image(
+            validated_data["dxf_file"].replace(
+                "data:application/octet-stream;base64,", ""
+            ),
+            "dxf",
+        )
         validated_data["dxf_file"] = image
         instance.name = validated_data.get("name", instance.name)
         instance.material_id = validated_data.get("material_id", instance.material_id)
@@ -143,10 +153,9 @@ class DetailSaveSerialazer(serializers.ModelSerializer):
 
 
 class DetailWithOrderStatus(serializers.ModelSerializer):
-    order_status = serializers.ReadOnlyField(source='order.status', default=-1)
+    order_status = serializers.ReadOnlyField(source="order.status", default=-1)
     order = OrderCroppedSerialazer(read_only=True)
     material_data = MaterialSerializer(read_only=True, source="material")
-
 
     class Meta:
         model = Detail
@@ -165,21 +174,24 @@ class DetailWithOrderStatus(serializers.ModelSerializer):
             "date",
             "price",
             "material_data",
-            "incut"
-            )
+            "incut",
+        )
         extra_kwargs = {
-            #"name": {'write_only': True},
-            "length": {'write_only': True},
+            # "name": {'write_only': True},
+            "length": {"write_only": True},
             "material": {"write_only": True},
-            "date": {'read_only': True},
-            "material_data": {'read_only': True},
+            "date": {"read_only": True},
+            "material_data": {"read_only": True},
         }
-        optional_fields = ["incut",]
-        #depth = 1
+        optional_fields = [
+            "incut",
+        ]
+        # depth = 1
 
 
 class DetailSerializer(serializers.ModelSerializer):
     material = MaterialSerializer()
+
     class Meta:
         model = Detail
         fields = (
@@ -191,14 +203,18 @@ class DetailSerializer(serializers.ModelSerializer):
             "width",
             "name",
             "id",
-            "incut"
-            )
+            "incut",
+        )
         depth = 1
-        optional_fields = ["incut",]
+        optional_fields = [
+            "incut",
+        ]
 
 
 class MaterialEditSerialazer(serializers.ModelSerializer):
     class Meta:
         model = Material
         fields = "__all__"
-        optional_fields = ["price_by_incut",]
+        optional_fields = [
+            "price_by_incut",
+        ]
