@@ -5,12 +5,6 @@ from .models import Material, MaterialGroup, Order, Detail, Range, DXFSize
 from .utils import create_image
 
 
-class ThicknessSerialazer(serializers.ModelSerializer):
-    class Meta:
-        model = Thickness
-        fields = "__all__"
-
-
 class DXFSizeSerialazer(serializers.ModelSerializer):
     class Meta:
         model = DXFSize
@@ -18,19 +12,15 @@ class DXFSizeSerialazer(serializers.ModelSerializer):
 
 
 class RangeSerialazer(serializers.ModelSerializer):
-    thick_value = serializers.CharField(source="thick.value", read_only=True)
     class Meta:
         model = Range
         fields = (
             "id",
             "start",
-            "stop",
+            "finish",
             "price",
-            "material",
-            "thick_value",
-            "thick"
+            "material"
             )
-        write_only_fields = ("thick",)
 
 
 
@@ -41,15 +31,21 @@ class MaterialSerializer(serializers.ModelSerializer):
         depth = 1
 
 class MaterialGroupSerializer(serializers.ModelSerializer):
-    # materials = MaterialSerializer(many=True, read_only=True)
-
     class Meta:
         model = MaterialGroup
         fields = (
             "id",
             "name",
             "cut_type"
-            )
+        )
+
+class MaterialSerializer(serializers.ModelSerializer):
+    ranges = RangeSerialazer(many=True, read_only=True)
+    group = MaterialGroupSerializer()
+
+    class Meta:
+        model = Material
+        fields = ['id', 'name', 'thickness', 'weight', 'price', 'price_d', 'price_v', 'group', 'ranges']
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     #detail_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Detail.objects.all())

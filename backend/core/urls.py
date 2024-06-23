@@ -11,7 +11,6 @@ urlpatterns = [
     path("detail/save/", views.DetailSave.as_view(), name="detail_save"),
     path("detail/exclude/", views.DetailExcludeApiView.as_view(), name="detail_exclude"),
     path("detail/", views.DetailApiView.as_view(), name="detail"),
-    path("thicks/", views.ThicknessListAPIView.as_view(), name="thicks"),
     path("dxf/confirm/", views.dxf_confirm, name="dxf_confirm"),
     path("order/", views.OrderApiView.as_view(), name="order"),
     path("material/<int:pk>/", views.MaterialGetEditDeleteApiView.as_view(), name="materials_edit_create_delete"),

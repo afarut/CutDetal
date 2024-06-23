@@ -308,12 +308,6 @@ class OrderApiView(CreateAPIView, ListAPIView):
     permission_classes = [CreateOnly|IsAuthenticated]
 
 
-class ThicknessListAPIView(ListAPIView, CreateAPIView):
-    serializer_class = ThicknessSerialazer
-    queryset = Thickness.objects.all()
-    permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
-    pagination_class = None
-
 
 class MaterialGetEditDeleteApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = MaterialEditSerialazer
