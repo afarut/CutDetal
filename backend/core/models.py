@@ -29,6 +29,7 @@ class Material(models.Model):
     def __str__(self):
         return self.name
 
+
 class Range(models.Model):
     start = models.FloatField()
     finish = models.FloatField()
