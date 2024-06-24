@@ -215,6 +215,3 @@ class MaterialEditSerialazer(serializers.ModelSerializer):
     class Meta:
         model = Material
         fields = "__all__"
-        optional_fields = [
-            "price_by_incut",
-        ]
