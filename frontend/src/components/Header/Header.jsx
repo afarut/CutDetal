@@ -44,6 +44,18 @@ const Header = () => {
     }
   }, []);
 
+  const handleUpdateMaterials = () => {
+    axios.post("/update_materials/")
+      .then((res) => {
+        if (res.data.status === true) {
+          alert("Обновилось!")
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
     setIsLoginPopupOpen(false);
@@ -166,6 +178,8 @@ const Header = () => {
             </div>
           </div>
 
+
+
         {isPopupOpen && (
           <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
             {!isLoginPopupOpen ? (
@@ -197,8 +211,8 @@ const Header = () => {
                         {domain === "calc.cutdetal.ru" && (
                           <div
                             onClick={() =>
-                              (window.location.href =
-                                "https://cutdetal.ru/instrukciya/")
+                            (window.location.href =
+                              "https://cutdetal.ru/instrukciya/")
                             }
                           >
                             <span>Инструкция</span>
@@ -227,6 +241,7 @@ const Header = () => {
                             </NavLink>
                           )}
                         </div>
+
                       </>
                     )}
                   </>
