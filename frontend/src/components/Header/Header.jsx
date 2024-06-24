@@ -172,13 +172,11 @@ const Header = () => {
           <img src={burgerMenuIcon} alt="Burger Menu Icon" />
         </div>
 
-        {
-          user.isAdmin || user.isSuperAdmin ? <div className=" px-3 py-1 bg-blue-800 text-white rounded flex justify-center items-center cursor-pointer" >
+        <div className=" px-3 py-1 bg-blue-800 text-white rounded flex justify-center items-center cursor-pointer" >
             <div onClick={handleUpdateMaterials} className="cursor-pointer">
               <span>Обновить материалы</span>
             </div>
-          </div> : ""
-        }
+          </div>
 
 
 
