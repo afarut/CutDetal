@@ -32,6 +32,7 @@ class MaterialSerializer(serializers.ModelSerializer):
             "price_v",
             "ranges",
         ]
+        ordering = ['id']
         depth=1
 
 

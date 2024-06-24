@@ -15,17 +15,17 @@ const PriceManage = () => {
   const [isPopupAddMaterialVisible, setPopupAddMaterialVisible] =
     useState(false);
   const popupRef = useRef(null);
-  const [currentMaterial, setCurrentMaterial] = useState(null)
+  const [currentMaterial, setCurrentMaterial] = useState(null);
   const [allMaterials, setAllMaterials] = useState([]);
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [prev, setPrev] = useState(null);
   const [next, setNext] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isPopupVisible && !isPopupAddMaterialVisible) {
-      setIsLoading(true)
+      setIsLoading(true);
     }
 
     axios
@@ -34,7 +34,7 @@ const PriceManage = () => {
         setNext(response.data.next);
         setPrev(response.data.previous);
         setAllMaterials(response.data.results);
-        setIsLoading(false)
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error.message);
@@ -64,72 +64,90 @@ const PriceManage = () => {
 
   return (
     <>
-      {!isLoading ? <div className="px-8 mt-6 lg:px-12">
-      <div className="flex justify-between items-center mb-[15px]">
-        <button
-          onClick={() => setPopupAddMaterialVisible(true)}
-          className={`${module.buttonWrapper} px-[29px] py-[7px] bg-white`}
-        >
-          + Добавить материал
-        </button>
-        <NavLink to="/">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 35 35"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1.61578 2.19485L32.5388 33.1178M1.61578 33.1178L32.5388 2.19485"
-              stroke="#FF6161"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+      {!isLoading ? (
+        <div className="px-8 mt-6 lg:px-12">
+          <div className="flex justify-end items-center mb-[15px]">
+            {/* <button
+              onClick={() => setPopupAddMaterialVisible(true)}
+              className={`${module.buttonWrapper} px-[29px] py-[7px] bg-white`}
+            >
+              + Добавить материал
+            </button> */}
+            <NavLink to="/">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 35 35"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1.61578 2.19485L32.5388 33.1178M1.61578 33.1178L32.5388 2.19485"
+                  stroke="#FF6161"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </NavLink>
+          </div>
+
+          {allMaterials.map((material) => (
+            <PriceManageItem
+              material={material}
+              name={material.name}
+              weigth={material.weight}
+              ranges={material.ranges}
+              priceForSquareMeter={material.price}
+              priseVrezka={material.price_v}
+              setPopupVisible={setPopupVisible}
+              key={material.id}
+              setCurrentMaterial={setCurrentMaterial}
+              isDeleting={isDeleting}
+              setIsDeleting={setIsDeleting}
+              daval={material.price_d}
             />
-          </svg>
-        </NavLink>
-      </div>
+          ))}
 
-      {allMaterials.map((material) => (
-        <PriceManageItem
-          material={material}
-          name={material.name}
-          weigth={material.weight}
-          ranges={material.ranges}
-          priceForSquareMeter={material.price_by_square_meter}
-          priseVrezka = {material.price_by_incut}
-          setPopupVisible={setPopupVisible}
-          key={material.id}
-          setCurrentMaterial={setCurrentMaterial}
-          isDeleting={isDeleting}
-          setIsDeleting={setIsDeleting}
-        />
-      ))}
+          {/* {isPopupVisible && (
+            <PopupEdit
+              material={currentMaterial}
+              setIsLoading={setIsLoading}
+              isLoading={isLoading}
+              setPopupVisible={setPopupVisible}
+            />
+          )}
 
-      {isPopupVisible && <PopupEdit material={currentMaterial} setIsLoading={setIsLoading} isLoading={isLoading} setPopupVisible={setPopupVisible} />}
+          {isPopupAddMaterialVisible && (
+            <PopupAddMaterial
+              setPopupAddMaterialVisible={setPopupAddMaterialVisible}
+            />
+          )} */}
 
-      {isPopupAddMaterialVisible && (
-        <PopupAddMaterial
-          setPopupAddMaterialVisible={setPopupAddMaterialVisible}
-        />
+          <div className="flex justify-center items-center mb-[10px]">
+            <div
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className={`${
+                !prev && "hidden"
+              } cursor-pointer lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+            >
+              Предыдущая страница
+            </div>
+            <div
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className={`ml-[20px] ${
+                !next && "hidden"
+              } cursor-pointer lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
+            >
+              Следующая страница
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-[50px] flex justify-center items-center mb-[50px]">
+          <LoadingProcess />
+        </div>
       )}
-
-<div className="flex justify-center items-center mb-[10px]">
-      <div
-        onClick={() => setCurrentPage(currentPage - 1)}
-        className={`${!prev && 'hidden' } cursor-pointer lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
-      >
-        Предыдущая страница
-      </div>
-      <div
-        onClick={() => setCurrentPage(currentPage + 1)}
-        className={`ml-[20px] ${!next && 'hidden' } cursor-pointer lg:px-[10px] lg:py-[8px] bg-blue-800 rounded-[8px] py-[4px] px-[8px] text-[14px] lg:text-[18px] text-white`}
-      >
-        Следующая страница
-      </div>
-    </div>
-    </div> : <div className="mt-[50px] flex justify-center items-center mb-[50px]"><LoadingProcess /></div> }
     </>
   );
 };
