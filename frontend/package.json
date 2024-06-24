@@ -17,6 +17,7 @@
     "react-dropzone": "^14.2.3",
     "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.5",
     "react-zoom-pan-pinch": "^3.4.3",
     "svg-to-img": "^2.0.9",
     "web-vitals": "^2.1.4"

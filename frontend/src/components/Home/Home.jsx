@@ -13,6 +13,8 @@ import VisibleSizeError from "./VisibleSizeError.jsx";
 import FormLoading from "./formloading.jsx";
 import { useLocation } from "react-router-dom";
 import ServerFilesError from "./serverfileserror.jsx";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import module from "./home.module.css"
 
 
 const Home = () => {
@@ -46,11 +48,11 @@ const Home = () => {
   const [ids, setIds] = useState([])
 
 
+
   const [selectedThickness, setSelectedThickness] = useState([]);
+
   const [thicknessOptions, setThicknessOptions] = useState([]);
   const [typeRez, setTypeRez] = useState([])
-
-  console.log(materials, materialValues)
 
   const location = useLocation()
   const { pathname } = location
@@ -86,6 +88,11 @@ const Home = () => {
   };
 
   const handleMaterialChange = (index, value) => {
+
+    const element = materials.find(item => parseInt(item.id) === parseInt(value));
+    const filteredArr = materials.filter(item => parseInt(item.id) !== parseInt(value));
+    setMaterials([element, ...filteredArr]);
+
     const newMaterialValues = [...materialValues];
     newMaterialValues[index] = value;
     setMaterialValues(newMaterialValues);
@@ -151,7 +158,7 @@ const Home = () => {
       for (let index = 0; index < data.length; index++) {
         const item = {
           detail_id: data[index].id,
-          material_id: materialValues[data[index].id],
+          material_id: parseInt(selectedThickness[data[index].id]),
           count: quantityValues[data[index].id],
           price: items[data[index].id],
         };
@@ -165,6 +172,7 @@ const Home = () => {
         details: detailsDataUpdate,
         comment: comment
       };
+
 
       axios.post("/dxf/confirm/", dataUpdate)
         .then((res) => {
@@ -237,7 +245,6 @@ const Home = () => {
     let error = false;
     let server = await pingServer()
 
-    console.log(server)
     if (!server) {
       return
     }
@@ -309,13 +316,12 @@ const Home = () => {
         ])
           .then((response) => {
             setData((prevData) => [...prevData, response.data]);
-            console.log(response.data)
             setQuantityValues((prevData) => {
               const newData = [...prevData];
               newData[response.data.id] = 1;
               return newData;
             });
-            
+
           })
           .catch((error) => {
             console.error(error.message);
@@ -394,70 +400,137 @@ const Home = () => {
     }
   };
 
+  const toggleBodyScroll = (shouldDisableScroll) => {
+    if (shouldDisableScroll) {
+      document.body.classList.add("noScroll");
+    } else {
+      document.body.classList.remove("noScroll");
+    }
+  };
+
+  if (files.length>0){
+    toggleBodyScroll(true)
+  }
+  if (files.length===0){
+    toggleBodyScroll(false)
+  }
+
   return (
-    <div className="">
-      {serverErrorFiles && <ServerFilesError />}
-      {errorSize && <VisibleSizeError name={fileName} size={maxFileSize} />}
-      {visibleError && <VisibleError />}
-      {loading ? (
-        <LoadingFiles
-          uploading={uploading}
-          goCalc={goCalc}
-          windowClose={windowClose}
-        />
-      ) : (
-        ""
-      )}
-      {formLoading ? <FormLoading /> : ""}
-      {formUpload ? <FormUpload windowClose={windowClose} /> : ""}
-      {calculate && data.length > 0 ? (
-        <Calculate
-          setDetailsIds={setDetailsIds}
-          detailsIds={detailsIds}
-          goPlacingOrder={goPlacingOrder}
-          windowClose={windowClose}
-          data={data}
-          setData={setData}
-          materialValues={materialValues}
-          handleMaterialChange={handleMaterialChange}
-          materials={materials}
-          quantityValues={quantityValues}
-          handleQuantityChange={handleQuantityChange}
-          handleItemRemove={handleItemRemove}
-          setOrders={setOrders}
-          files={files}
-          setItems={setItems}
-          items={items}
-          handleThicknessChange={handleThicknessChange}
-          thicknessOptions={thicknessOptions}
-          selectedThickness={selectedThickness}
-          typeRez={typeRez}
-        />
-      ) : (
-        ""
-      )}
-      {placingOrder ? (
-        <PlacingOrder
-          name={name}
-          handleNameChange={handleNameChange}
-          phoneNumber={phoneNumber}
-          handlePhoneNumberChange={handlePhoneNumberChange}
-          email={email}
-          handleEmailChange={handleEmailChange}
-          isIndividual={isIndividual}
-          handleTypeChange={handleTypeChange}
-          goPrevPlacingOrder={goPrevPlacingOrder}
-          handleSubmit={handleSubmit}
-          comment={comment}
-          handleCommentChange={handleCommentChange}
-        />
-      ) : (
-        ""
-      )}
-      {errorServer ? (
-        <ErrorPopup windowClose={windowClose} idConfirm={idConfirm} />
-      ) : ""}
-      <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
+    <div>
+      <div className={files.length > 0 || loading ? module.darkenedBackground : ""}>
+        <TransitionGroup>
+          {serverErrorFiles && (
+            <CSSTransition timeout={300} classNames="popup">
+              <ServerFilesError />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {errorSize && (
+            <CSSTransition timeout={300} classNames="popup">
+              <VisibleSizeError name={fileName} size={maxFileSize} />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {visibleError && (
+            <CSSTransition timeout={300} classNames="popup">
+              <VisibleError />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {loading && (
+            <CSSTransition timeout={300} classNames="popup">
+              <LoadingFiles
+                uploading={uploading}
+                goCalc={goCalc}
+                windowClose={windowClose}
+              />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {formLoading && (
+            <CSSTransition timeout={300} classNames="popup">
+              <FormLoading />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {formUpload && (
+            <CSSTransition timeout={300} classNames="popup">
+              <FormUpload windowClose={windowClose} />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {calculate && data.length > 0 && (
+            <CSSTransition timeout={300} classNames="popup">
+              <Calculate
+                setDetailsIds={setDetailsIds}
+                detailsIds={detailsIds}
+                goPlacingOrder={goPlacingOrder}
+                windowClose={windowClose}
+                data={data}
+                setData={setData}
+                materialValues={materialValues}
+                handleMaterialChange={handleMaterialChange}
+                materials={materials}
+                quantityValues={quantityValues}
+                handleQuantityChange={handleQuantityChange}
+                handleItemRemove={handleItemRemove}
+                setOrders={setOrders}
+                files={files}
+                setItems={setItems}
+                items={items}
+                handleThicknessChange={handleThicknessChange}
+                thicknessOptions={thicknessOptions}
+                selectedThickness={selectedThickness}
+                typeRez={typeRez}
+              />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {placingOrder && (
+            <CSSTransition timeout={300} classNames="popup">
+              <PlacingOrder
+                name={name}
+                handleNameChange={handleNameChange}
+                phoneNumber={phoneNumber}
+                handlePhoneNumberChange={handlePhoneNumberChange}
+                email={email}
+                handleEmailChange={handleEmailChange}
+                isIndividual={isIndividual}
+                handleTypeChange={handleTypeChange}
+                goPrevPlacingOrder={goPrevPlacingOrder}
+                handleSubmit={handleSubmit}
+                comment={comment}
+                handleCommentChange={handleCommentChange}
+              />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
+        <TransitionGroup>
+          {errorServer && (
+            <CSSTransition timeout={300} classNames="popup">
+              <ErrorPopup windowClose={windowClose} idConfirm={idConfirm} />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+      </div>
+
+
+        <LandingPage getRootProps={getRootProps} getInputProps={getInputProps} />
     </div>
   );
 };
