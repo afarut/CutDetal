@@ -44,7 +44,7 @@ const Home = () => {
   const [fileName, setFileName] = useState('')
   const [idConfirm, setIdConfirm] = useState(null)
   const [serverErrorFiles, setServerErrorFiles] = useState(false)
-
+  const [daval, setDaval] = useState([])
   const [ids, setIds] = useState([])
 
 
@@ -111,6 +111,13 @@ const Home = () => {
     setQuantityValues(newQuantityValues);
   };
 
+  const handleDavalChange = (index) => {
+    const newDaval = [...daval];
+    newDaval[index] = newDaval[index]===undefined ? true : !newDaval[index];
+    console.log("newDaval", newDaval)
+    setDaval(newDaval);
+  };
+
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
@@ -161,6 +168,7 @@ const Home = () => {
           material_id: parseInt(selectedThickness[data[index].id]),
           count: quantityValues[data[index].id],
           price: items[data[index].id],
+          daval: daval[data[index].id]===undefined ? false : daval[data[index].id]
         };
         detailsDataUpdate.push(item);
       }
@@ -172,6 +180,8 @@ const Home = () => {
         details: detailsDataUpdate,
         comment: comment
       };
+
+      console.log(dataUpdate)
 
 
       axios.post("/dxf/confirm/", dataUpdate)
@@ -494,6 +504,8 @@ const Home = () => {
                 thicknessOptions={thicknessOptions}
                 selectedThickness={selectedThickness}
                 typeRez={typeRez}
+                daval={daval}
+                setDaval={handleDavalChange}
               />
             </CSSTransition>
           )}

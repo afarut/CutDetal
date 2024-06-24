@@ -19,7 +19,9 @@ const Calculate = ({
   handleThicknessChange,
   thicknessOptions,
   selectedThickness,
-  typeRez
+  typeRez,
+  daval,
+  setDaval
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [imageInfo, setImageInfo] = useState({});
@@ -66,6 +68,8 @@ const Calculate = ({
                   thicknessOptions={thicknessOptions}
                   selectedThickness={selectedThickness}
                   typeRez={typeRez}
+                  daval={daval}
+                  setDaval={setDaval}
                 />
               ))}
               <div className="flex justify-end">

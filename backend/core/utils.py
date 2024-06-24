@@ -149,7 +149,7 @@ def create_order_xml_string(order_header, calculation_table):
     rough_string = ET.tostring(root, "utf-8")
     reparsed = minidom.parseString(rough_string)
     xml_string = reparsed.toprettyxml(indent="  ")
-
+    print(xml_string)
     return xml_string
 
 
