@@ -12,7 +12,7 @@ const UploadingTrue = ({ goCalc, windowClose, ids = [] }) => {
       className={`flex flex-col items-center gap-[16px] justify-center h-full ${module.divGap}`}
     >
       <div>
-        <img className={module.loadPopupOkey} src={okey} alt="okey" />
+        <img className={module.loadPopupOkey} src={okey} alt="okey" loading="lazy" />
       </div>
       <div className={module.processWindowText}>Чертежи обработаны!</div>
       {(pathname === "/embed-calc" && ids.length !== 0) ? (
