@@ -37,7 +37,7 @@ const Calculate = ({
         />
       ) : (
         <div
-          className={`absolute inset-0 flex justify-center pt-[6%] bg-opacity-60 bg-black z-20 h-full ${module.divCalculate}`}
+          className={`absolute inset-0 flex justify-center pt-[6%] z-20 h-full ${module.divCalculate}`}
         >
           <div
             className={`bg-white w-full max-h-[740px] mx-[42px] rounded-3xl relative pt-[16px] ${module.ffjjhh}`}

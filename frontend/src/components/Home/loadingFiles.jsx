@@ -8,7 +8,7 @@ const LoadingFiles = ({ uploading, goCalc, windowClose, ids = [] }) => {
     const {pathname} = location
 
     return (
-        <div className={`${!(pathname === "/embed-calc") && module.loadPopup} pt-[10%] absolute inset-0 flex justify-center bg-opacity-60 bg-black z-20 h-full`}>
+        <div className={`${!(pathname === "/embed-calc") && module.loadPopup} pt-[10%] absolute inset-0 flex justify-center z-20 h-full`}>
             <div className={`h-[472px] w-[472px] bg-white rounded-3xl ${module.loadPopupDiv}`}>
                 <div className=" h-full relative">
                     {uploading === true ? (

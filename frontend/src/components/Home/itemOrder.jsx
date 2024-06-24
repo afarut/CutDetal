@@ -2,6 +2,7 @@ import trash from "../../images/trash.svg";
 import queshion from "../../images/queshion.svg";
 import module from "./home.module.css";
 import { useState, useEffect, useRef } from "react";
+import { CSSTransition } from 'react-transition-group';
 
 const ItemOrder = ({
   item,
@@ -103,11 +104,11 @@ const ItemOrder = ({
         stop: ranges[i].finish,
 
         PriceMaterial:
-          ((X * Y) / 1000000) *  priceMaterial * sum,
+          ((X * Y) / 1000000) * priceMaterial * sum,
         PriceRezka: (length / 1000) * sum * ranges[i].price,
         TotalSumOneDetal: Math.ceil(
           (((X * Y) / 1000000) * priceMaterial * sum +
-            (length / 1000) * sum * ranges[i].price + sum * item.incut * material.price_v)  /
+            (length / 1000) * sum * ranges[i].price + sum * item.incut * material.price_v) /
           sum
         ),
       };
@@ -122,7 +123,7 @@ const ItemOrder = ({
   }, [materialValues, thicknessOptions, selectedThickness, daval]);
 
   const getPriceOneDetailByCount = () => {
-    const count = quantityValues[item.id]==0 ? 1 : quantityValues[item.id];
+    const count = quantityValues[item.id] == 0 ? 1 : quantityValues[item.id];
     for (let i = 0; i < diapazon.length - 1; i++) {
       if (diapazon[i].countList <= count && diapazon[i + 1].countList > count) {
         return diapazon[i].TotalSumOneDetal;
@@ -132,7 +133,7 @@ const ItemOrder = ({
   };
 
   const getPriceDetailByCount = () => {
-    const count = quantityValues[item.id]==0 ? 1 : quantityValues[item.id];
+    const count = quantityValues[item.id] == 0 ? 1 : quantityValues[item.id];
 
     for (let i = 0; i < diapazon.length - 1; i++) {
       if (diapazon[i].countList <= count && diapazon[i + 1].countList > count) {
@@ -179,8 +180,8 @@ const ItemOrder = ({
         <div className={`${module.materialInput} flex gap-[8px] my-[16px] w-full `}>
           Размер: <span className="ml-[16px] font-bold">{item.size_x}х{item.size_y} мм</span>
         </div>
-        
-        
+
+
         <div className="flex flex-col gap-[8px]">
           <div
             className={`${module.materialInput} flex items-center gap-[8px]`}
@@ -205,7 +206,13 @@ const ItemOrder = ({
           </div>
           <div>
 
-            {materialValues[item.id] !== undefined && (
+            <CSSTransition
+              in={materialValues[item.id] !== undefined}
+              timeout={300}
+              classNames="fade"
+              unmountOnExit
+            >
+
               <div
                 className={`${module.materialInput} flex items-center gap-[8px]`}
               >
@@ -227,21 +234,25 @@ const ItemOrder = ({
                   ))}
                 </select>
               </div>
-            )}
-
+            </CSSTransition>
           </div>
         </div>
 
-        {materialValues[item.id] !== undefined && (
-
-        <div className={`${module.materialInput} flex gap-[8px] my-[8px] w-full mt-[16px]`}>
-          Тип резки: <span className="ml-[16px] font-bold">{typeRez[item.id].cut_type}</span>
-        </div>
-        )}
+        {materialValues[item.id] !== undefined && <CSSTransition
+          in={materialValues[item.id] !== undefined}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit
+        >
+          <div className={`${module.materialInput} flex gap-[8px] my-[8px] w-full mt-[16px]`}>
+            Тип резки: <span className="ml-[16px] font-bold">{typeRez[item.id].cut_type}</span>
+          </div>
+        </CSSTransition>
+        }
 
         <div className={`${module.materialInput} flex items-center gap-6 my-[8px]`}>
           <label htmlFor="daval">Давальческий материал:</label>
-          <input type="checkbox" name="daval" id="daval" value={daval} onChange={()=>setDaval(!daval)} />
+          <input type="checkbox" name="daval" id="daval" value={daval} onChange={() => setDaval(!daval)} />
         </div>
 
         <div className={module.inputDivCount}>
@@ -254,36 +265,56 @@ const ItemOrder = ({
             value={quantityValues[item.id]}
             onChange={(e) => handleQuantityChange(item.id, e.target.value)}
           />
-          {isNaN(getPriceOneDetailByCount())===false ? <span
-            className={`${module.spanPriceItem} flex items-center relative`}
+          <CSSTransition
+            in={isNaN(getPriceOneDetailByCount()) === false}
+            timeout={300}
+            classNames="fade"
+            unmountOnExit
           >
-            цена {getPriceOneDetailByCount()}р/деталь
-            <img
-              ref={imgRef}
-              src={queshion}
-              alt="queshion"
-              className="ml-[4px] cursor-pointer w-[12px] h-[12px] flex items-center"
-              onClick={hintOn}
-            />
-            {onQuestion && (
-              <div className={module.questionWindow}>
-                <div>
-                  {diapazon.map((item, i) => (
-                    <div key={i}>
-                      От {item.countList} шт. - цена {item.TotalSumOneDetal}{" "}
-                      р/деталь
-                    </div>
-                  ))}
+            <span
+              className={`${module.spanPriceItem} flex items-center relative`}
+            >
+              цена {getPriceOneDetailByCount()}р/деталь
+              <img
+                ref={imgRef}
+                src={queshion}
+                alt="queshion"
+                className="ml-[4px] cursor-pointer w-[12px] h-[12px] flex items-center"
+                onClick={hintOn}
+              />
+              <CSSTransition
+                in={onQuestion}
+                timeout={300}
+                classNames="fade"
+                unmountOnExit
+              >
+                <div className={module.questionWindow}>
+                  <div>
+                    {diapazon.map((item, i) => (
+                      <div key={i}>
+                        От {item.countList} шт. - цена {item.TotalSumOneDetal}{" "}
+                        р/деталь
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </span> : ""}
-          
+
+              </CSSTransition>
+            </span>
+          </CSSTransition>
+
+
         </div>
-        {isNaN(getPriceDetailByCount())===false ? <div className={module.AllPriceItem}>
-          ИТОГО: <span>{getPriceDetailByCount()} RUB</span>
-        </div> : ""}
-        
+        <CSSTransition
+          in={isNaN(getPriceDetailByCount()) === false}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit
+        >
+          <div className={module.AllPriceItem}>
+            ИТОГО: <span>{getPriceDetailByCount()} RUB</span>
+          </div>
+        </CSSTransition>
       </div>
       <div className="absolute top-0 right-0 m-[18px]">
         <img
