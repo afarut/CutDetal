@@ -1,14 +1,19 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import settingsIcon from "../../images/settings.svg";
 import manageIcon from "../../images/manage.svg";
+import refreshIcon from '../../images/refresh.svg'
 import module from "./Manage.module.css";
 import axios from "../../axios.js";
+import LoadingMaterials from "./LoadingMaterials.jsx";
 
 const Manage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [fileSize, setFileSize] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const popupRef = useRef(null);
+
+  const navigate = useNavigate()
 
   const jwtToken = document.cookie
     .split("; ")
@@ -64,8 +69,31 @@ const Manage = () => {
     closePopup();
   };
 
+  const handleUpdateMaterials = () => {
+    setIsLoading(true)
+    axios.post("/update_materials/", {}, {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`,
+      },
+  })
+      .then((res) => {
+        if (res.data.status === true) {
+          setIsLoading(false)
+          navigate('/manage/price')
+          alert('Успешно обновлено!')
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        console.log(err)
+        alert('Ошибка!')
+      })
+  }
+
   return (
-    <div
+    <>
+    {isLoading && <LoadingMaterials />}
+      <div
       className={`flex justify-center items-center flex-col lg:flex-row my-[60px] gap-[20px] lg:my-[0] lg:h-[70vh]`}
     >
       <NavLink to={"/manage/price"}>
@@ -80,7 +108,7 @@ const Manage = () => {
           <span
             className={`${module.settingsTitle} text-[28px] lg:text-[40px] leading-[30px] lg:leading-[49px]`}
           >
-            Управление ценой
+            Посмотреть материалы
           </span>
         </div>
       </NavLink>
@@ -97,6 +125,21 @@ const Manage = () => {
           className={`${module.settingsTitle} text-[28px] lg:text-[40px] leading-[30px] lg:leading-[49px]`}
         >
           Управление размером файлов
+        </span>
+      </div>
+      <div
+        className={`${module.settingsWrapper} lg:h-[466px] lg:w-[466px] h-[330px] w-[330px] flex py-[21px] justify-center items-center flex-col`}
+        onClick={handleUpdateMaterials}
+      >
+        <img
+          className="h-[185px] w-[185px] lg:h-[260px] lg:w-[260px]"
+          src={refreshIcon}
+          alt="manage"
+        />
+        <span
+          className={`${module.settingsTitle} text-[28px] lg:text-[40px] leading-[30px] lg:leading-[49px]`}
+        >
+          Обновить материалы из  1С
         </span>
       </div>
       {isPopupOpen && (
@@ -160,6 +203,7 @@ const Manage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

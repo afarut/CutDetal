@@ -44,18 +44,6 @@ const Header = () => {
     }
   }, []);
 
-  const handleUpdateMaterials = () => {
-    axios.post("/update_materials/")
-      .then((res) => {
-        if (res.data.status === true) {
-          alert("Обновилось!")
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
     setIsLoginPopupOpen(false);
@@ -171,14 +159,6 @@ const Header = () => {
         <div className="lg:hidden" onClick={togglePopup}>
           <img src={burgerMenuIcon} alt="Burger Menu Icon" />
         </div>
-
-        <div className=" px-3 py-1 bg-blue-800 text-white rounded flex justify-center items-center cursor-pointer" >
-            <div onClick={handleUpdateMaterials} className="cursor-pointer">
-              <span>Обновить материалы</span>
-            </div>
-          </div>
-
-
 
         {isPopupOpen && (
           <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>

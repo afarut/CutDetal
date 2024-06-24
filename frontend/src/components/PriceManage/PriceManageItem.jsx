@@ -15,7 +15,8 @@ const PriceManageItem = ({
   setCurrentMaterial,
   isDeleting,
   setIsDeleting,
-  priseVrezka
+  priseVrezka,
+  daval
 }) => {
   const editClickHandler = () => {
     setCurrentMaterial(material);
@@ -51,13 +52,13 @@ const PriceManageItem = ({
       <div className="mb-[8px] flex justify-between ">
         <span className={`${module.nameOfMaterial} text-[24px]`}>{name}</span>
         <div className="flex items-center">
-          <img
+          {/* <img
             height={27}
             className="mr-[15px] lg:ml-[17px] cursor-pointer"
             onClick={editClickHandler}
             src={pencilIcon}
             alt="pencil"
-          />
+          /> */}
           <img height={27} className="cursor-pointer" onClick={handleDelete} src={trashIcon} alt="trash" />
         </div>
       </div>
@@ -83,13 +84,17 @@ const PriceManageItem = ({
             <span className={`${module.fieldDesc}`}>Цена врезки: </span>
             <span>{priseVrezka} RUB</span>
           </div>
+          <div>
+            <span className={`${module.fieldDesc}`}>Цена, если давальческий: </span>
+            <span>{daval} RUB</span>
+          </div>
         </div>
         <div className={`${module.materialInfoContainer} flex flex-col`}>
           <span className={`${module.titleInfo} mb-[5px]`}>За пог. метр:</span>
           {ranges.sort((a, b) => a.start - b.start).map((el) => (
             <div key={el.id}>
               <span className={`${module.fieldDesc}`}>
-                От {el.start} до {el.stop}м:{" "}
+                От {el.start} до {el.finish}м:{" "}
               </span>
               <span>{el.price} RUB</span>
             </div>

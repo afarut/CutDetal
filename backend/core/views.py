@@ -16,6 +16,7 @@ from .models import Detail, MaterialGroup, Order, Material, Range, DXFSize
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, RetrieveAPIView
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
@@ -23,10 +24,12 @@ from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import authentication_classes, permission_classes
 from .permissions import CreateOnly, EditOnly, IsAuthAndSuperAdminOnly, ReadOnly
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .filters import ExcludeDetailFilter, DetailFilter
 import asyncio
 from django.db.utils import IntegrityError
 from asgiref.sync import sync_to_async
+from django.utils.decorators import method_decorator
 
 @authentication_classes([])
 @permission_classes([])
@@ -208,33 +211,64 @@ async def get_materials_view(request):
             return JsonResponse(result)
         except asyncio.TimeoutError:
             return JsonResponse({"status": False})
-
+        
 @authentication_classes([])
 @permission_classes([])
 @csrf_exempt
 async def update_materials(request):
-    if request.method == "POST":
+    try:
         try:
-            try:
-                await asyncio.wait_for(utils.ping_web_service(), timeout=12)
-            except asyncio.TimeoutError:
-                return JsonResponse({"status": False, "error": "Ping timeout"})
-
-            await sync_to_async(Material.objects.all().delete)()
-            await sync_to_async(MaterialGroup.objects.all().delete)()
-
-            data = await asyncio.wait_for(utils.get_materials(), timeout=12)
-
-            await sync_to_async(create_materials_from_data)(data)
-
-            return JsonResponse({"status": True})
-
+            await asyncio.wait_for(utils.ping_web_service(), timeout=12)
         except asyncio.TimeoutError:
-            return JsonResponse({"status": False, "error": "Fetch timeout"})
-        except IntegrityError as e:
-            return JsonResponse({"status": False, "error": str(e)})
-        except Exception as e:
-            return JsonResponse({"status": False, "error": str(e)})
+            return JsonResponse({"status": False, "error": "Ping timeout"})
+
+        await sync_to_async(Material.objects.all().delete)()
+        await sync_to_async(MaterialGroup.objects.all().delete)()
+
+        data = await asyncio.wait_for(utils.get_materials(), timeout=12)
+
+        await sync_to_async(create_materials_from_data)(data)
+
+        return JsonResponse({"status": True})
+
+    except asyncio.TimeoutError:
+        return JsonResponse({"status": False, "error": "Fetch timeout"})
+    except IntegrityError as e:
+        return JsonResponse({"status": False, "error": str(e)})
+    except Exception as e:
+        return JsonResponse({"status": False, "error": str(e)})
+
+# @method_decorator(csrf_exempt, name='dispatch')
+# class UpdateMaterialsView(View):
+#     serializer_class = DetailSaveSerialazer
+#     queryset = Detail.objects.all()
+#     permission_classes = [IsAuthAndSuperAdminOnly|ReadOnly]
+
+#     async def post(self, request):
+#         # if not request.user.is_authenticated or not request.user.is_superuser:
+#         #     return JsonResponse({"status": False, "error": "Permission denied"}, status=403)
+
+#         try:
+#             try:
+#                 await asyncio.wait_for(utils.ping_web_service(), timeout=12)
+#             except asyncio.TimeoutError:
+#                 return JsonResponse({"status": False, "error": "Ping timeout"})
+
+#             await sync_to_async(Material.objects.all().delete)()
+#             await sync_to_async(MaterialGroup.objects.all().delete)()
+
+#             data = await asyncio.wait_for(utils.get_materials(), timeout=12)
+
+#             await sync_to_async(create_materials_from_data)(data)
+
+#             return JsonResponse({"status": True})
+
+#         except asyncio.TimeoutError:
+#             return JsonResponse({"status": False, "error": "Fetch timeout"})
+#         except IntegrityError as e:
+#             return JsonResponse({"status": False, "error": str(e)})
+#         except Exception as e:
+#             return JsonResponse({"status": False, "error": str(e)})
 
 def create_materials_from_data(data):
     with transaction.atomic():
@@ -323,7 +357,7 @@ class MaterialApiview(CreateAPIView, ListAPIView):
 
 class MaterialApiviewWithPaggination(ListAPIView): # To fix
     serializer_class = MaterialSerializer
-    queryset = Material.objects.all()
+    queryset = Material.objects.all().order_by('id')
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
