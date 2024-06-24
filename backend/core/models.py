@@ -35,7 +35,7 @@ class Range(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="ranges")
 
     def __str__(self):
-        return f"{self.start} - {self.stop} by {self.price}"
+        return f"{self.start} - {self.finish} by {self.price}"
 
 
 class Order(models.Model):
