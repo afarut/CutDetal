@@ -19,13 +19,13 @@ const ItemOrder = ({
   handleThicknessChange,
   thicknessOptions,
   selectedThickness,
-  typeRez
+  typeRez,
+  daval, 
+  setDaval
 }) => {
   const [diapazon, setDiapazon] = useState([]);
 
   const [onQuestion, setOnQuestion] = useState(false);
-
-  const [daval, setDaval] = useState(false)
 
   const imgRef = useRef(null);
 
@@ -37,6 +37,8 @@ const ItemOrder = ({
     })
     setIsPopupOpen(true)
   }
+
+  console.log(daval)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -62,7 +64,7 @@ const ItemOrder = ({
       updatedItems[item.id] = priceDetail;
       return updatedItems;
     });
-  }, [quantityValues, materialValues, thicknessOptions, selectedThickness, daval]);
+  }, [quantityValues, materialValues, thicknessOptions, selectedThickness, daval[item.id]]);
 
   function getSVGWidth(svgString) {
     const parser = new DOMParser();
@@ -96,7 +98,7 @@ const ItemOrder = ({
         sum = 1;
       }
 
-      const priceMaterial = daval ? material.price_d : material.price
+      const priceMaterial = daval[item.id]===true ? material.price_d : material.price
 
       const doc = {
         countList: sum,
@@ -120,7 +122,7 @@ const ItemOrder = ({
 
   useEffect(() => {
     getResult();
-  }, [materialValues, thicknessOptions, selectedThickness, daval]);
+  }, [materialValues, thicknessOptions, selectedThickness, daval[item.id]]);
 
   const getPriceOneDetailByCount = () => {
     const count = quantityValues[item.id] == 0 ? 1 : quantityValues[item.id];
@@ -252,7 +254,7 @@ const ItemOrder = ({
 
         <div className={`${module.materialInput} flex items-center gap-6 my-[8px]`}>
           <label htmlFor="daval">Давальческий материал:</label>
-          <input type="checkbox" name="daval" id="daval" value={daval} onChange={() => setDaval(!daval)} />
+          <input type="checkbox" name="daval" id="daval" value={daval[item.id]} onChange={() => setDaval(item.id)} />
         </div>
 
         <div className={module.inputDivCount}>
