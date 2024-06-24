@@ -20,14 +20,22 @@ const ItemOrder = ({
   thicknessOptions,
   selectedThickness,
   typeRez,
-  daval, 
+  daval,
   setDaval
 }) => {
   const [diapazon, setDiapazon] = useState([]);
 
   const [onQuestion, setOnQuestion] = useState(false);
 
+  const [davalMat, setDavalMat] = useState(false)
+
+  console.log(davalMat)
+
   const imgRef = useRef(null);
+
+  useEffect(() => {
+    setDavalMat(daval[item.id])
+  }, [daval[item.id], setOnQuestion, onQuestion])
 
   const handleIsPopupOpen = () => {
     setImageInfo({
@@ -36,9 +44,8 @@ const ItemOrder = ({
       height: getSVGHeight(item.image)
     })
     setIsPopupOpen(true)
+    setDavalMat(daval[item.id])
   }
-
-  console.log(daval)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -48,9 +55,10 @@ const ItemOrder = ({
         onQuestion
       ) {
         setOnQuestion(false);
+        setDavalMat(daval[item.id])
       }
     };
-
+    setDavalMat(daval[item.id])
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -98,7 +106,7 @@ const ItemOrder = ({
         sum = 1;
       }
 
-      const priceMaterial = daval[item.id]===true ? material.price_d : material.price
+      const priceMaterial = daval[item.id] === true ? material.price_d : material.price
 
       const doc = {
         countList: sum,
@@ -151,7 +159,6 @@ const ItemOrder = ({
   if (isNaN(items[item.id])) {
     items[item.id] = getPriceDetailByCount()
   }
-
 
   return (
     <div key={item.id} className={module.cartCalc}>
@@ -254,7 +261,22 @@ const ItemOrder = ({
 
         <div className={`${module.materialInput} flex items-center gap-6 my-[8px]`}>
           <label htmlFor="daval">Давальческий материал:</label>
-          <input type="checkbox" name="daval" id="daval" value={daval[item.id]} onChange={() => setDaval(item.id)} />
+
+
+          <div className={`${module.customCheckbox} ${davalMat ? module.customCheckboxChecked : ''}`} onClick={() => setDaval(item.id)}>
+            {davalMat && <div
+              className={`${module.customCheckbox} ${daval[item.id] ? module.customCheckboxChecked : ''}`}
+              onClick={() => setDaval(prevState => !prevState[item.id])}
+            >
+              {daval[item.id] && (
+                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              )}
+            </div>}
+          </div>
+
+
         </div>
 
         <div className={module.inputDivCount}>

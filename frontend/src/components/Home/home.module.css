@@ -317,14 +317,14 @@
     margin-right: 12px;
 }
 .divScroll {
-    overflow-y: auto;
-    scrollbar-width: 0px; 
-    scrollbar-color: transparent transparent; 
-}
-
-.divScroll::-webkit-scrollbar {
-    width: 0px; 
-}
+    overflow-y: auto; /* Ensure vertical scrolling */
+    scrollbar-width:none; /* Use 'thin' if you want to show a thin scrollbar */
+    scrollbar-color: transparent transparent; /* Hide the scrollbar track */
+  }
+  
+  .divScroll::-webkit-scrollbar {
+    width: 0px; /* Hide the scrollbar for WebKit browsers */
+  }
 
 .placingTitle{
     color: rgba(0, 0, 0, 0.71);
@@ -591,4 +591,19 @@
     left: 0;
     width: 100%;
     z-index: 1000; /* Ensure it covers the whole page */
+  }
+
+  .customCheckbox {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .customCheckboxChecked {
+    background-color: #ffffff; /* Цвет фона для выбранного чекбокса */
+    border-color: #000000; /* Цвет рамки для выбранного чекбокса */
   }
