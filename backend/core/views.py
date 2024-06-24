@@ -126,6 +126,7 @@ def dxf_confirm(request):
             is_individual = form.cleaned_data["is_individual"]
             details = form.cleaned_data["details"]
             comment = form.cleaned_data["comment"]
+
             # Create a new order
             order = Order.objects.create(
                 username=username,
@@ -152,6 +153,7 @@ def dxf_confirm(request):
                 material_id = detail.get("material_id")
                 price = detail.get("price")
                 quantity = detail.get("count")
+                material_daval = detail.get("daval")
                 try:
                     material_obj = Material.objects.get(id=material_id)
                     # Retrieve the detail object from the database
@@ -166,7 +168,8 @@ def dxf_confirm(request):
                                               "DXFLink": detail_obj.dxf_file, 
                                               "MaterialName": material_obj.name, 
                                               "Price": price, 
-                                              "Quantity": quantity})
+                                              "Quantity": quantity,
+                                              "MaterialDaval": material_daval})
 
                     # Associate detail with the order
                     order.details.add(detail_obj)
