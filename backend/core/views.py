@@ -110,7 +110,7 @@ def dxf_get(request):
 def dxf_confirm(request):
     if request.method == "POST":
         data = json.loads(request.body.decode())
-
+        
         # Create a form instance and populate it with data from the request
         form = forms.DxfConfirmForm(data)
 
@@ -131,6 +131,8 @@ def dxf_confirm(request):
                 is_individual=is_individual,
                 comment=comment
             )
+            
+            print(order)
 
             # массивы для XML
             order_header = {

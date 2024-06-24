@@ -5,9 +5,24 @@ body {
   margin: 0;
   font-family: 'Montserrat', sans-serif !important;
 }
-
 html,
 body {
   height: 100%;
   background-color: #F8F9FD;
+  overflow: hidden;
+}
+
+html {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }

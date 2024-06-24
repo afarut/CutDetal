@@ -12,7 +12,7 @@ const PlacingOrder = ({ name, handleNameChange, phoneNumber, handlePhoneNumberCh
   }, [name, phoneNumber, email]);
   return (
     <div>
-      <div className={`absolute inset-0 flex justify-center pt-[6%] bg-opacity-60 bg-black z-20 h-full ${module.divCalculate}`}>
+      <div className={`absolute inset-0 flex justify-center pt-[6%] z-20 h-full ${module.divCalculate}`}>
         <div className="h-[max-content] w-[540px] bg-white rounded-3xl px-[36px] py-[28px]">
           <div className="h-full relative">
             <div className="">
