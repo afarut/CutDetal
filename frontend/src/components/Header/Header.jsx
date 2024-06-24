@@ -160,17 +160,12 @@ const Header = () => {
           <img src={burgerMenuIcon} alt="Burger Menu Icon" />
         </div>
 
-<<<<<<< Updated upstream
-=======
         <div className=" px-3 py-1 bg-blue-800 text-white rounded flex justify-center items-center cursor-pointer" >
             <div onClick={handleUpdateMaterials} className="cursor-pointer">
               <span>Обновить материалы</span>
             </div>
           </div>
 
-
-
->>>>>>> Stashed changes
         {isPopupOpen && (
           <div className={`fixed inset-0 bg-gray-800 bg-opacity-60 z-50`}>
             {!isLoginPopupOpen ? (
