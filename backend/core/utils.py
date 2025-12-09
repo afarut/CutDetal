@@ -11,6 +11,79 @@ from xml.dom import minidom
 import aiohttp
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.conf import settings
+import base64
+
+# Безопасный PNG 1px → bytes после base64
+FAKE_BASE64_IMAGE_STR = (
+'<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="-50 -50 100 100">  <!-- Внешний шестигранник гайки -->  <polygon points="43.3,25 0,50 -43.3,25 -43.3,-25 0,-50 43.3,-25"           fill="none" stroke="black" stroke-width="2"/>  <!-- Внутренний круг для отверстия под болт -->  <circle cx="0" cy="0" r="15" fill="none" stroke="black" stroke-width="2"/>  <!-- Дополнительные линии для объемного вида (опционально) -->  <line x1="-43.3" y1="-25" x2="-43.3" y2="25" stroke="black" stroke-width="1" stroke-dasharray="2,2"/>  <line x1="43.3" y1="-25" x2="43.3" y2="25" stroke="black" stroke-width="1" stroke-dasharray="2,2"/></svg>'
+)
+
+# ДЕКОДИРУЕМ заранее → будет bytes, и .decode() в view будет работать
+FAKE_BASE64_IMAGE_BYTES = FAKE_BASE64_IMAGE_STR.encode("utf-8")
+
+
+# def calc_dxf(
+#     file_content_base64,
+#     name_file,
+#     sr_min=0.01,
+#     sr_corner=0,
+#     login=settings.LOGIN,
+#     password=settings.PASSWORD,
+# ):
+#     return {
+#         "success": True,
+#         "error_message": "",
+#         "total_length": 123.45,
+#         "image": FAKE_BASE64_IMAGE_BYTES,    # ← Теперь bytes, НЕ None
+#         "size_x": 100,
+#         "size_y": 200,
+#         "version": "stub-1.0",
+#         "image_name": name_file,
+#         "incut": 1,
+#     }
+
+
+# async def ping_web_service(login=settings.LOGIN, password=settings.PASSWORD):
+#     return {"status": True}
+
+
+# async def get_materials(login=settings.LOGIN, password=settings.PASSWORD):
+#     return {
+#         "Materials": {
+#             "Item": [
+#                 {"Name": "TestMaterial1", "Price": "100"},
+#                 {"Name": "TestMaterial2", "Price": "200"},
+#             ]
+#         }
+#     }
+
+
+# def XML_to_1C(xml_base64file, login=settings.LOGIN, password=settings.PASSWORD):
+#     return {
+#         "success": True,
+#         "message": "Order accepted (stub)",
+#         "order_id": "STUB-001",
+#     }
+
+
+# def xml_to_base64(xml_file):
+#     return base64.b64encode(xml_file.encode("utf-8")).decode("utf-8")
+
+
+def create_image(image_bytes, ext):
+    # print(type(base64.b64decode(image_bytes).decode('latin-1')))
+    image = ImageFile(
+        io.BytesIO(base64.b64decode(image_bytes).decode("latin-1").encode()),
+        name=f"foo.{ext}",
+    )
+    return image
+
+
+
+
+
+
 def calc_dxf(
     file_content_base64,
     name_file,
@@ -19,6 +92,7 @@ def calc_dxf(
     login=settings.LOGIN,
     password=settings.PASSWORD,
 ):
+    raise Exception("anus")
     # Создаем сессию с аутентификацией
     session = Session()
     session.auth = HTTPBasicAuth(login, password)
@@ -182,10 +256,43 @@ def xml_to_base64(xml_file):
     return xml_base64file
 
 
-def create_image(image_bytes, ext):
-    # print(type(base64.b64decode(image_bytes).decode('latin-1')))
-    image = ImageFile(
-        io.BytesIO(base64.b64decode(image_bytes).decode("latin-1").encode()),
-        name=f"foo.{ext}",
-    )
-    return image
+
+
+
+
+
+
+def calc_dxf(
+    file_content_base64,
+    name_file,
+    sr_min=0.01,
+    sr_corner=0,
+    login=settings.LOGIN,
+    password=settings.PASSWORD,
+):
+    return {
+        "success": True,
+        "error_message": "",
+        "total_length": 123.45,
+        "image": FAKE_BASE64_IMAGE_BYTES,    # ← Теперь bytes, НЕ None
+        "size_x": 100,
+        "size_y": 200,
+        "version": "stub-1.0",
+        "image_name": name_file,
+        "incut": 1,
+    }
+
+
+async def ping_web_service(login=settings.LOGIN, password=settings.PASSWORD):
+    return {"status": True}
+
+
+async def get_materials(login=settings.LOGIN, password=settings.PASSWORD):
+    return {
+        "Materials": {
+            "Item": [
+                {"Name": "TestMaterial1", "Price": "100"},
+                {"Name": "TestMaterial2", "Price": "200"},
+            ]
+        }
+    }

@@ -1,4 +1,0 @@
-version: '3.8'
-services:
-  db:
-    # command: bash -c "rm -rf /var/lib/postgresql/data/* && docker-entrypoint.sh postgres"
