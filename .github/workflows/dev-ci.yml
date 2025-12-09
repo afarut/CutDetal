@@ -43,4 +43,4 @@ jobs:
               echo "DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }}" >> .env &&
               echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> ./frontend/.env &&
               
-              sudo docker-compose up -d --build --force-recreate 
+              sudo docker compose up -d --build --force-recreate 
