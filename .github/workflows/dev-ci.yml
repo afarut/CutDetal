@@ -23,7 +23,7 @@ jobs:
               rm -f .env &&
               touch .env &&
               
-              echo "DEBUG=False" >> .env &&
+              echo "DEBUG=True" >> .env &&
               echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env &&
 
               echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> .env &&
