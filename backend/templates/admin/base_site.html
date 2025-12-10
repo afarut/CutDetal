@@ -1,0 +1,88 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+
+
+    <!--LiveInternet counter--><a href="https://www.liveinternet.ru/click"
+  target="_blank"><img id="licntF07C" width="88" height="31" style="border:0" 
+  title="LiveInternet: показано число просмотров и посетителей за 24 часа"
+  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+  alt=""/></a><script>(function(d,s){d.getElementById("licntF07C").src=
+  "https://counter.yadro.ru/hit?t52.6;r"+escape(d.referrer)+
+  ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+  (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+  ";h"+escape(d.title.substring(0,150))+";"+Math.random()})
+  (document,screen)</script><!--/LiveInternet-->
+
+<!-- Top100 (Kraken) Counter -->
+<script>
+    (function (w, d, c) {
+    (w[c] = w[c] || []).push(function() {
+        var options = {
+            project: 7750280,
+            trackHashes: true,
+            user_id: null,
+        };
+        try {
+            w.top100Counter = new top100(options);
+        } catch(e) { }
+    });
+    var n = d.getElementsByTagName("script")[0],
+    s = d.createElement("script"),
+    f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src =
+    (d.location.protocol == "https:" ? "https:" : "http:") +
+    "//st.top100.ru/top100/top100.js";
+
+    if (w.opera == "[object Opera]") {
+    d.addEventListener("DOMContentLoaded", f, false);
+} else { f(); }
+})(window, document, "_top100q");
+</script>
+<noscript>
+  <img src="//counter.rambler.ru/top100.cnt?pid=7750280" alt="Топ-100" />
+</noscript>
+<!-- END Top100 (Kraken) Counter -->
+
+
+    <!-- Top.Mail.Ru counter -->
+<script type="text/javascript">
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "3726096", type: "pageView", start: (new Date()).getTime()});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "tmr-code");
+</script>
+<noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3726096;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
+<!-- /Top.Mail.Ru counter -->
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105775608', 'ym');
+
+    ym(105775608, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/105775608" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+    
+
+    <script>
+        console.log("Admin tracker loaded");
+        // сюда можно вставить Яндекс.Метрику, GA4 или свой JS
+    </script>
+{% endblock %}
