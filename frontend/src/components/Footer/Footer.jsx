@@ -12,7 +12,8 @@ const Footer = () => {
 
   return (
     <>
-  
+      <div className="footer-wrapper w-full xl:items-center">
+
     <!--LiveInternet counter--><a href="https://www.liveinternet.ru/click"
   target="_blank"><img id="licntF07C" width="88" height="31" style="border:0" 
   title="LiveInternet: показано число просмотров и посетителей за 24 часа"
@@ -23,8 +24,7 @@ const Footer = () => {
   (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
   ";h"+escape(d.title.substring(0,150))+";"+Math.random()})
   (document,screen)</script><!--/LiveInternet-->
-
-      <div className="footer-wrapper w-full xl:items-center">
+    
         <div
           className={`${module.footerNavWrapper} appContainer flex xl:flex-row xl:justify-between flex-col xl:items-center `}
         >
